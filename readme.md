@@ -14,6 +14,10 @@ This repository contains implementations of various projects related to C++ prog
 
 5. **JavaScript Methods in C**: Implementations of JavaScript methods in C.
 
+6. **Socket in C**: Implementations Socket in C.
+
+7. **And so on**
+
 ## How to Use
 
 Each project is organized into its own directory. Navigate to the project of interest to find the source code, explanations, and instructions.
