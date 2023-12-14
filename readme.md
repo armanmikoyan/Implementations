@@ -1,4 +1,4 @@
-# Repository Title
+# IMPLEMENTATIONS
 
 This repository contains implementations of various projects related to C++ programming, covering topics such as design patterns, STL algorithms, data structures, smart pointers, and JavaScript methods in C++.
 
@@ -12,7 +12,7 @@ This repository contains implementations of various projects related to C++ prog
 
 4. **Smart Pointers**: Usage and examples of smart pointers in C++.
 
-5. **JavaScript Methods in C++**: Techniques to mimic JavaScript methods in C++.
+5. **JavaScript Methods in C**: Implementations of JavaScript methods in C.
 
 ## How to Use
 
