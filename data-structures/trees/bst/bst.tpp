@@ -220,11 +220,12 @@ void bst<T>::traverse_in_i() const
         while (curr)
         {
             stack.push(curr);
-            curr = curr->_left;
+            curr = curr->_left;                  // --------------
         }
         curr = stack.top();
-        std::cout << curr->_val << " ";
         stack.pop();
+
+        std::cout << curr->_val << " ";
 
         curr = curr->_right;
     }
