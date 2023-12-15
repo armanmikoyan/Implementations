@@ -59,7 +59,8 @@ void bst<T>::traverse_pre() const
 template<typename T>
 void bst<T>::traverse_in() const
 {
-    traverse_in_r(_root);
+ // traverse_in_r(_root); // recursive
+    traverse_in_i();
 }
 
 template<typename T>
@@ -208,13 +209,26 @@ void bst<T>::level_order_traversal_i() const
     
 // }
 
-// template<typename T>
-// void bst<T>::traverse_in_i() const
-// {
-    
-// }
+template<typename T>
+void bst<T>::traverse_in_i() const
+{
+    if(!_root) return;
+    node* curr = _root;
+    std::stack<node*> stack;
+    while(curr || !stack.empty())
+    {
+        while (curr)
+        {
+            stack.push(curr);
+            curr = curr->_left;
+        }
+        curr = stack.top();
+        std::cout << curr->_val << " ";
+        stack.pop();
 
-
+        curr = curr->_right;
+    }
+}
 
 
 
