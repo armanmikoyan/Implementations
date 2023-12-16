@@ -84,7 +84,33 @@ typename avl<T>::node* avl<T>::insert_r(node* curr, T v)
     {
         curr->_right = insert_r(curr->_right, v);
     }
-    return curr;
+
+    // rotation if needed
+    int bf = balance_factor(curr);
+     
+    if (bf > 1 && curr->_left->_val > v)                  // 1. left subtree is heavy and inserted to the left side
+    {
+        return right_rotate(curr);                       //  LL CASE
+    }
+
+    else if(bf > 1 && curr->_left->_val < v)             //  2. left subtree is heavy and inserted to the right side
+    {                                                 
+        curr->_left =  left_rotate(curr);                    // LR CASE
+        return right_rotate(curr);
+    }
+
+    else if (bf < -1 && curr->_right->_val > v)           //  3. right subtree is heavy  and inserted to the left side
+    {
+        curr->_right = right_rotate(curr->_right);          //  RL CASE
+        return left_rotate(curr);
+    }
+
+    else if(bf < -1 && curr->_right->_val < v)            // 4. right subtree is heavy  and inserted to the right side
+    {
+        return left_rotate(curr);                          //  RR CASE
+    }
+
+    return curr;   // rotations doesn't happend
 }
 
 template<typename T>
@@ -154,6 +180,36 @@ int avl<T>::balance_factor(node* curr) const
 {
     if (!curr) return 0;
     return depth_r(curr->_left) - depth_r(curr->_right);
+}
+
+template<typename T>
+typename avl<T>::node* avl<T>::right_rotate(node* root)
+{
+    // save left child of root, and right child of  left
+    node* y = root->_left;
+    node* left_right = y->_right;
+
+    // right rotation
+    y->_right = root;
+    root->_left = left_right;
+
+    // new root
+    return y;
+}
+
+template<typename T>
+typename avl<T>::node*avl<T>::left_rotate(node* root)
+{
+    //save right child of root, and left child of right child
+    node* y = root->_right;
+    node* right_left = y->_left;
+
+    // left rotation
+    y->_left = root;
+    root->_right = right_left;
+
+    //new root
+    return y;
 }
 
 template<typename T>

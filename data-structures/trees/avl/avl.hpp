@@ -42,9 +42,11 @@ private: // helpers
     int                balance_factor(node*) const;
     node*                 predecessor(node*) const;
     node*                   successor(node*) const; 
-    node*                   get_max_r(node*) const; 
+    node*                   get_max_r(node*) const;
     node*                   get_min_r(node*) const; 
     int                       depth_r(node*) const;
+    node*                      right_rotate(node*); 
+    node*                       left_rotate(node*);
     node*                       insert_r(node*, T);
     node*                        erase_r(node*, T); 
 
