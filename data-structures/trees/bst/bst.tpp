@@ -27,27 +27,15 @@ void bst<T>::insert(T v)
 }
 
 template<typename T>
+void bst<T>::erase(T v)
+{
+    _root = erase_r(_root, v);
+}
+
+template<typename T>
 bool bst<T>::search(T v) const
 {
-    return search_r(_root, v);
-}
-
-template<typename T>
-int bst<T>::depth() const
-{
-    return depth_r(_root);
-}
-
-template<typename T>
-int bst<T>::get_max() const
-{
-    return get_max_r(_root);
-}
-
-template<typename T>
-int bst<T>::get_min() const
-{
-    return get_min_r(_root);
+    return search_i(v);
 }
 
 template<typename T>
@@ -73,7 +61,7 @@ template<typename T>
 void bst<T>::level_order_traversal() const
 {
    //  level_order_traversal_i(); // iterative
-    for (int i = 0; i <= depth(); ++i)
+    for (int i = 0; i <= depth_r(_root); ++i)
     {
         level_order_traversal_r(_root, i); // recursive
     }
@@ -127,7 +115,7 @@ void bst<T>::insert_i(T v)
 template<typename T>
 bool bst<T>::search_i(T v) const
 {
-    node *curr = _root;
+    node* curr = _root;
     while (curr)
     {
         if (curr->_val == v) return true;
@@ -144,27 +132,27 @@ bool bst<T>::search_i(T v) const
 }
 
 template<typename T>
-int bst<T>::get_max_i(node* curr) const
+typename bst<T>::node* bst<T>::get_max_i(node* curr) const
 {
-    if (!curr) return -1;
-    if (!curr->_right) return curr->_val;
+    if (!curr) return nullptr;
+    if (!curr->_right) return curr;
     while (curr->_right)
     {
         curr = curr->_right;
     }
-    return curr->_val;
+    return curr;
 }
 
 template<typename T>
-int bst<T>::get_min_i(node* curr) const
+typename bst<T>::node* bst<T>::get_min_i(node* curr) const
 {
-    if (!curr) return -1;
-    if (!curr->_left) return curr->_val;
+    if (!curr) return nullptr;
+    if (!curr->_left) return curr;
     while (curr->_left)
     {
         curr = curr->_left;
     }
-    return curr->_val;
+    return curr;
 }
 
 template<typename T>
@@ -187,6 +175,53 @@ void bst<T>::level_order_traversal_i() const
         }
         queue.pop();
     }
+}
+
+template<typename T>
+typename bst<T>::node* bst<T>::predecessor(node* curr) const
+{
+    if (!curr) return nullptr;
+    if (curr->_left) return get_max_r(curr->_left);
+
+    node* pred = nullptr;
+    node* ancestor = _root;
+    while (curr != ancestor)
+    {
+        if (curr->_val > ancestor->_val)
+        {
+            pred = ancestor;
+            ancestor = ancestor->_right;
+        }
+        else
+        {
+            ancestor = ancestor->_left;
+        }
+    }
+    return pred;
+}
+
+template<typename T>
+typename bst<T>::node* bst<T>::successor(node* curr) const
+{
+    if (!curr) return nullptr;
+    if (curr->_right) return get_min_r(curr->_right);
+
+    node* ancestor = _root;
+    node* success = nullptr;
+
+    while (ancestor != curr)
+    {
+        if (ancestor->_val > curr->_val)
+        {
+            success = ancestor;
+            ancestor = ancestor->_left;
+        }
+        else
+        {
+            ancestor = ancestor->_right;
+        }
+    }
+    return success;
 }
 
 // template<typename T>
@@ -215,7 +250,7 @@ void bst<T>::traverse_in_i() const
     if(!_root) return;
     node* curr = _root;
     std::stack<node*> stack;
-    while(curr || !stack.empty())
+    while (curr || !stack.empty())
     {
         while (curr)
         {
@@ -271,6 +306,51 @@ bool bst<T>::search_r(node* curr, T v) const
 }
 
 template<typename T>
+typename bst<T>::node* bst<T>::erase_r(node* root, T v)
+{
+    if (!root) return root;
+    
+    if (root->_val > v)
+    {
+        root->_left = erase_r(root->_left, v);
+    }
+    else if (root->_val < v)
+    {
+        root->_right = erase_r(root->_right, v);
+    }
+    else
+    {
+        if (!root->_left && !root->_right) 
+        {
+            delete root;
+            return  nullptr;
+        }
+        else if (!root->_left && root->_right || root->_left && !root->_right)
+        {
+            if (!root->_right)
+            {
+                node* tmp = root->_left;
+                delete root;
+                return tmp;
+            }
+            else
+            {
+                node* tmp = root->_right;
+                delete root;
+                return tmp;
+            }
+        }
+        else
+        {
+            auto tmp = get_max_r(root->_left);
+            std::swap(root->_val, tmp->_val);
+            root->_left = erase_r(root->_left, tmp->_val);
+        }
+    }
+    return root;
+}
+
+template<typename T>
 int  bst<T>::depth_r(node* curr) const
 {
     if (!curr) return -1;
@@ -280,18 +360,18 @@ int  bst<T>::depth_r(node* curr) const
 }
 
 template<typename T>
-int bst<T>::get_max_r(node* curr) const
+typename bst<T>::node* bst<T>::get_max_r(node* curr) const
 {
-    if (!curr) return -1;
-    if (!curr->_right) return curr->_val;
+    if (!curr) return nullptr;
+    if (!curr->_right) return curr;
     return get_max_r(curr->_right);
 }
 
 template<typename T>
-int bst<T>::get_min_r(node* curr) const
+typename bst<T>::node* bst<T>::get_min_r(node* curr) const
 {
-    if (!curr) return -1;
-    if (!curr->_left) return curr->_val;
+    if (!curr) return nullptr;
+    if (!curr->_left) return curr;
     return get_min_r(curr->_left);
 }
 

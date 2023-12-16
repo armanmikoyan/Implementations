@@ -30,11 +30,9 @@ public: //interface
     void         traverse_post() const;
     void          traverse_pre() const;
     void           traverse_in() const;
-    int                get_min() const;
-    int                get_max() const;
     bool               search(T) const;
-    int                  depth() const;
     void                     insert(T);
+    void                      erase(T);
 
 private: // recursive  impl
     void level_order_traversal_r(node*, int) const;
@@ -42,18 +40,21 @@ private: // recursive  impl
     void               traverse_pre_r(node*) const; 
     void                traverse_in_r(node*) const;
     bool                  search_r(node*, T) const;
-    int                     get_max_r(node*) const; 
-    int                     get_min_r(node*) const; 
+    node*                   get_max_r(node*) const; 
+    node*                   get_min_r(node*) const; 
     int                       depth_r(node*) const;
     node*                       insert_r(node*, T);
- 
+    node*                        erase_r(node*, T); 
+
 private: // iterative  impl
     void level_order_traversal_i() const;
     void         traverse_post_i() const;// --
     void          traverse_pre_i() const;// --
-    void           traverse_in_i() const;// --
-    int            get_min_i(node*)const; 
-    int            get_max_i(node*)const;
+    void           traverse_in_i() const;
+    node*       predecessor(node*) const; 
+    node*         successor(node*) const; 
+    node*         get_min_i(node*) const; 
+    node*         get_max_i(node*) const;
     bool               search_i(T) const;
     int                  depth_i() const;// --
     void                     insert_i(T);
