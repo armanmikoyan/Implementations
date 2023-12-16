@@ -47,8 +47,8 @@ private: // recursive  impl
 
 private: // iterative  impl
     void level_order_traversal_i() const;
-    void         traverse_post_i() const;// --
-    void          traverse_pre_i() const;// --
+    void         traverse_post_i() const; // --
+    void          traverse_pre_i() const; // --
     void           traverse_in_i() const;
     node*       predecessor(node*) const; 
     node*         successor(node*) const; 
