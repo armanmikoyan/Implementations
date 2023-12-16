@@ -90,7 +90,7 @@ typename avl<T>::node* avl<T>::insert_r(node* curr, T v)
      
     if (bf > 1 && curr->_left->_val > v)                  // 1. left subtree is heavy and inserted to the left side
     {
-        return right_rotate(curr);                       //  LL CASE
+        return right_rotate(curr);                          //  LL CASE
     }
 
     else if(bf > 1 && curr->_left->_val < v)             //  2. left subtree is heavy and inserted to the right side
@@ -99,7 +99,7 @@ typename avl<T>::node* avl<T>::insert_r(node* curr, T v)
         return right_rotate(curr);
     }
 
-    else if (bf < -1 && curr->_right->_val > v)           //  3. right subtree is heavy  and inserted to the left side
+    else if (bf < -1 && curr->_right->_val > v)          //  3. right subtree is heavy  and inserted to the left side
     {
         curr->_right = right_rotate(curr->_right);          //  RL CASE
         return left_rotate(curr);
@@ -107,7 +107,7 @@ typename avl<T>::node* avl<T>::insert_r(node* curr, T v)
 
     else if(bf < -1 && curr->_right->_val < v)            // 4. right subtree is heavy  and inserted to the right side
     {
-        return left_rotate(curr);                          //  RR CASE
+        return left_rotate(curr);                           //  RR CASE
     }
 
     return curr;   // rotations doesn't happend
