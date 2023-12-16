@@ -11,6 +11,6 @@ int main()
     b.traverse_in();
 
     std::cout << std::endl;
-        b.level_order_traversal();
+    b.level_order_traversal();
     std::cout << std::endl;
 }

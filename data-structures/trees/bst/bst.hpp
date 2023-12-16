@@ -1,7 +1,6 @@
 #ifndef BST
 #define BST
 
-#include <vector>
 #include <queue>
 #include <stack>
 #include <iostream>
