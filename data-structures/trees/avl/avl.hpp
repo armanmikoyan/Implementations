@@ -1,7 +1,6 @@
 #ifndef AVL
 #define AVL
 
-#include <vector>
 #include <queue>
 #include <stack>
 #include <iostream>
@@ -40,7 +39,8 @@ private: // helpers
     void               traverse_pre_r(node*) const; 
     void                traverse_in_r(node*) const;
     bool                  search_r(node*, T) const;
-    node*                 predecessor(node*) const; 
+    int                balance_factor(node*) const;
+    node*                 predecessor(node*) const;
     node*                   successor(node*) const; 
     node*                   get_max_r(node*) const; 
     node*                   get_min_r(node*) const; 
