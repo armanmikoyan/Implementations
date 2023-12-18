@@ -172,8 +172,32 @@ typename avl<T>::node* avl<T>::erase_r(node* root, T v)
             root->_left = erase_r(root->_left, tmp->_val);
         }
     }
-    return root;
-}
+
+    int bf = balance_factor(root);
+    if (bf > 1 && balance_factor(root->_left) >= 0)             // 1. left subtree is heavy,  LL case
+    {
+        return right_rotate(root);
+    }
+
+    else if (bf > 1 && balance_factor(root->_left) < 0)         // 2. left subtree is heavy,  LR case
+    {
+        root->_left = left_rotate(root->_left);
+        return right_rotate(root);
+    }
+
+    else if (bf < -1 && balance_factor(root->_right) <= 0)      // 3. right subtree is heavy,  RR case
+    {
+        return left_rotate(root);
+    }
+
+    else if (bf < -1 && balance_factor(root->_right) >= 0)       // 4. right subtree is heavy,  RL case
+    {
+        root->_right = right_rotate(root->_right);
+        return left_rotate(root);
+    }   
+    
+    return root;      // rotations doesn't happend
+} 
 
 template<typename T>
 int avl<T>::balance_factor(node* curr) const
