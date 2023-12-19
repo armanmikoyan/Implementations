@@ -155,7 +155,6 @@ typename bst<T>::node* bst<T>::get_min_i(node* curr) const
     return curr;
 }
 
-
 template<typename T>
 void bst<T>::level_order_traversal_i() const
 {   
