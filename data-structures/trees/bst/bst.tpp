@@ -165,7 +165,7 @@ void bst<T>::level_order_traversal_i() const
     while (!queue.empty())
     {
         int sz = queue.size();
-        while(sz--)
+        while (sz--)
         {
             node* top =  queue.front();
             queue.pop();
