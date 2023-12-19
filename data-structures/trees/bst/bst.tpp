@@ -60,11 +60,11 @@ void bst<T>::traverse_post() const
 template<typename T>
 void bst<T>::level_order_traversal() const
 {
-   //  level_order_traversal_i(); // iterative
-    for (int i = 0; i <= depth_r(_root); ++i)
-    {
-        level_order_traversal_r(_root, i); // recursive
-    }
+     level_order_traversal_i(); // iterative
+    // for (int i = 0; i <= depth_r(_root); ++i)
+    // {
+    //     level_order_traversal_r(_root, i); // recursive
+    // }
 }
 
 
@@ -155,6 +155,7 @@ typename bst<T>::node* bst<T>::get_min_i(node* curr) const
     return curr;
 }
 
+
 template<typename T>
 void bst<T>::level_order_traversal_i() const
 {   
@@ -164,16 +165,21 @@ void bst<T>::level_order_traversal_i() const
     queue.push(_root);
     while (!queue.empty())
     {
-        std::cout << queue.front()->_val << " ";
-        if (queue.front()->_left)
+        int sz = queue.size();
+        while(sz--)
         {
-            queue.push(queue.front()->_left);
-        }
-        if (queue.front()->_right)
-        {
-            queue.push(queue.front()->_right);
-        }
-        queue.pop();
+            node* top =  queue.front();
+            queue.pop();
+            std::cout << top->_val << " ";
+            if (top->_left)
+            {
+                queue.push(top->_left);
+            }
+            if (top->_right)
+            {
+                queue.push(top->_right);
+            }   
+        }  
     }
 }
 
