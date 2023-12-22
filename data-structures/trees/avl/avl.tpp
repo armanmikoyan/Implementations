@@ -190,7 +190,7 @@ typename avl<T>::node* avl<T>::erase_r(node* root, T v)
         return left_rotate(root);
     }
 
-    else if (bf < -1 && balance_factor(root->_right) >= 0)       // 4. right subtree is heavy,  RL case
+    else if (bf < -1 && balance_factor(root->_right) > 0)       // 4. right subtree is heavy,  RL case
     {
         root->_right = right_rotate(root->_right);
         return left_rotate(root);
