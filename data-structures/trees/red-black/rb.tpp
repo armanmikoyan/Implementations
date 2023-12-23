@@ -1,8 +1,10 @@
 template<typename T>
 rb<T>::rb()
-    : _root{}
-    ,  _nil{}
+    : _root{new node}
+    ,  _nil{new node}
 {
+    _nil->_color = color::black;
+    _root->_praent = _nil;
 }
 
 template<typename T>
@@ -87,15 +89,65 @@ typename rb<T>::node* rb<T>::erase_r(node* root, T v)    /////////---------
 } 
 
 template<typename T>
-typename rb<T>::node* rb<T>::right_rotate(node* root) /////////////
+typename rb<T>::node*rb<T>::left_rotate(node* root) ////////////////
 {
+    node* y = root->_right;
+    root->_right = y->_left;
 
+    if (y->_left != _nil)
+    {
+        y->_left->_parent = root;
+    }
+
+    y->_parent = root->_parent;
+
+    if (root->_parent == _nil)
+    {
+        _root = y;
+    }
+    else if (root == root->_parent->_left)
+    {
+        root->_praent->_left = y;
+    }
+    else
+    {
+        root->_praent->_right = y;
+    }
+
+    y->_left = root;
+    root->_praent = y;
+    return y;
 }
 
 template<typename T>
-typename rb<T>::node*rb<T>::left_rotate(node* root) ////////////////
+typename rb<T>::node* rb<T>::right_rotate(node* root) /////////////
 {
- 
+    node* y = root->left;
+    root->_left = y->_right;
+
+    if (y->_right != _nil)
+    {
+        y->_right->_parent = root;
+    }
+
+    y->_praent = root->_praent;
+
+    if (root->_praent == _nil)
+    {
+        _root = y;
+    }
+    else if(root == root->_praent->_left)
+    {
+        root->_praent->_left = y;
+    }
+    else
+    {
+        root->_praent->_right = y;
+    }
+
+    y->_right = root;
+    root->_praent = y;
+    return y;
 }
 
 template<typename T>
