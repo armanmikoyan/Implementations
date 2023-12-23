@@ -1,7 +1,6 @@
 template<typename T>
 rb<T>::rb()
     : _root{new node}
-    ,  _nil{new node}
 {
     _nil->_color = color::black;
     _root->_praent = _nil;
@@ -19,11 +18,11 @@ rb<T>::node::node()
 
 template<typename T>
 rb<T>::node::node(T v)
-    :           _praent{} 
-    ,             _left{}
-    ,            _right{}
-    ,             _val{v}
-    ,  _color{color::red}
+    :      _praent{_nil} 
+    ,        _left{_nil}
+    ,       _right{_nil}
+    ,            _val{v}
+    , _color{color::red}
     
 {
 }

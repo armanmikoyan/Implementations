@@ -56,7 +56,7 @@ private: // helpers
 
 private:
     node* _root;
-    node*  _nil;
+    static inline node* _nil = new node;
 };
 
 #include "rb.tpp"
