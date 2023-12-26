@@ -185,7 +185,6 @@ void rb<T>::insert_fixup(node* z)
             }
        }
    }
-
    _root->_color = color::black;
 }
 
