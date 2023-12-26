@@ -126,19 +126,19 @@ void rb<T>::insert_fixup(node* z)
 {
    while (z->_parent->_color == color::red)
    {
-       if (z->_parent == z->_parent->_parent->_left) // left case: z's parent is a left child of z's grandparent
+       if (z->_parent == z->_parent->_parent->_left) // left mirror case: z's parent is a left child of z's grandparent
        {
            node *uncle = z->_parent->_parent->_right;
-           if (uncle->_color == color::red)    // case 1 uncle is red;              
+           if (uncle->_color == color::red) // CASE 1: uncle is red;              
            {
                z->_parent->_parent->_color = color::red;
                z->_parent->_color = color::black;
                uncle->_color = color::black;
                z = z->_parent->_parent;
            }
-           else // case 2 uncle is black
+           else // CASE: 2 uncle is black
            {
-               if (z == z->_parent->_right)     // intermediate case lr case
+               if (z == z->_parent->_right) // intermediate case lr case,  for going 3 case
                {
                    z = z->_parent;                    
                    left_rotate(z);                           
@@ -149,24 +149,23 @@ void rb<T>::insert_fixup(node* z)
            }
        }
 
-        // mirror case
 
-       else // right case: z's parent is a right child of z's grandparent
+       else // right mirror case: z's parent is a right child of z's grandparent
        {
             node *uncle = z->_parent->_parent->_left;
-            if (uncle->_color == color::red)                // case 1 uncle is red
+            if (uncle->_color == color::red) // CASE 1: uncle is red
             {
                 z->_parent->_parent->_color = color::red;    
                 z->_parent->_color = color::black;
                 uncle->_color = color::black;
                 z = z->_parent->_parent;
             }
-            else            // case 2 uncle color is black
+            else // CASE 2: uncle color is black
             {
-                if (z == z->_parent->_left)   // intermediate case rl case
+                if (z == z->_parent->_left) // intermediate case rl case,  for going 3 case
                 {
                     z = z->_parent;
-                    right_rotate(z);
+                    right_rotate(z);   
                 }
                 z->_parent->_color = color::black;          //
                 z->_parent->_parent->_color = color::red;  //    case 3  
@@ -185,7 +184,7 @@ typename rb<T>::node* rb<T>::erase_r(node* root, T v)    /////////---------
 } 
 
 template<typename T>
-void rb<T>::left_rotate(node* root) ////////////////
+void rb<T>::left_rotate(node* root) 
 {
     node* y = root->_right;
     root->_right = y->_left;
@@ -215,7 +214,7 @@ void rb<T>::left_rotate(node* root) ////////////////
 }
 
 template<typename T>
-void rb<T>::right_rotate(node* root) /////////////
+void rb<T>::right_rotate(node* root)
 {
     node* y = root->_left;
     root->_left = y->_right;
@@ -338,7 +337,6 @@ void rb<T>::traverse_post_r(node* node) const
     traverse_post_r(node->_right);
     std::cout << node->_val << " ";
 }
-
 
 template<typename T>
 void rb<T>::level_order_traversal_i(node* root) const
