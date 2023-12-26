@@ -5,20 +5,16 @@
 int main()
 {
     rb<int> rb;
-    rb.insert(50);
-    rb.insert(88);
-   rb.insert(30);
-    rb.insert(26);
-       rb.insert(99);
-
-   rb.insert(15);    
-       rb.insert(77);
-      rb.insert(3);
-   
-      rb.insert(4);
-            rb.insert(16);
-               rb.insert(12);
-                  rb.insert(57);
-                        rb.insert(58);
-     rb.level_order_traversal();
+    rb.insert(1);
+    rb.insert(7);
+    rb.insert(6);
+     rb.insert(5);
+    rb.insert(4);
+     rb.insert(3);
+    rb.insert(2);
+    rb.insert(0);
+     rb.insert(9);
+     rb.insert(10);
+     rb.insert(8);
+    rb.level_order_traversal();
 }

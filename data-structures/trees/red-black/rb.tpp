@@ -352,7 +352,7 @@ void rb<T>::level_order_traversal_i(node* root) const
         {
             node* top =  queue.front();
             queue.pop();
-            if(top->_val)
+            if(top != _nil)
             {
                 if((int(top->_color)))
                 {
