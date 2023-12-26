@@ -128,7 +128,7 @@ void rb<T>::insert_fixup(node* z)
    {
        if (z->_parent == z->_parent->_parent->_left) // left mirror case: z's parent is a left child of z's grandparent
        {
-           node *uncle = z->_parent->_parent->_right;
+           node* uncle = z->_parent->_parent->_right;
            if (uncle->_color == color::red) // CASE 1: uncle is red;              
            {
                z->_parent->_parent->_color = color::red;
@@ -152,7 +152,7 @@ void rb<T>::insert_fixup(node* z)
 
        else // right mirror case: z's parent is a right child of z's grandparent
        {
-            node *uncle = z->_parent->_parent->_left;
+            node* uncle = z->_parent->_parent->_left;
             if (uncle->_color == color::red) // CASE 1: uncle is red
             {
                 z->_parent->_parent->_color = color::red;    

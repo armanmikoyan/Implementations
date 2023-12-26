@@ -38,7 +38,7 @@ public: //interface
     void          traverse_pre() const;
     void           traverse_in() const;
     bool               search(T) const; /////--------
-    void                     insert(T); ////---------
+    void                     insert(T); 
     void                      erase(T); /////------
 
 private: // helpers
@@ -51,10 +51,10 @@ private: // helpers
     node*                   get_max_r(node*) const;
     node*                   get_min_r(node*) const; 
     bool                  search_r(node*, T) const; ////------------
-    void                       right_rotate(node*);  ///// -------
-    void                        left_rotate(node*);  // ---------
-    void                              insert_rb(T); // ------
-    void                       insert_fixup(node*); // ------                        
+    void                       right_rotate(node*); 
+    void                        left_rotate(node*);  
+    void                              insert_rb(T); 
+    void                       insert_fixup(node*);                    
     node*                        erase_r(node*, T);   // -----
 
 private:
