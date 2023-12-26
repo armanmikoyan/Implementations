@@ -42,7 +42,7 @@ void rb<T>::erase(T v)
 template<typename T>
 bool rb<T>::search(T v) const
 {
-    return search_r(v);
+    return search_r(_root, v);
 }
 
 template<typename T>
@@ -81,8 +81,20 @@ void rb<T>::level_order_traversal() const
 //-----------------------------------------------------------------------//
 
 template<typename T>
-bool rb<T>::search_r(node* curr, T v) const      ////////////////////////
+bool rb<T>::search_r(node* curr, T v) const    
 {
+    if (!curr) return false;
+
+    if (curr->_val == v) return true;
+
+    else if (curr->_val > v)
+    {
+        return search_r(curr->_left, v);
+    }
+    else
+    {
+        return search_r(curr->_right, v);
+    }
 }
 
 template<typename T>
@@ -352,7 +364,7 @@ void rb<T>::level_order_traversal_i(node* root) const
         {
             node* top =  queue.front();
             queue.pop();
-            if(top != _nil)
+            if (top != _nil)
             {
                 if((int(top->_color)))
                 {

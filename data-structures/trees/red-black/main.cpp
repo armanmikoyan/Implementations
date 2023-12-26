@@ -16,5 +16,7 @@ int main()
      rb.insert(9);
      rb.insert(10);
      rb.insert(8);
-    rb.level_order_traversal();
+
+     rb.level_order_traversal();
+    std::cout << "\n" << rb.search(3);
 }

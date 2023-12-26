@@ -37,7 +37,7 @@ public: //interface
     void         traverse_post() const;
     void          traverse_pre() const;
     void           traverse_in() const;
-    bool               search(T) const; /////--------
+    bool               search(T) const; 
     void                     insert(T); 
     void                      erase(T); /////------
 
@@ -50,10 +50,10 @@ private: // helpers
     node*                   successor(node*) const; 
     node*                   get_max_r(node*) const;
     node*                   get_min_r(node*) const; 
-    bool                  search_r(node*, T) const; ////------------
+    bool                  search_r(node*, T) const; 
+    void                              insert_rb(T); 
     void                       right_rotate(node*); 
     void                        left_rotate(node*);  
-    void                              insert_rb(T); 
     void                       insert_fixup(node*);                    
     node*                        erase_r(node*, T);   // -----
 
