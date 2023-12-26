@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <stack>
+#include <iomanip>
 #include <iostream>
 
 template<typename T>
@@ -21,7 +22,7 @@ private:
         node(T);
 
     public:
-        node* _praent;
+        node* _parent;
         node*   _left;
         node*  _right;
         color  _color;
@@ -40,7 +41,8 @@ public: //interface
     void                     insert(T); ////---------
     void                      erase(T); /////------
 
-private: // helpers  
+private: // helpers
+    void      level_order_traversal_i(node*) const;
     void              traverse_post_r(node*) const;
     void               traverse_pre_r(node*) const; 
     void                traverse_in_r(node*) const;
@@ -49,9 +51,10 @@ private: // helpers
     node*                   get_max_r(node*) const;
     node*                   get_min_r(node*) const; 
     bool                  search_r(node*, T) const; ////------------
-    node*                      right_rotate(node*);  ///// -------
-    node*                       left_rotate(node*);  // ---------
-    node*                       insert_r(node*, T); // ------
+    void                       right_rotate(node*);  ///// -------
+    void                        left_rotate(node*);  // ---------
+    void                              insert_rb(T); // ------
+    void                       insert_fixup(node*); // ------                        
     node*                        erase_r(node*, T);   // -----
 
 private:
