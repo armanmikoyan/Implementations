@@ -36,7 +36,7 @@ void rb<T>::insert(T v)
 template<typename T>
 void rb<T>::erase(T v)
 {
-    _root = erase_r(_root, v);
+    erase_rb(v);
 }
 
 template<typename T>
@@ -189,10 +189,29 @@ void rb<T>::insert_fixup(node* z)
 }
 
 template<typename T>
-typename rb<T>::node* rb<T>::erase_r(node* root, T v)    /////////---------
+void rb<T>::erase_rb(T v)    /////////---------
 {
     
 } 
+
+template<typename T>
+void rb<T>::transplant(node* u, node* v)
+{
+    if (u->_parent == _nil)
+    {
+        _root = v;
+    }
+    else if (u == u->_parent->_left)
+    {
+        u->_parent->_left = v;
+    }
+    else
+    {
+        u->_parent->_right = v;
+    }
+
+    v->_parent = u->_parent;
+}
 
 template<typename T>
 void rb<T>::left_rotate(node* root) 

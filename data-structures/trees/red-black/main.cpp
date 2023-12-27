@@ -5,18 +5,16 @@
 int main()
 {
     rb<int> rb;
-    rb.insert(1);
-    rb.insert(7);
-    rb.insert(6);
-     rb.insert(5);
+    rb.insert(11);
+    rb.insert(27);
+    rb.insert(66);
+    rb.insert(35);
     rb.insert(4);
-     rb.insert(3);
-    rb.insert(2);
-    rb.insert(0);
-     rb.insert(9);
-     rb.insert(10);
-     rb.insert(8);
-
+    rb.insert(13);
+    rb.insert(23);
+    rb.insert(10);
+    rb.insert(93);
+    rb.insert(7);
+    rb.insert(9);
      rb.level_order_traversal();
-    std::cout << "\n" << rb.search(3);
 }

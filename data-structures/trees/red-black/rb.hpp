@@ -55,7 +55,8 @@ private: // helpers
     void                       right_rotate(node*); 
     void                        left_rotate(node*);  
     void                       insert_fixup(node*);                    
-    node*                        erase_r(node*, T);   // -----
+    void                                erase_rb(T);   // -----
+    void                   transplant(node*, node*);
 
 private:
     node* _root;
