@@ -189,10 +189,29 @@ void rb<T>::insert_fixup(node* z)
 }
 
 template<typename T>
-void rb<T>::erase_rb(T v)    /////////---------
+void rb<T>::erase_rb(T v)    
 {
+     // first step: finding node to delete
+    node *z = _root;
+    while (z != _nil)
+    {
+        if(z->_val == v) break;
+
+        else if (z->_val > v)
+        {
+            z = z->_left;                
+        }
+        else  z = z->_right;
+    }
+    if (z == _nil) return;     // not find
+
+
     
-} 
+    
+    // second part:  transplantations
+
+    
+}
 
 template<typename T>
 void rb<T>::transplant(node* u, node* v)
