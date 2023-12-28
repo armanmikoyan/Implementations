@@ -1,4 +1,4 @@
-template<typename T>
+    template<typename T>
 rb<T>::rb()
     : _root{}
 {
@@ -209,8 +209,123 @@ void rb<T>::erase_rb(T v)
     
     
     // second part:  transplantations
+    node* y = z;
+    color y_original_color = y->_color;
+    node* x{};
 
-    
+    if (z->_left == _nil)
+    {
+        x = z->_right;
+        transplant(z, z->_right);
+    }                                  // at most 1 children exist
+    else if (z->_right == _nil)
+    {
+        x = z->_left;
+        transplant(z, z->_left);
+    }  
+
+    else    // both children exist
+    {
+        y = get_min_r(z->_right);    // succesor
+        y_original_color = y->_color;
+        x = y->_right;
+        
+        if (y != z->_right)     // if succesor is not right child
+        {
+            transplant(y, y->_right);        
+            y->_right = z->_right;
+            y->_right->_parent = y;
+        }
+        else                   // succesor is right child
+        {
+            x->_parent = y;
+        }
+
+        transplant(z, y);        // transplant  z and it's succesor
+        y->_left = z->_left;
+        y->_left->_parent = y;
+        y->_color = z->_color;              
+    }
+
+    delete z;
+    if (y_original_color == color::black) // if succesor was black violation happend
+    {
+        erase_fixup(x); // fixing  succesor's right subtree, left subtree doesn't exist
+    }
+}
+
+template<typename T>
+void rb<T>::erase_fixup(node* x)
+{
+    while (x != _nil && x->_color == color::black)
+    {
+        if (x == x->_parent->_left) // mirror case left;
+        {
+            node* sibling = x->_parent->_right;
+            if (sibling->_color == color::red)  // case 1;
+            {
+                sibling->_color = color::black;
+                x->_parent->_color = color::red;
+                left_rotate(x->_parent);
+                sibling = x->_parent->_right;
+            }
+
+            if (sibling->_left->_color == color::black && sibling->_right->_color == color::black) // case 2;
+            {
+                sibling->_color = color::red;
+                x = x->_parent;
+            }
+            else
+            {
+                if (sibling->_right->_color == color::black)
+                {                                                  // case 3
+                    sibling->_left->_color = color::black;
+                    sibling->_color = color::red;
+                    sibling = x->_parent->_right;
+                }
+                                                                 // case 4
+                sibling->_color = x->_parent->_color;
+                x->_parent->_color = color::black;
+                sibling->_right->_color = color::black;
+                left_rotate(x->_parent);
+                x = _root;
+            }
+        }
+
+        else      // mirror case right
+        {
+            node* sibling = x->_parent->_left;
+            if (sibling->_color == color::red)
+            {                                        // case 1
+                sibling->_color = color::black;
+                x->_parent->_color = color::red;
+                right_rotate(x->_parent);
+                sibling = x->_parent->_left;
+            }
+            if (sibling->_right->_color == color::black && sibling->_left->_color == color::black)  // case 2
+            {
+                sibling->_color = color::red;
+                x = x->_parent;
+            }
+            else
+            {
+                if (sibling->_left->_color == color::black)      
+                {                                                  // case 3
+                    sibling->_right->_color = color::black;
+                    sibling->_color = color::red;
+                    left_rotate(sibling);
+                    sibling = x->_parent->_left;
+                }
+                                                        // case 4
+                sibling->_color = x->_parent->_color;
+                x->_parent->_color = color::black;
+                sibling->_left->_color = color::black;
+                right_rotate(x->_parent);
+                x = _root;
+            }
+        }
+    }
+    x->_color = color::black;
 }
 
 template<typename T>
