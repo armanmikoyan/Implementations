@@ -1,4 +1,4 @@
-    template<typename T>
+template<typename T>
 rb<T>::rb()
     : _root{}
 {
@@ -101,8 +101,8 @@ template<typename T>
 void rb<T>::insert_rb(T v)  
 {
     node* z = new node(v);
-    node *x = _root;
-    node *parent = _nil;
+    node* x =       _root;
+    node* parent =   _nil;
 
     while (x != _nil)
     {
@@ -129,7 +129,6 @@ void rb<T>::insert_rb(T v)
     {
         parent->_left = z;
     }
-
     insert_fixup(z);
 }
 
@@ -249,8 +248,6 @@ void rb<T>::erase_rb(T v)
         erase_fixup(x); // fixing  succesor's right subtree, left subtree doesn't exist
     }
 }
-
-
 
 template<typename T>
 void rb<T>::erase_fixup(node* x)
@@ -397,7 +394,7 @@ void rb<T>::right_rotate(node* root)
     {
         _root = y;
     }
-    else if(root == root->_parent->_left)
+    else if (root == root->_parent->_left)
     {
         root->_parent->_left = y;
     }
@@ -413,7 +410,7 @@ void rb<T>::right_rotate(node* root)
 template<typename T>
 typename rb<T>::node* rb<T>::predecessor(node* curr) const
 {
-    if (!curr) return nullptr;
+    if (curr == _nil) return nullptr;
     if (curr->_left) return get_max_r(curr->_left);
 
     node* pred = nullptr;
@@ -436,7 +433,7 @@ typename rb<T>::node* rb<T>::predecessor(node* curr) const
 template<typename T>
 typename rb<T>::node* rb<T>::successor(node* curr) const
 {
-    if (!curr) return nullptr;
+    if (curr == _nil) return nullptr;
     if (curr->_right) return get_min_r(curr->_right);
 
     node* ancestor = _root;
@@ -460,7 +457,7 @@ typename rb<T>::node* rb<T>::successor(node* curr) const
 template<typename T>
 typename rb<T>::node* rb<T>::get_max_r(node* curr) const
 {
-    if (!curr) return nullptr;
+    if (curr == _nil) return nullptr;
     if (curr->_right == _nil) return curr;
     return get_max_r(curr->_right);
 }
@@ -468,7 +465,7 @@ typename rb<T>::node* rb<T>::get_max_r(node* curr) const
 template<typename T>
 typename rb<T>::node* rb<T>::get_min_r(node* curr) const
 {
-    if (!curr) return nullptr;
+    if (curr == _nil) return nullptr;
     if (curr->_left == _nil) return curr;
     return get_min_r(curr->_left);
 }

@@ -13,9 +13,11 @@ int main()
     rb.insert(1);
     rb.insert(5);
     rb.insert(7); 
-       
-    rb.erase(7);
-    rb.erase(9);
-    rb.erase(29);
+    rb.insert(121);
+    rb.insert(31);
+    rb.insert(55);
+    rb.insert(23);
+
+
     rb.level_order_traversal();
 }

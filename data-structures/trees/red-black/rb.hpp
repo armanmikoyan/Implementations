@@ -39,7 +39,7 @@ public: //interface
     void           traverse_in() const;
     bool               search(T) const; 
     void                     insert(T); 
-    void                      erase(T); /////------
+    void                      erase(T); 
 
 private: // helpers
     void      level_order_traversal_i(node*) const;
@@ -60,7 +60,7 @@ private: // helpers
     void                  transplant(node*, node*);
 
 private:
-    node* _root;
+    node*                         _root;
     static inline node* _nil = new node;
 };
 
