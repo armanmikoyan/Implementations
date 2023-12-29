@@ -192,10 +192,10 @@ template<typename T>
 void rb<T>::erase_rb(T v)    
 {
      // first step: finding node to delete
-    node *z = _root;
+    node* z = _root;
     while (z != _nil)
     {
-        if(z->_val == v) break;
+        if (z->_val == v) break;
 
         else if (z->_val > v)
         {
@@ -205,13 +205,10 @@ void rb<T>::erase_rb(T v)
     }
     if (z == _nil) return;     // not find
 
-
-    
-    
     // second part:  transplantations
     node* y = z;
     color y_original_color = y->_color;
-    node* x{};
+    node* x;
 
     if (z->_left == _nil)
     {
@@ -223,7 +220,6 @@ void rb<T>::erase_rb(T v)
         x = z->_left;
         transplant(z, z->_left);
     }  
-
     else    // both children exist
     {
         y = get_min_r(z->_right);    // succesor
@@ -254,78 +250,85 @@ void rb<T>::erase_rb(T v)
     }
 }
 
+
+
 template<typename T>
 void rb<T>::erase_fixup(node* x)
 {
-    while (x != _nil && x->_color == color::black)
-    {
-        if (x == x->_parent->_left) // mirror case left;
-        {
-            node* sibling = x->_parent->_right;
-            if (sibling->_color == color::red)  // case 1;
-            {
-                sibling->_color = color::black;
-                x->_parent->_color = color::red;
+   while (x != _root && x->_color == color::black)
+   {
+       // mirror case when x is left child of his parent
+       if (x == x->_parent->_left)
+       {
+           node* sibling = x->_parent->_right;
+            if (sibling->_color == color::red)  
+            {    // CASE 1:  sibling is red
+                sibling->_color = color::black;    // make sibling black and go to case 2, 3 or 4
+                x->_parent->_color = color::red;    
                 left_rotate(x->_parent);
                 sibling = x->_parent->_right;
             }
-
-            if (sibling->_left->_color == color::black && sibling->_right->_color == color::black) // case 2;
-            {
-                sibling->_color = color::red;
-                x = x->_parent;
+            if (sibling->_left->_color == color::black && sibling->_right->_color == color::black)    
+            {   // CASE 2:  sibling is black and both childrens are black 
+                sibling->_color = color::red;  
+                x = x->_parent;               //  x goes up, sibling compensate it with coloring him red 
             }
             else
             {
                 if (sibling->_right->_color == color::black)
-                {                                                  // case 3
+                {   // CASE 3: sibling black and sibling's left child is red
                     sibling->_left->_color = color::black;
                     sibling->_color = color::red;
+                    right_rotate(sibling);
                     sibling = x->_parent->_right;
                 }
-                                                                 // case 4
+
+                // CASE 4: sibling is black , sibling's right child is red
                 sibling->_color = x->_parent->_color;
-                x->_parent->_color = color::black;
+                sibling->_parent->_color = color::black;
                 sibling->_right->_color = color::black;
                 left_rotate(x->_parent);
                 x = _root;
             }
-        }
+       }
 
-        else      // mirror case right
-        {
-            node* sibling = x->_parent->_left;
-            if (sibling->_color == color::red)
-            {                                        // case 1
-                sibling->_color = color::black;
-                x->_parent->_color = color::red;
-                right_rotate(x->_parent);
-                sibling = x->_parent->_left;
-            }
-            if (sibling->_right->_color == color::black && sibling->_left->_color == color::black)  // case 2
-            {
-                sibling->_color = color::red;
-                x = x->_parent;
-            }
-            else
-            {
-                if (sibling->_left->_color == color::black)      
-                {                                                  // case 3
-                    sibling->_right->_color = color::black;
-                    sibling->_color = color::red;
-                    left_rotate(sibling);
-                    sibling = x->_parent->_left;
-                }
-                                                        // case 4
+       // mirror case when x is right child of his parent
+       else
+       {
+           node* sibling = x->_parent->_left;
+
+           if (sibling->_color == color::red)
+           { // CASE 1: siblins  is red
+               sibling->_color = color::black;   // make sibling black and go to case 2, 3 or 4
+               x->_parent->_color = color::red;     
+               right_rotate(x->_parent);
+               sibling = x->_parent->_left;
+           }
+
+           if (sibling->_left->_color == color::black && sibling->_right->_color == color::black)
+           {  // CASE 2: sibling is black and both childrens is black
+               sibling->_color = color::red;
+               x = x->_parent;                 // x goes up, sibling compensate it with coloring him red 
+           }
+           else
+           { 
+               if (sibling->_left->_color == color::black)
+               {    // CASE 3: sibling is black and his right child is red
+                   sibling->_right->_color = color::black;
+                   sibling->_color = color::red;
+                   left_rotate(sibling);
+                   sibling = x->_parent->_left;
+               }
+                // CASE 4
                 sibling->_color = x->_parent->_color;
                 x->_parent->_color = color::black;
                 sibling->_left->_color = color::black;
                 right_rotate(x->_parent);
-                x = _root;
-            }
-        }
-    }
-    x->_color = color::black;
+                x = _root;   
+           }
+       }
+   }
+   x->_color = color::black;
 }
 
 template<typename T>
@@ -458,7 +461,7 @@ template<typename T>
 typename rb<T>::node* rb<T>::get_max_r(node* curr) const
 {
     if (!curr) return nullptr;
-    if (!curr->_right) return curr;
+    if (curr->_right == _nil) return curr;
     return get_max_r(curr->_right);
 }
 
@@ -466,7 +469,7 @@ template<typename T>
 typename rb<T>::node* rb<T>::get_min_r(node* curr) const
 {
     if (!curr) return nullptr;
-    if (!curr->_left) return curr;
+    if (curr->_left == _nil) return curr;
     return get_min_r(curr->_left);
 }
 
