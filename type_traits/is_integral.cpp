@@ -51,11 +51,11 @@ void check(T arg)
 
 int main()
 {
-    char char_val      =    97;
-    float float_val    =  99.9;
-    int int_val        =    99;
-    double double_val  = 99.99;
-    long long_val      = 99999;
+    char char_val      =     97;
+    float float_val    =  99.99;
+    int int_val        =    999;
+    double double_val  = 99.999;
+    long long_val      = 999999;
 
     check(int_val);
 }
