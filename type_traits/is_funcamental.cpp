@@ -68,10 +68,5 @@ struct is_funcamental<unsigned long long>
 
 int main()
 {
-    int x = 99;
-    int& lvalue_ref = x;
-    int&& rvalue_ref = 9;
-    unsigned int uint_ = 99;
-
-    std::cout << is_funcamental<decltype(uint_)>::value << "\n";
+    std::cout << is_funcamental<int>::value << "\n";
 }
