@@ -19,21 +19,21 @@ public:
     graph_matrix& operator=(graph_matrix&&) noexcept;
 
 public:
-    void     add_edge(size_t u, size_t v);
-    void                     add_vertex();
-    void                      transpose();
-    void             print_matrix() const;
-    void               dfs(int = 0) const;  
-    void               bfs(int = 0) const;
-    void          component_count() const; //-
-    void     all_paths_two_vertex() const;//-
-    void    vertex_count_in_level() const;//-
-    void shortest_path_two_vertex() const;//-
+    void                                                        add_vertex();
+    void                                                         transpose();
+    void                                        add_edge(size_t u, size_t v);
+    void                                                print_matrix() const;
+    void                                                  dfs(int = 0) const;  
+    void                                                  bfs(int = 0) const;
+    size_t                       vertex_count_in_level(size_t, size_t) const;
+    size_t                    shortest_path_two_vertex(size_t, size_t) const;
+    std::vector<std::vector<int>> all_paths_two_vertex(size_t, size_t) const;  
 
 private: // helpers
-    void dfs_helper_recrusive(int, std::vector<bool>&) const;
-    void dfs_helper_iterative(int, std::vector<bool>&) const;
-    void bfs_h(int, std::vector<bool>&) const;
+    void                                           dfs_helper_recrusive(int, std::vector<bool>&) const;
+    void                                           dfs_helper_iterative(int, std::vector<bool>&) const;
+    void                                                          bfs_h(int, std::vector<bool>&) const;
+    std::vector<int> all_paths_two_vertex_helper(size_t, size_t, std::vector<std::vector<int>>&) const;
 
 private:
     std::vector<std::vector<int>> _graph;

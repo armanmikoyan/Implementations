@@ -152,6 +152,86 @@ void graph_matrix<T>::transpose()
 }
 
 template<typename T>
+size_t graph_matrix<T>::shortest_path_two_vertex(size_t u, size_t v) const
+{
+    if (u == v) return 0;
+    if (u > _graph.size() || v > _graph.size()) throw std::out_of_range("Vertex index out of range");
+    std::vector<bool> visited(_graph.size(), false);
+    std::queue<int> q;
+    q.push(u);
+    size_t count = 0;
+    
+    while (!q.empty())
+    {
+        int sz = q.size();
+        while (sz--)
+        {
+            int front = q.front();
+            if (front == v) return count;
+            q.pop();
+            visited[front] = true;
+            for (int i = 0; i < _graph.size(); ++i)
+            {
+                if (_graph[front][i] && !visited[i])
+                {
+                    q.push(i);
+                }
+            }
+        }
+        count++;
+    }
+
+    std::cout << "from " << u  << " " << v << " is not reachable\n";
+    return INT_MAX;
+}
+
+template<typename T>
+size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level) const
+{
+    if (vertex == level) throw std::invalid_argument("vertex and level is equal");
+    std::queue<int> q;
+    std::vector<bool> visited(_graph.size(), false);
+    q.push(vertex);
+    while (!q.empty())
+    {
+        size_t size = q.size();
+        if (!level) return size;
+        while (size--)
+        {
+          
+            int front = q.front();
+            q.pop();
+            visited[front] = true;
+            for (int i = 0; i < _graph.size(); ++i)
+            {
+                if (_graph[vertex][i] && !visited[i])
+                {
+                    q.push(i);
+                }
+            }
+        }
+        --level;
+    }
+    return 0;
+}
+
+template<typename T>
+std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t u, size_t v) const
+{
+    std::vector<std::vector<int>> paths;
+    all_paths_two_vertex_helper(u , v, paths);
+    return  paths
+}
+
+
+template<typename T>
+std::vector<int> graph_matrix<T>::all_paths_two_vertex_helper(size_t u,size_t v,std::vector<std::vector<int>>& paths)  const
+{
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+}
+
+
+template<typename T>
 void graph_matrix<T>::print_matrix() const
 {
     const char* green = "\033[1;32m";
