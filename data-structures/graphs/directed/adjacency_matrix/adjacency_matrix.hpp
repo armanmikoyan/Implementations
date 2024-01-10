@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
+#include <stack>
 #include <utility>
 
 template<typename T>
@@ -21,15 +23,17 @@ public:
     void                     add_vertex();
     void                      transpose();
     void             print_matrix() const;
-    void                   dfs(int) const;   // iterative, recursive
-    void                      bfs() const;
-    void          component_count() const;
-    void     all_paths_two_vertex() const;
-    void    vertex_count_in_level() const;
-    void shortest_path_two_vertex() const;
+    void               dfs(int = 0) const;  
+    void               bfs(int = 0) const;
+    void          component_count() const; //-
+    void     all_paths_two_vertex() const;//-
+    void    vertex_count_in_level() const;//-
+    void shortest_path_two_vertex() const;//-
 
 private: // helpers
-    void dfs_h(int, bool*) const;
+    void dfs_helper_recrusive(int, std::vector<bool>&) const;
+    void dfs_helper_iterative(int, std::vector<bool>&) const;
+    void bfs_h(int, std::vector<bool>&) const;
 
 private:
     std::vector<std::vector<int>> _graph;

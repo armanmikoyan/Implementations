@@ -36,40 +36,94 @@ graph_matrix<T>& graph_matrix<T>::operator=(graph_matrix<T>&& rhs) noexcept
     return *this;
 }
 
-
 template<typename T>
-void graph_matrix<T>::dfs(int v) const
+void graph_matrix<T>::bfs(int v) const
 {
-    bool visited[_graph.size()];
-    dfs_h(v, visited);
+    std::vector<bool> visited(_graph.size(), false);
+    bfs_h(v, visited);
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_h(int v, bool* visited) const
+void graph_matrix<T>::bfs_h(int v, std::vector<bool>& visited) const
 {
-    visited[v] = true;
-    std::cout << v;
-    for(int i = v; i < _graph.size(); ++i)
+    std::queue<int> q;
+    q.push(v);
+    while (!q.empty())
     {
-        for (int j = 0; j < _graph.size(); ++j)
+        int front = q.front();
+        std::cout << front << " ";
+        q.pop();
+        visited[front] = true;
+        for (int curr = 0; curr < _graph.size(); ++curr)
         {
-            if (_graph[i][j])
+            if (_graph[front][curr])
             {
-                if (!visited[j])
+                if (!visited[curr])
                 {
-                    std::cout << "--->";
-                    dfs_h(j, visited);
+                    q.push(curr);
+                    visited[curr] = true;
                 }
             }
         }
     }
-     std::cout << v;
+    std::cout << std::endl;
+}
+
+template<typename T>
+void graph_matrix<T>::dfs(int v) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    dfs_helper_recrusive(v, visited);
+  //  dfs_helper_iterative(v, visited);
+}
+
+template<typename T>
+void graph_matrix<T>::dfs_helper_recrusive(int v, std::vector<bool>& visited) const
+{
+    visited[v] = true;
+    std::cout << v << "\n";
+    for (int curr = 0; curr < _graph[v].size(); ++curr)
+    {
+        if (_graph[v][curr])
+        {
+            if (!visited[curr])
+            {
+                dfs_helper_recrusive(curr, visited);
+            }
+        }
+    }
+}
+
+template<typename T>
+void graph_matrix<T>::dfs_helper_iterative(int v, std::vector<bool>& visited) const
+{
+    std::stack<int> stack;
+ 
+    visited[v] = true;
+    stack.push(v);
+
+    while (!stack.empty())
+    {
+        int top = stack.top();
+        stack.pop();
+        std::cout << top << "\n";
+
+        for (int curr = 0; curr < _graph.size(); ++curr)
+        {
+            if (_graph[top][curr] && !visited[curr])
+            {
+                stack.push(curr);
+                visited[curr] = true;
+            }
+        }
+    }
 }
 
 template<typename T>
 void graph_matrix<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
+
     _graph[u][v] = 1;
 }
 
