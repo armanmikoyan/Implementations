@@ -21,7 +21,7 @@ public:
 public:
     void                                                        add_vertex();
     void                                                         transpose();
-    void                                        add_edge(size_t u, size_t v);
+    void                                            add_edge(size_t, size_t);
     void                                                print_matrix() const;
     void                                                  dfs(int = 0) const;  
     void                                                  bfs(int = 0) const;
