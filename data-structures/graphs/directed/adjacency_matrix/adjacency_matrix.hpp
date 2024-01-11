@@ -29,11 +29,16 @@ public:
     size_t                    shortest_path_two_vertex(size_t, size_t) const;
     std::vector<std::vector<int>> all_paths_two_vertex(size_t, size_t) const;  
 
-private: // helpers
+// helpers
+private: 
     void                                           dfs_helper_recrusive(int, std::vector<bool>&) const;
     void                                           dfs_helper_iterative(int, std::vector<bool>&) const;
     void                                                          bfs_h(int, std::vector<bool>&) const;
-    std::vector<int> all_paths_two_vertex_helper(size_t, size_t, std::vector<std::vector<int>>&) const;
+    std::vector<int>                                    reconstruct(int, int, std::vector<int>&) const;
+    void                                     all_paths_two_vertex_helper(size_t, size_t, 
+                                                                std::vector<bool>&, 
+                                                                std::vector<int>, 
+                                                                std::vector<std::vector<int>>&) const;
 
 private:
     std::vector<std::vector<int>> _graph;

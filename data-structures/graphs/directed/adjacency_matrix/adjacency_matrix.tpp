@@ -216,20 +216,52 @@ size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level) const
 }
 
 template<typename T>
-std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t u, size_t v) const
+std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t source, size_t destination) const
 {
     std::vector<std::vector<int>> paths;
-    all_paths_two_vertex_helper(u , v, paths);
-    return  paths
+    std::vector<int> raw_path;
+    std::vector<bool> visited(_graph.size(), false);
+    all_paths_two_vertex_helper(source, destination, visited, raw_path, paths);
+    return paths;
 }
 
+template <typename T>
+void graph_matrix<T>::all_paths_two_vertex_helper(
+                                size_t source, 
+                                size_t destination,
+                                std::vector<bool>& visited,
+                                std::vector<int> raw_path, 
+                                std::vector<std::vector<int>>& paths) const
+{
+    visited[source] = true;
+    for (size_t curr = 0; curr < _graph.size(); ++curr)
+    {
+        if (_graph[source][curr] && !visited[curr])
+        {
+            raw_path.push_back(source);
+            if (curr == destination)
+            {
+                paths.push_back(reconstruct(source, destination, raw_path));       
+            }
+            all_paths_two_vertex_helper(curr, destination, visited, raw_path, paths);
+            raw_path.pop_back();
+        }
+    }
+
+   visited[source] = false;
+}
 
 template<typename T>
-std::vector<int> graph_matrix<T>::all_paths_two_vertex_helper(size_t u,size_t v,std::vector<std::vector<int>>& paths)  const
+std::vector<int> graph_matrix<T>::reconstruct(int source, int dest, std::vector<int>& raw_path) const
 {
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+    std::vector<int> path;
+    for (int i = 0; i < raw_path.size(); ++i)
+    {
+        path.push_back(raw_path[i]);
+    }
+    path.push_back(dest);
+    return path;
 }
-
 
 template<typename T>
 void graph_matrix<T>::print_matrix() const
