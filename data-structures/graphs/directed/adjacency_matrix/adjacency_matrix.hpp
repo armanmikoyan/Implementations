@@ -35,10 +35,12 @@ private:
     void                                           dfs_helper_iterative(int, std::vector<bool>&) const;
     void                                                          bfs_h(int, std::vector<bool>&) const;
     std::vector<int>                                    reconstruct(int, int, std::vector<int>&) const;
-    void                                     all_paths_two_vertex_helper(size_t, size_t, 
-                                                                std::vector<bool>&, 
-                                                                std::vector<int>, 
-                                                                std::vector<std::vector<int>>&) const;
+
+    void all_paths_two_vertex_helper(size_t, 
+                                     size_t, 
+                                     std::vector<bool>&, 
+                                     std::vector<int>, 
+                                     std::vector<std::vector<int>>&) const;
 
 private:
     std::vector<std::vector<int>> _graph;
