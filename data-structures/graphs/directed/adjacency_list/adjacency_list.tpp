@@ -35,3 +35,247 @@ graph_list<T>& graph_list<T>::operator=(graph_list<T>&& rhs) noexcept
     }
     return *this;
 }
+
+template<typename T>
+void graph_list<T>::add_vertex() 
+{
+    _graph.push_back({});
+}
+
+template<typename T>
+void graph_list<T>::add_edge(size_t u, size_t v) 
+{
+    if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
+    for (auto curr : _graph[u])
+    {
+        if (curr == v) return;
+    }
+    _graph[u].push_back(v);
+}
+
+template<typename T>
+void graph_list<T>::transpose() 
+{
+    graph_list<T> tmp(this->_graph.size());
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph[i].size(); ++j)
+        {
+            tmp._graph[_graph[i][j]].push_back(i);
+        }
+    }
+    _graph = std::move(tmp._graph);
+}
+
+template<typename T>
+void graph_list<T>::dfs(size_t start) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    dfs_helper_recursive(start, visited);
+  //dfs_helper_iterative(start, visited);
+}
+
+template<typename T>
+void graph_list<T>::dfs_helper_recursive(size_t start, std::vector<bool>& visited) const
+{
+    visited[start] = true;
+    std::cout << start << " ";
+    for (auto current : _graph[start])
+    {
+        if  (!visited[current])
+        {
+            dfs_helper_recursive(current, visited);
+        }
+    }
+    std::cout << std::endl;
+}
+
+template<typename T>
+void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited) const
+{
+    std::stack<size_t> stack;
+    stack.push(start);
+    visited[start] = true;
+    while (!stack.empty())
+    {
+        size_t current = stack.top();
+        stack.pop();
+        std::cout << current << " ";
+        for (auto next = _graph[current].rbegin(); next != _graph[current].rend(); ++next)
+        {
+            if (!visited[*next])
+            {
+                stack.push(*next);
+                visited[*next] = true;
+            }
+        }
+    }
+}
+
+template<typename T>
+void graph_list<T>::bfs(size_t start) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    bfs_helper(start, visited); 
+}
+
+template<typename T>
+void graph_list<T>::bfs_helper(size_t start, std::vector<bool>& visited) const
+{
+    std::queue<size_t> queue;
+    queue.push(start);
+    visited[start] = true;
+
+    while (!queue.empty())
+    {
+        size_t current = queue.front();
+        queue.pop();
+        std::cout << current << " ";
+        for (auto next : _graph[current])
+        {
+            if (!visited[next])
+            {
+                queue.push(next);
+                visited[next] = true;
+            }
+        }
+    }
+}
+
+template<typename T>
+size_t graph_list<T>::vertex_count_in_level(size_t vertex, size_t level) const
+{
+    if (vertex >= _graph.size() || level >= _graph.size()) throw std::invalid_argument("args is not valid");
+    std::vector<bool> visited(_graph.size(), false);
+    std::queue<size_t> queue;
+    queue.push(vertex);
+    visited[vertex] = true;
+
+    while (!queue.empty())
+    {
+        int size = queue.size();
+        if (!level) return size;
+        while (size--)
+        {
+            size_t current = queue.front();
+            queue.pop();
+            for(auto next : _graph[current])
+            {
+                if (!visited[next])
+                {
+                    queue.push(next);
+                    visited[next] = true;
+                }
+            }       
+        }
+        --level;
+    }
+    return 0;
+}
+
+template<typename T>
+size_t graph_list<T>::shortest_path_two_vertex(size_t source, size_t destination) const
+{
+    if (source >= _graph.size() || destination >= _graph.size()) throw std::invalid_argument("args is not valid");
+
+    std::vector<bool> visited(_graph.size(), false);
+    std::queue<size_t> queue;
+    size_t count = 0;
+    queue.push(source);
+    visited[source] = true;
+
+    while (!queue.empty())
+    {
+        int size = queue.size();
+        ++count;  
+        while (size--)
+        {
+            size_t current = queue.front();
+            queue.pop();
+
+            for (auto next : _graph[current])
+            {
+                if (next == destination) return count;
+
+                if (!visited[next])
+                {
+                    queue.push(next);
+                    visited[next] = true;
+                }
+            }
+        }
+    }
+
+    std::cout << "There is no path " << "from " << source << " to " << destination << "\n";
+    return INT_MAX;
+}
+
+template<typename T>
+std::vector<std::vector<int>> graph_list<T>::all_paths_two_vertex(size_t source, size_t destination) const
+{
+    if (source >= _graph.size() || destination >= _graph.size()) throw std::invalid_argument("args is not valid");
+    std::vector<std::vector<int>> paths;
+    std::vector<int> raw_path;
+    std::vector<bool> visited(_graph.size(), false);
+    all_paths_two_vertex_helper(source, destination, visited, raw_path, paths);
+    
+    return paths;
+}
+
+template<typename T>
+void graph_list<T>::all_paths_two_vertex_helper(size_t source, 
+                                                size_t destination, 
+                                                std::vector<bool>& visited, 
+                                                std::vector<int> raw_path,
+                                                std::vector<std::vector<int>>& paths) const
+{
+    visited[source] = true;
+    for (auto next : _graph[source])
+    {
+        if (!visited[next])
+        {
+            raw_path.push_back(source);
+
+            if (next == destination) 
+            {
+                paths.push_back(reconstruct(destination, raw_path));
+            }
+            else
+            {
+                all_paths_two_vertex_helper(next, destination, visited, raw_path, paths);
+            }
+            raw_path.pop_back();
+        }
+    }
+
+    visited[source] = false;
+}
+
+template<typename T>
+std::vector<int> graph_list<T>::reconstruct(size_t destination, std::vector<int>& raw_path) const
+{
+    std::vector<int> path;
+
+    for (int i = 0; i < raw_path.size(); ++i)
+    {
+        path.push_back(raw_path[i]);
+    }
+    path.push_back(destination);
+    return path;
+}
+
+template<typename T>
+void graph_list<T>::print_list() const
+{
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        std::cout << i << " ->";
+        for (size_t j = 0; j < _graph[i].size(); ++j)
+        {
+            std::cout <<  "\033[1;32m" << " " << _graph[i][j] <<  "\033[0m" << " |"; 
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+}
