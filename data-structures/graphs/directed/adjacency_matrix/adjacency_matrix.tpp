@@ -37,14 +37,14 @@ graph_matrix<T>& graph_matrix<T>::operator=(graph_matrix<T>&& rhs) noexcept
 }
 
 template<typename T>
-void graph_matrix<T>::bfs(int v) const
+void graph_matrix<T>::bfs(size_t v) const
 {
     std::vector<bool> visited(_graph.size(), false);
-    bfs_h(v, visited);
+    bfs_helper(v, visited);
 }
 
 template<typename T>
-void graph_matrix<T>::bfs_h(int v, std::vector<bool>& visited) const
+void graph_matrix<T>::bfs_helper(size_t v, std::vector<bool>& visited) const
 {
     std::queue<int> q;
     q.push(v);
@@ -70,7 +70,7 @@ void graph_matrix<T>::bfs_h(int v, std::vector<bool>& visited) const
 }
 
 template<typename T>
-void graph_matrix<T>::dfs(int v) const
+void graph_matrix<T>::dfs(size_t v) const
 {
     std::vector<bool> visited(_graph.size(), false);
     dfs_helper_recrusive(v, visited);
@@ -78,7 +78,7 @@ void graph_matrix<T>::dfs(int v) const
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_recrusive(int v, std::vector<bool>& visited) const
+void graph_matrix<T>::dfs_helper_recrusive(size_t v, std::vector<bool>& visited) const
 {
     visited[v] = true;
     std::cout << v << "\n";
@@ -95,7 +95,7 @@ void graph_matrix<T>::dfs_helper_recrusive(int v, std::vector<bool>& visited) co
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_iterative(int v, std::vector<bool>& visited) const
+void graph_matrix<T>::dfs_helper_iterative(size_t v, std::vector<bool>& visited) const
 {
     std::stack<int> stack;
  
@@ -188,7 +188,7 @@ size_t graph_matrix<T>::shortest_path_two_vertex(size_t u, size_t v) const
 template<typename T>
 size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level) const
 {
-    if (vertex == level) throw std::invalid_argument("vertex and level is equal");
+    if (vertex >= _graph.size() || level >= _graph.size()) throw std::invalid_argument("args is not valid");
     std::queue<int> q;
     std::vector<bool> visited(_graph.size(), false);
     q.push(vertex);
@@ -243,7 +243,10 @@ void graph_matrix<T>::all_paths_two_vertex_helper(
             {
                 paths.push_back(reconstruct(source, destination, raw_path));       
             }
-            all_paths_two_vertex_helper(curr, destination, visited, raw_path, paths);
+            else
+            {
+                all_paths_two_vertex_helper(curr, destination, visited, raw_path, paths);
+            }
             raw_path.pop_back();
         }
     }
@@ -252,7 +255,7 @@ void graph_matrix<T>::all_paths_two_vertex_helper(
 }
 
 template<typename T>
-std::vector<int> graph_matrix<T>::reconstruct(int source, int dest, std::vector<int>& raw_path) const
+std::vector<int> graph_matrix<T>::reconstruct(size_t dest, std::vector<int>& raw_path) const
 {
     std::vector<int> path;
     for (int i = 0; i < raw_path.size(); ++i)
