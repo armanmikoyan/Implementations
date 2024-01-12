@@ -241,7 +241,7 @@ void graph_matrix<T>::all_paths_two_vertex_helper(
             raw_path.push_back(source);
             if (curr == destination)
             {
-                paths.push_back(reconstruct(source, destination, raw_path));       
+                paths.push_back(reconstruct(destination, raw_path));       
             }
             else
             {
