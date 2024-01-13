@@ -1,9 +1,8 @@
-#include "adjacency_matrix.hpp"
-
+#include "adjacency_list.hpp"
 
 int main()
 {
-    graph_matrix<int> g{};
+    graph_list<int> g{};
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
@@ -17,8 +16,9 @@ int main()
     g.add_edge(2, 4);
     g.add_edge(4, 3);
     g.add_edge(2, 3);
+    g.print_list();
 
-    g.print_matrix();
+ 
 
-    g.dfs();
+    std::cout << std::endl;
 }

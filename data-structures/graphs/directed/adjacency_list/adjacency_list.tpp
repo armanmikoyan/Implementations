@@ -68,30 +68,32 @@ void graph_list<T>::transpose()
 }
 
 template<typename T>
-void graph_list<T>::dfs(size_t start) const
+void graph_list<T>::dfs(size_t start, std::function<void(size_t)> callback) const
 {
     std::vector<bool> visited(_graph.size(), false);
-    dfs_helper_recursive(start, visited);
-  //dfs_helper_iterative(start, visited);
+    dfs_helper_recursive(start, visited, callback);
+  //dfs_helper_iterative(start, visited, callback);
 }
 
 template<typename T>
-void graph_list<T>::dfs_helper_recursive(size_t start, std::vector<bool>& visited) const
+void graph_list<T>::dfs_helper_recursive(size_t start, std::vector<bool>& visited, 
+                                                       std::function<void(size_t)> callback) const
 {
     visited[start] = true;
-    std::cout << start << " ";
+    callback(start);
     for (auto current : _graph[start])
     {
         if  (!visited[current])
         {
-            dfs_helper_recursive(current, visited);
+            dfs_helper_recursive(current, visited, callback);
         }
     }
     std::cout << std::endl;
 }
 
 template<typename T>
-void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited) const
+void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited, 
+                                                       std::function<void(size_t)> callback) const
 {
     std::stack<size_t> stack;
     stack.push(start);
@@ -100,7 +102,7 @@ void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visite
     {
         size_t current = stack.top();
         stack.pop();
-        std::cout << current << " ";
+        callback(current);
         for (auto next = _graph[current].rbegin(); next != _graph[current].rend(); ++next)
         {
             if (!visited[*next])
@@ -113,14 +115,14 @@ void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visite
 }
 
 template<typename T>
-void graph_list<T>::bfs(size_t start) const
+void graph_list<T>::bfs(size_t start,  std::function<void(size_t)> callback) const
 {
     std::vector<bool> visited(_graph.size(), false);
-    bfs_helper(start, visited); 
+    bfs_helper(start, visited, callback); 
 }
 
 template<typename T>
-void graph_list<T>::bfs_helper(size_t start, std::vector<bool>& visited) const
+void graph_list<T>::bfs_helper(size_t start, std::vector<bool>& visited,  std::function<void(size_t)> callback) const
 {
     std::queue<size_t> queue;
     queue.push(start);
@@ -130,7 +132,9 @@ void graph_list<T>::bfs_helper(size_t start, std::vector<bool>& visited) const
     {
         size_t current = queue.front();
         queue.pop();
-        std::cout << current << " ";
+
+        callback(current);
+
         for (auto next : _graph[current])
         {
             if (!visited[next])
@@ -229,13 +233,12 @@ void graph_list<T>::all_paths_two_vertex_helper(size_t source,
                                                 std::vector<int> raw_path,
                                                 std::vector<std::vector<int>>& paths) const
 {
-    visited[source] = true;
+    visited[source] = true;     // only if graph has cycle
+    raw_path.push_back(source);
     for (auto next : _graph[source])
     {
         if (!visited[next])
         {
-            raw_path.push_back(source);
-
             if (next == destination) 
             {
                 paths.push_back(reconstruct(destination, raw_path));
@@ -244,10 +247,9 @@ void graph_list<T>::all_paths_two_vertex_helper(size_t source,
             {
                 all_paths_two_vertex_helper(next, destination, visited, raw_path, paths);
             }
-            raw_path.pop_back();
         }
     }
-
+    raw_path.pop_back();
     visited[source] = false;
 }
 
@@ -262,6 +264,12 @@ std::vector<int> graph_list<T>::reconstruct(size_t destination, std::vector<int>
     }
     path.push_back(destination);
     return path;
+}
+
+template<typename T>
+void graph_list<T>::default_operation(size_t vertex) 
+{
+    std::cout << vertex << " ";
 }
 
 template<typename T>

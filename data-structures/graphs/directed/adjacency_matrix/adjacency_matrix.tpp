@@ -37,21 +37,21 @@ graph_matrix<T>& graph_matrix<T>::operator=(graph_matrix<T>&& rhs) noexcept
 }
 
 template<typename T>
-void graph_matrix<T>::bfs(size_t v) const
+void graph_matrix<T>::bfs(size_t v, std::function<void(size_t)> callback) const
 {
     std::vector<bool> visited(_graph.size(), false);
-    bfs_helper(v, visited);
+    bfs_helper(v, visited, callback);
 }
 
 template<typename T>
-void graph_matrix<T>::bfs_helper(size_t v, std::vector<bool>& visited) const
+void graph_matrix<T>::bfs_helper(size_t v, std::vector<bool>& visited, std::function<void(size_t)> callback) const
 {
     std::queue<int> q;
     q.push(v);
     while (!q.empty())
     {
         int front = q.front();
-        std::cout << front << " ";
+        callback(front);
         q.pop();
         visited[front] = true;
         for (int curr = 0; curr < _graph.size(); ++curr)
@@ -70,32 +70,34 @@ void graph_matrix<T>::bfs_helper(size_t v, std::vector<bool>& visited) const
 }
 
 template<typename T>
-void graph_matrix<T>::dfs(size_t v) const
+void graph_matrix<T>::dfs(size_t v, std::function<void(size_t)> callback) const
 {
     std::vector<bool> visited(_graph.size(), false);
-    dfs_helper_recrusive(v, visited);
-  //  dfs_helper_iterative(v, visited);
+  //  dfs_helper_recursive(v, visited, callback);
+    dfs_helper_iterative(v, visited, callback);
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_recrusive(size_t v, std::vector<bool>& visited) const
+void graph_matrix<T>::dfs_helper_recursive(size_t v, std::vector<bool>& visited, 
+                                                     std::function<void(size_t)> callback) const
 {
     visited[v] = true;
-    std::cout << v << "\n";
+    callback(v);
     for (int curr = 0; curr < _graph[v].size(); ++curr)
     {
         if (_graph[v][curr])
         {
             if (!visited[curr])
             {
-                dfs_helper_recrusive(curr, visited);
+                dfs_helper_recursive(curr, visited, callback);
             }
         }
     }
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_iterative(size_t v, std::vector<bool>& visited) const
+void graph_matrix<T>::dfs_helper_iterative(size_t v, std::vector<bool>& visited, 
+                                                     std::function<void(size_t)> callback) const
 {
     std::stack<int> stack;
  
@@ -106,7 +108,7 @@ void graph_matrix<T>::dfs_helper_iterative(size_t v, std::vector<bool>& visited)
     {
         int top = stack.top();
         stack.pop();
-        std::cout << top << "\n";
+        callback(top);
 
         for (int curr = 0; curr < _graph.size(); ++curr)
         {
@@ -234,11 +236,11 @@ void graph_matrix<T>::all_paths_two_vertex_helper(
                                 std::vector<std::vector<int>>& paths) const
 {
     visited[source] = true;
+    raw_path.push_back(source);
     for (size_t curr = 0; curr < _graph.size(); ++curr)
     {
         if (_graph[source][curr] && !visited[curr])
         {
-            raw_path.push_back(source);
             if (curr == destination)
             {
                 paths.push_back(reconstruct(destination, raw_path));       
@@ -247,11 +249,11 @@ void graph_matrix<T>::all_paths_two_vertex_helper(
             {
                 all_paths_two_vertex_helper(curr, destination, visited, raw_path, paths);
             }
-            raw_path.pop_back();
         }
     }
 
-   visited[source] = false;
+    raw_path.pop_back();
+    visited[source] = false;
 }
 
 template<typename T>
@@ -264,6 +266,12 @@ std::vector<int> graph_matrix<T>::reconstruct(size_t dest, std::vector<int>& raw
     }
     path.push_back(dest);
     return path;
+}
+
+template<typename T>
+void graph_matrix<T>::default_operation(size_t vertex) 
+{
+    std::cout << vertex << " ";
 }
 
 template<typename T>
