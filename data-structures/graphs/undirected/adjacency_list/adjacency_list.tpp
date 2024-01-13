@@ -282,6 +282,7 @@ std::vector<int> graph_list<T>::reconstruct(size_t destination, std::vector<int>
         path.push_back(raw_path[i]);
     }
     path.push_back(destination);
+    
     return path;
 }
 
