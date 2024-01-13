@@ -22,9 +22,9 @@ public:
 public:
     void                                                            add_vertex();
     void                                                add_edge(size_t, size_t);
-    void                                                    print_list() const;
-    void dfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;   
-    void bfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;
+    void                                                      print_list() const;
+    void  dfs(size_t = 0, std::function<void(size_t)> = default_operation) const;   
+    void  bfs(size_t = 0, std::function<void(size_t)> = default_operation) const;
     size_t                                               component_count() const;
     size_t                           vertex_count_in_level(size_t, size_t) const;
     size_t                        shortest_path_two_vertex(size_t, size_t) const;
@@ -47,6 +47,7 @@ private:
 
 private:
     std::vector<std::vector<int>> _graph;
+    
 };
 
 #include "adjacency_list.tpp"
