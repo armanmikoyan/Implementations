@@ -41,7 +41,7 @@ void graph_matrix<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
     _graph[u][v] = 1;
- _graph[v][u] = 1;  //  for undirected graph
+//  _graph[v][u] = 1;  //  for undirected graph
 }
 
 template<typename T>
@@ -79,7 +79,21 @@ void graph_matrix<T>::dfs(size_t vertex, std::function<void(size_t)> callback) c
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited, std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs_extra_case(size_t vertex, std::function<void(size_t)> callback) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            dfs_helper_recrusive(i, visited, callback);     
+        }
+    }
+}
+
+template<typename T>
+void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited, 
+                                                           std::function<void(size_t)> callback) const
 {
     visited[current] = true;
 
@@ -95,7 +109,8 @@ void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& vi
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_iterative(size_t vertex, std::vector<bool>& visited, std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs_helper_iterative(size_t vertex, std::vector<bool>& visited,
+                                                          std::function<void(size_t)> callback) const
 {
     std::stack<size_t> stack;
     stack.push(vertex);
@@ -123,9 +138,24 @@ template<typename T>
 void graph_matrix<T>::bfs(size_t vertex,  std::function<void(size_t)> callback) const
 {
     if (vertex >= _graph.size()) throw std::out_of_range("vertex index is great");
+    
     std::vector<bool> visited(_graph.size(), false);
     bfs_helper(vertex, visited, callback);
    
+}
+
+template<typename T>
+void graph_matrix<T>::bfs_extra_case(size_t vertex, std::function<void(size_t)> callback) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            bfs_helper(i, visited, callback);     
+        }
+        std::cout << std::endl;
+    }
 }
 
 template<typename T>

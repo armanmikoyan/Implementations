@@ -20,16 +20,18 @@ public:
     graph_matrix& operator=(graph_matrix&&) noexcept;
 
 public:
-    void                                                            add_vertex();
-    void                                                add_edge(size_t, size_t);
-    void                                                             transpose();
-    void                                                    print_matrix() const;
-    void dfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;   
-    void bfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;
-    size_t                                               component_count() const;
-    size_t                           vertex_count_in_level(size_t, size_t) const;
-    size_t                        shortest_path_two_vertex(size_t, size_t) const;
-    std::vector<std::vector<int>>     all_paths_two_vertex(size_t, size_t) const;  
+    void                                                                       add_vertex();
+    void                                                           add_edge(size_t, size_t);
+    void                                                                        transpose();
+    void                                                               print_matrix() const;
+    void            dfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;   
+    void dfs_extra_case(size_t = 0,  std::function<void(size_t)> = default_operation) const;   
+    void            bfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;
+    void bfs_extra_case(size_t = 0,  std::function<void(size_t)> = default_operation) const; 
+    size_t                                                          component_count() const;
+    size_t                                      vertex_count_in_level(size_t, size_t) const;
+    size_t                                   shortest_path_two_vertex(size_t, size_t) const;
+    std::vector<std::vector<int>>                all_paths_two_vertex(size_t, size_t) const;  
 
 private: // helpers
     void dfs_helper_recrusive(size_t, std::vector<bool>&, std::function<void(size_t)>) const;

@@ -51,7 +51,7 @@ void graph_list<T>::add_edge(size_t u, size_t v)
         if (curr == v) return;
     }
     _graph[u].push_back(v);
-  _graph[v].push_back(u);  //  for undirected graph
+//   _graph[v].push_back(u);  //  for undirected graph
 
 }
 
@@ -103,9 +103,25 @@ size_t graph_list<T>::component_count() const
 template<typename T>
 void graph_list<T>::dfs(size_t start, std::function<void(size_t)> callback) const
 {
+    if (start >= _graph.size()) throw std::out_of_range("vertex index is great");
+
     std::vector<bool> visited(_graph.size(), false);
     dfs_helper_recrusive(start, visited, callback);
     // dfs_helper_iterative(start, visited, callback);
+}
+
+template<typename T>
+void graph_list<T>::dfs_extra_case(size_t start, std::function<void(size_t)> callback) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            dfs_helper_recrusive(i, visited, callback);
+        }
+       std::cout << std::endl;
+    }
 }
 
 template<typename T>
@@ -127,7 +143,7 @@ void graph_list<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visi
 
 template<typename T>
 void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited, 
-                                                  std::function<void(size_t)> callback) const
+                                                       std::function<void(size_t)> callback) const
 {
     std::stack<size_t> stack;
     stack.push(start);
@@ -152,8 +168,24 @@ void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visite
 template<typename T>
 void graph_list<T>::bfs(size_t start, std::function<void(size_t)> callback) const
 {
+    if (start >= _graph.size()) throw std::out_of_range("vertex index is great");
+
     std::vector<bool> visited(_graph.size(), false);
     bfs_helper(start, visited, callback);
+}
+
+template<typename T>
+void graph_list<T>::bfs_extra_case(size_t start, std::function<void(size_t)> callback) const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            bfs_helper(i, visited, callback);
+        }
+       std::cout << std::endl;
+    }
 }
 
 template<typename T>
