@@ -22,6 +22,7 @@ public:
 public:
     void                                                            add_vertex();
     void                                                add_edge(size_t, size_t);
+    void                                                             transpose();
     void                                                    print_matrix() const;
     void dfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;   
     void bfs(size_t = 0,  std::function<void(size_t)> = default_operation) const;

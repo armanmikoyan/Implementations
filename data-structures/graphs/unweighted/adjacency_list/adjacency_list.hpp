@@ -21,6 +21,7 @@ public:
 
 public:
     void                                                            add_vertex();
+    void                                                             transpose();
     void                                                add_edge(size_t, size_t);
     void                                                      print_list() const;
     void  dfs(size_t = 0, std::function<void(size_t)> = default_operation) const;   

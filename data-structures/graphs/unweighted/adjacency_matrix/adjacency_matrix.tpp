@@ -41,7 +41,7 @@ void graph_matrix<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
     _graph[u][v] = 1;
-    _graph[v][u] = 1;
+//  _graph[v][u] = 1;  //  for undirected graph
 }
 
 template<typename T>
@@ -52,6 +52,20 @@ void graph_matrix<T>::add_vertex()
         row.push_back(0);
     }
     _graph.push_back(std::vector<int>(_graph.size() + 1, 0));
+}
+
+template<typename T>
+void graph_matrix<T>::transpose()
+{
+    graph_matrix<T> tmp = *this;
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph.size(); ++j)
+        {
+            tmp._graph[i][j] = _graph[j][i];
+        }
+    }
+    _graph = std::move(tmp._graph);
 }
 
 template<typename T>
@@ -218,17 +232,20 @@ size_t graph_matrix<T>::shortest_path_two_vertex(size_t source, size_t destionat
     while(!q.empty())
     {
         ++path_length;
-        size_t curr = q.front();
-        q.pop();
-
-        for (int i = 0; i < _graph.size(); ++i)
+        size_t size = q.size();
+        while (size--)
         {
-            if (_graph[curr][i] && !visited[i])
+            size_t curr = q.front();
+            q.pop();
+            for (int i = 0; i < _graph.size(); ++i)
             {
-                if (i == destionation)
-                    return path_length;
-                q.push(i);
-                visited[i] = true;
+                if (_graph[curr][i] && !visited[i])
+                {
+                    if (i == destionation)
+                        return path_length;
+                    q.push(i);
+                    visited[i] = true;
+                }
             }
         }
     }

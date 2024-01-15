@@ -51,7 +51,22 @@ void graph_list<T>::add_edge(size_t u, size_t v)
         if (curr == v) return;
     }
     _graph[u].push_back(v);
-    _graph[v].push_back(u);
+  //_graph[v].push_back(u);  //  for undirected graph
+
+}
+
+template<typename T>
+void graph_list<T>::transpose() 
+{
+    graph_list<T> tmp(this->_graph.size());
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph[i].size(); ++j)
+        {
+            tmp._graph[_graph[i][j]].push_back(i);
+        }
+    }
+    _graph = std::move(tmp._graph);
 }
 
 template<typename T>  
