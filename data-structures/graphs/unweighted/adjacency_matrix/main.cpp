@@ -19,7 +19,7 @@ int main()
     g.add_edge(4, 5);
 
     g.print_matrix();
-    auto res = g.all_paths_two_vertex(3, 4);
+    auto res = g.all_paths_two_vertex(0, 5);
     for (auto path : res)
     {
         for(auto p : path)

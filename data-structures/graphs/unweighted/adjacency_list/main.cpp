@@ -21,7 +21,7 @@ int main()
     g.add_edge(4, 5);
 
     g.print_list();
-    auto paths = g.all_paths_two_vertex(3, 4);
+    auto paths = g.all_paths_two_vertex(0, 5);
     for (auto path : paths)
     {
         for(auto p : path)
