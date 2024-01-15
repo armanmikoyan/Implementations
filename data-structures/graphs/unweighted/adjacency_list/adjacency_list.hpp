@@ -35,12 +35,12 @@ private: // helpers
     void dfs_helper_recrusive(size_t, std::vector<bool>&, std::function<void(size_t)>) const;
     void dfs_helper_iterative(size_t, std::vector<bool>&, std::function<void(size_t)>) const;
     void           bfs_helper(size_t, std::vector<bool>&, std::function<void(size_t)>) const;
-    std::vector<int>                            reconstruct(size_t, std::vector<int>&) const;
+    std::vector<int>                            reconstruct(size_t, size_t, std::vector<int>&) const;
 
     void all_paths_two_vertex_helper(size_t, 
                                      size_t, 
                                      std::vector<bool>&, 
-                                     std::vector<int>, 
+                                     std::vector<int>&, 
                                      std::vector<std::vector<int>>&) const;
 
 private:

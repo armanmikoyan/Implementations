@@ -41,7 +41,7 @@ void graph_matrix<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
     _graph[u][v] = 1;
-//  _graph[v][u] = 1;  //  for undirected graph
+ _graph[v][u] = 1;  //  for undirected graph
 }
 
 template<typename T>
@@ -258,9 +258,10 @@ template<typename T>
 std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t source, size_t destination) const
 {
     std::vector<std::vector<int>> paths;
-    std::vector<int> raw_path;
+    std::vector<int> raw_path(_graph.size(), -1);
     std::vector<bool> visited(_graph.size(), false);
     all_paths_two_vertex_helper(source, destination, visited, raw_path, paths);
+
     return paths;
 }
 
@@ -268,19 +269,18 @@ template<typename T>
 void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source, 
                                      size_t destination, 
                                      std::vector<bool>& visited, 
-                                     std::vector<int> raw_path, 
+                                     std::vector<int>& raw_path, 
                                      std::vector<std::vector<int>>& paths) const
 {
     visited[source] = true;
-    raw_path.push_back(source);
-
     for (int i = 0; i < _graph.size(); ++i)
     {
         if (_graph[source][i] && !visited[i])
         {
+            raw_path[i] = source;
             if (i == destination)
             {
-                paths.push_back(reconstruct(destination, raw_path));
+                paths.push_back(reconstruct(source, destination, raw_path));
             }
             else
             {
@@ -290,19 +290,18 @@ void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source,
     }
 
     visited[source] = false;
-    raw_path.pop_back();
 }
 
 template<typename T>
-std::vector<int> graph_matrix<T>::reconstruct(size_t destination, std::vector<int>& raw_path) const
+std::vector<int> graph_matrix<T>::reconstruct(size_t source, size_t destination, std::vector<int>& raw_path) const
 {
     std::vector<int> path;
-    for (int i = 0; i < raw_path.size(); ++i)
-    {
-        path.push_back(raw_path[i]);
-    }
 
-    path.push_back(destination);
+    while (destination != -1)
+    {
+        path.insert(path.begin(), destination);
+        destination = raw_path[destination];
+    }
     return path;
 }
 
