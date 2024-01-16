@@ -41,7 +41,7 @@ void graph_matrix<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
     _graph[u][v] = 1;
-//  _graph[v][u] = 1;  //  for undirected graph
+ //   _graph[v][u] = 1;  //  for undirected graph
 }
 
 template<typename T>
@@ -52,6 +52,84 @@ void graph_matrix<T>::add_vertex()
         row.push_back(0);
     }
     _graph.push_back(std::vector<int>(_graph.size() + 1, 0));
+}
+
+template<typename T>
+bool graph_matrix<T>::has_cycle_undirected() const
+{
+    std::vector<bool> visited(_graph.size(), false);
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            if (has_cycle_undirected_helper(i, -1, visited)) return true;
+        }
+        std::cout << std::endl;
+    }
+
+    return false;
+}
+
+template<typename T>
+bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, std::vector<bool>& visited) const
+{
+    visited[source] = true;
+ 
+    for (size_t i = 0; i < _graph.size(); ++i)
+    {
+        if (_graph[source][i])
+        {
+             if (!visited[i])
+            {
+                if (has_cycle_undirected_helper(i, source, visited)) return true;
+            }
+            else if (i != parent) return true;
+        }
+    }
+
+    return false;
+}
+
+template<typename T>
+bool graph_matrix<T>::has_cycle_directed() const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    std::vector<bool> on_rec_stack(_graph.size(), false);
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            if (has_cycle_directed_helper(i, on_rec_stack, visited)) return true;
+        }
+    }
+
+    return false;
+}
+
+template<typename T>
+bool graph_matrix<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited, 
+                                                               std::vector<bool>& on_rec_stack) const
+{
+    visited[source]      = true;
+    on_rec_stack[source] = true;
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (_graph[source][i])
+        {
+            if (!visited[i])
+            {
+                if (has_cycle_directed_helper(i, visited, on_rec_stack)) return true;
+            }
+
+            else if (on_rec_stack[i]) return true;
+        }
+    }
+
+    on_rec_stack[source] = false;
+    return false;
 }
 
 template<typename T>

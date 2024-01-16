@@ -4,15 +4,21 @@
 
 int main()
 {
-    graph_list<int> g{};
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_edge(1, 0);
-    g.print_list();
+graph_list<int> g{};
+g.add_vertex();
+g.add_vertex();
+g.add_vertex();
+g.add_vertex();
+g.add_vertex();
 
-    g.dfs_extra_case();
+g.add_edge(0, 1);
+g.add_edge(1, 2);
+g.add_edge(2, 3);
+g.add_edge(3, 4);
+g.add_edge(1, 4);
+
+
+g.print_list();
+
+std::cout << g.has_cycle_directed();
 }

@@ -51,14 +51,83 @@ void graph_list<T>::add_edge(size_t u, size_t v)
         if (curr == v) return;
     }
     _graph[u].push_back(v);
-//   _graph[v].push_back(u);  //  for undirected graph
+   // _graph[v].push_back(u);  //  for undirected graph
 
+}
+
+template<typename T>
+bool graph_list<T>::has_cycle_undirected() const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            if (has_cycle_undirected_helper(i, -1, visited)) return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
+bool graph_list<T>::has_cycle_undirected_helper(size_t source, size_t parent, std::vector<bool>& visited) const
+{
+    visited[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (!visited[next])
+        {
+            if (has_cycle_undirected_helper(next, source, visited)) return true;
+        }
+
+        else if (next != parent) return true;
+    }
+    return false;
+}
+
+template<typename T>
+bool graph_list<T>::has_cycle_directed() const
+{
+    std::vector<bool>       visited(_graph.size(), false);
+    std::vector<bool> on_rec_stack(_graph.size(), false);
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            if (has_cycle_directed_helper(i, visited, on_rec_stack)) return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
+bool graph_list<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited, 
+                                                             std::vector<bool>& on_rec_stack) const
+{
+    visited[source]      = true;
+    on_rec_stack[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (!visited[next])
+        {
+            if (has_cycle_directed_helper(next, visited, on_rec_stack)) return true;
+        }
+
+        else if (on_rec_stack[next]) return true;
+    }
+
+    on_rec_stack[source] = false;
+    return false;
 }
 
 template<typename T>
 void graph_list<T>::transpose() 
 {
     graph_list<T> tmp(this->_graph.size());
+
     for (int i = 0; i < _graph.size(); ++i)
     {
         for (int j = 0; j < _graph[i].size(); ++j)
@@ -75,6 +144,7 @@ size_t graph_list<T>::component_count() const
     size_t count = 0;
     std::vector<bool> visited(_graph.size(), false);
     std::stack<size_t> stack;
+    
     for (int i = 0; i < _graph.size(); ++i)
     {
         if (!visited[i])
