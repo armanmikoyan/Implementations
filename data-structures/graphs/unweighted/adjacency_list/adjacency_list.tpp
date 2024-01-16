@@ -402,6 +402,46 @@ std::vector<int> graph_list<T>::reconstruct(size_t source, size_t destination, s
 }
 
 template<typename T>
+std::vector<int> graph_list<T>::topological_sort() const
+{
+    if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
+
+    std::vector<bool> visited(_graph.size(), false);
+    std::vector<int> result;
+
+    //for (int i = 0; i < _graph.size(); ++i)
+    //{
+        //if (!visited[i] && _graph[i].size() == 0)
+        //{
+            topological_sort_helper(4, visited, result);
+        //}
+   // }
+        
+    return result;
+}
+
+template<typename T>
+void graph_list<T>::topological_sort_helper(size_t source, std::vector<bool>& visited, std::vector<int>& result) const
+{
+    visited[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (!visited[next])
+        {
+            topological_sort_helper(next, visited, result);
+        }
+    }
+    result.insert(result.begin(), source);
+}
+
+template<typename T>
+std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const
+{
+
+}
+
+template<typename T>
 void graph_list<T>::default_operation(size_t vertex) 
 {
     std::cout << vertex << " ";

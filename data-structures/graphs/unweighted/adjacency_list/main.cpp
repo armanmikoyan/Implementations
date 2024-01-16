@@ -1,24 +1,35 @@
 #include "adjacency_list.hpp"
+#include <map>
 
-#define n  std::cout << std::endl;
 
 int main()
 {
-graph_list<int> g{};
-g.add_vertex();
-g.add_vertex();
-g.add_vertex();
-g.add_vertex();
-g.add_vertex();
+    graph_list<int> g{};
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
 
-g.add_edge(0, 1);
-g.add_edge(1, 2);
-g.add_edge(2, 3);
-g.add_edge(3, 4);
-g.add_edge(1, 4);
+    g.add_edge(4, 3);
+    g.add_edge(3, 2);
+    g.add_edge(3, 0);
+    g.add_edge(2, 0);
+    g.add_edge(1, 0);
 
+    std::map<int, std::string> map;
+    map[0] = "math";
+    map[1] = "discrete";
+    map[2] = "calculus";
+    map[3] = "linear_algebra";
+    map[4] = "num_theory";
 
-g.print_list();
+    g.print_list();
 
-std::cout << g.has_cycle_directed();
+    auto list = g.topological_sort();
+
+    for (auto l : list)
+    {
+        std::cout << map[l] << " ";
+    }
 }
