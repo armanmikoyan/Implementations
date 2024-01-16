@@ -405,18 +405,27 @@ template<typename T>
 std::vector<int> graph_list<T>::topological_sort() const
 {
     if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
-
+    std::vector<size_t> vertex_degree(_graph.size(), 0);
     std::vector<bool> visited(_graph.size(), false);
+    
+    for(auto list : _graph)
+    {
+        for (auto vertex : list)
+        {
+            ++vertex_degree[vertex];
+        }
+    }
+
     std::vector<int> result;
 
-    //for (int i = 0; i < _graph.size(); ++i)
-    //{
-        //if (!visited[i] && _graph[i].size() == 0)
-        //{
-            topological_sort_helper(4, visited, result);
-        //}
-   // }
-        
+    for (int i = 0; i < vertex_degree.size(); ++i)
+    {
+        if (!visited[i] && vertex_degree[i] == 0)
+        {
+            topological_sort_helper(i, visited, result);
+        }
+    }
+
     return result;
 }
 
