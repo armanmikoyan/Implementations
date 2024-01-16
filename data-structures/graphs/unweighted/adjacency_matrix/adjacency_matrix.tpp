@@ -30,7 +30,7 @@ template<typename T>
 graph_matrix<T>& graph_matrix<T>::operator=(graph_matrix<T>&& rhs) noexcept
 {
     if (this != &rhs)
-    {   
+    {
         _graph = std::move(rhs._graph);
     }
     return *this;
@@ -75,7 +75,7 @@ template<typename T>
 bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, std::vector<bool>& visited) const
 {
     visited[source] = true;
- 
+
     for (size_t i = 0; i < _graph.size(); ++i)
     {
         if (_graph[source][i])
@@ -109,7 +109,7 @@ bool graph_matrix<T>::has_cycle_directed() const
 }
 
 template<typename T>
-bool graph_matrix<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited, 
+bool graph_matrix<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited,
                                                                std::vector<bool>& on_rec_stack) const
 {
     visited[source]      = true;
@@ -164,13 +164,13 @@ void graph_matrix<T>::dfs_extra_case(size_t vertex, std::function<void(size_t)> 
     {
         if (!visited[i])
         {
-            dfs_helper_recrusive(i, visited, callback);     
+            dfs_helper_recrusive(i, visited, callback);
         }
     }
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited, 
+void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited,
                                                            std::function<void(size_t)> callback) const
 {
     visited[current] = true;
@@ -216,10 +216,10 @@ template<typename T>
 void graph_matrix<T>::bfs(size_t vertex,  std::function<void(size_t)> callback) const
 {
     if (vertex >= _graph.size()) throw std::out_of_range("vertex index is great");
-    
+
     std::vector<bool> visited(_graph.size(), false);
     bfs_helper(vertex, visited, callback);
-   
+
 }
 
 template<typename T>
@@ -230,7 +230,7 @@ void graph_matrix<T>::bfs_extra_case(size_t vertex, std::function<void(size_t)> 
     {
         if (!visited[i])
         {
-            bfs_helper(i, visited, callback);     
+            bfs_helper(i, visited, callback);
         }
         std::cout << std::endl;
     }
@@ -262,7 +262,7 @@ void graph_matrix<T>::bfs_helper(size_t vertex, std::vector<bool>& visited, std:
 }
 
 template<typename T>
-size_t graph_matrix<T>::component_count() const 
+size_t graph_matrix<T>::component_count() const
 {
     size_t count = 0;
     std::stack<size_t> stack;
@@ -374,10 +374,10 @@ std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t sourc
 }
 
 template<typename T>
-void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source, 
-                                     size_t destination, 
-                                     std::vector<bool>& visited, 
-                                     std::vector<int>& raw_path, 
+void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source,
+                                     size_t destination,
+                                     std::vector<bool>& visited,
+                                     std::vector<int>& raw_path,
                                      std::vector<std::vector<int>>& paths) const
 {
     visited[source] = true;
@@ -414,7 +414,105 @@ std::vector<int> graph_matrix<T>::reconstruct(size_t source, size_t destination,
 }
 
 template<typename T>
-void graph_matrix<T>::default_operation(size_t vertex) 
+std::vector<int> graph_matrix<T>::topological_sort() const     // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead use Kahn's algorithm
+{
+    if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
+
+    std::vector<int> result;
+    std::vector<bool> visited(_graph.size(), false);
+    std::vector<size_t> vertex_degree(_graph.size(), 0);
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph.size(); ++j)
+        {
+            if (_graph[i][j])
+            {
+                ++vertex_degree[j];
+            }
+        }
+    }
+
+    for (int i = 0; i < vertex_degree.size(); ++i)
+    {
+        if (!visited[i] && vertex_degree[i] == 0)
+        {
+            topological_sort_helper(i, visited, result);
+        }
+    }
+
+    return result;
+}
+
+template<typename T>
+void graph_matrix<T>::topological_sort_helper(size_t source, std::vector<bool>& visited, std::vector<int>& result) const
+{
+    visited[source] = true;
+
+    for(int i = 0; i < _graph.size(); ++i)
+    {
+        if (_graph[source][i] && !visited[i])
+        {
+            topological_sort_helper(i, visited, result);
+        }
+    }
+    result.insert(result.begin(), source);
+}
+
+
+template<typename T>
+std::vector<int> graph_matrix<T>::topological_sort_Kahns_algorithm() const     // Use this algorithm !!!
+{
+    std::vector<int> result;
+    std::queue<size_t> queue;
+    std::vector<size_t> vertice_degree(_graph.size(), 0);
+
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph.size(); ++j)
+        {
+            if (_graph[i][j])
+            {
+                ++vertice_degree[j];
+            }
+        }
+    }
+
+    for (size_t i = 0; i < vertice_degree.size(); ++i)
+    {
+        if (vertice_degree[i] == 0) // if there is not vertice with degree 0, the graph is cyclic
+        {
+            queue.push(i);
+        }
+    }
+
+    while (!queue.empty())
+    {
+        size_t current = queue.front();
+        result.push_back(current);
+        queue.pop();
+
+        for (int i = 0; i < _graph.size(); ++i)
+        {
+            if (_graph[current][i])
+            {
+                --vertice_degree[i];
+                if (vertice_degree[i] == 0)
+                {
+                    queue.push(i);
+                }
+            }
+        }
+    }
+
+   if (result.size() != _graph.size()) throw std::logic_error("There is cycle in the graph");
+
+   return result;
+}
+
+template<typename T>
+void graph_matrix<T>::default_operation(size_t vertex)
 {
     std::cout << vertex << " ";
 }
@@ -429,9 +527,9 @@ void graph_matrix<T>::print_matrix() const
     std::cout << "    ";
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        std::cout << i << "   "; 
+        std::cout << i << "   ";
     }
-    std::cout << std::endl; 
+    std::cout << std::endl;
 
     for (size_t i = 0; i < _graph.size(); ++i)
     {
@@ -453,7 +551,7 @@ void graph_matrix<T>::print_matrix() const
             {
                 std::cout << red;
             }
-            std::cout << " " << _graph[i][j] << reset << " |"; 
+            std::cout << " " << _graph[i][j] << reset << " |";
         }
         std::cout << std::endl;
     }

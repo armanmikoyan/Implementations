@@ -402,7 +402,7 @@ std::vector<int> graph_list<T>::reconstruct(size_t source, size_t destination, s
 }
 
 template<typename T>
-std::vector<int> graph_list<T>::topological_sort() const    // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead  use Kahn's algorithm
+std::vector<int> graph_list<T>::topological_sort() const    // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead use Kahn's algorithm
 {
     if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
 
@@ -449,8 +449,8 @@ template<typename T>
 std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        // Use this algorithm !!!
 {
     std::vector<int> result;
-    std::vector<size_t> vertice_degree(_graph.size(), 0);
     std::queue<size_t> queue;
+    std::vector<size_t> vertice_degree(_graph.size(), 0);
 
     for (auto list : _graph)
     {
@@ -462,7 +462,7 @@ std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        
 
     for (size_t i = 0; i < vertice_degree.size(); ++i)
     {
-        if (vertice_degree[i] == 0)
+        if (vertice_degree[i] == 0) // if there is not vertice with degree 0, the graph is cyclic
         {
             queue.push(i);
         }
@@ -484,7 +484,7 @@ std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        
         }
     }
 
-   if (result.size() != _graph.size()) throw std::logic_error("There is cycle in the graph");
+    if (result.size() != _graph.size()) throw std::logic_error("There is cycle in the graph");
 
     return result;
 }
