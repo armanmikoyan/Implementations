@@ -449,7 +449,6 @@ template<typename T>
 std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        // Use this algorithm !!!
 {
     std::vector<int> result;
-    std::vector<bool> visited(_graph.size(), false);
     std::vector<size_t> vertice_degree(_graph.size(), 0);
     std::queue<size_t> queue;
 
@@ -472,7 +471,6 @@ std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        
     while (!queue.empty())
     {
         size_t current = queue.front();
-        visited[current] = true;
         result.push_back(current);
         queue.pop();
 

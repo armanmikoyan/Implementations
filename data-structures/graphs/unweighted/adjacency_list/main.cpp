@@ -1,6 +1,4 @@
 #include "adjacency_list.hpp"
-#include <map>
-
 
 int main()
 {
@@ -18,7 +16,6 @@ int main()
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
-
     g.add_edge(1, 0);
     g.add_edge(1, 3);
     g.add_edge(0, 2);
