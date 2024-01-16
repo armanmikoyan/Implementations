@@ -30,20 +30,20 @@ template<typename T>
 graph_list<T>& graph_list<T>::operator=(graph_list<T>&& rhs) noexcept
 {
     if (this != &rhs)
-    {   
+    {
         _graph = std::move(rhs._graph);
     }
     return *this;
 }
 
 template<typename T>
-void graph_list<T>::add_vertex() 
+void graph_list<T>::add_vertex()
 {
     _graph.push_back({});
 }
 
 template<typename T>
-void graph_list<T>::add_edge(size_t u, size_t v) 
+void graph_list<T>::add_edge(size_t u, size_t v)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
     for (auto curr : _graph[u])
@@ -51,7 +51,7 @@ void graph_list<T>::add_edge(size_t u, size_t v)
         if (curr == v) return;
     }
     _graph[u].push_back(v);
-   // _graph[v].push_back(u);  //  for undirected graph
+//    _graph[v].push_back(u);  //  for undirected graph
 
 }
 
@@ -103,7 +103,7 @@ bool graph_list<T>::has_cycle_directed() const
 }
 
 template<typename T>
-bool graph_list<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited, 
+bool graph_list<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited,
                                                              std::vector<bool>& on_rec_stack) const
 {
     visited[source]      = true;
@@ -124,7 +124,7 @@ bool graph_list<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& 
 }
 
 template<typename T>
-void graph_list<T>::transpose() 
+void graph_list<T>::transpose()
 {
     graph_list<T> tmp(this->_graph.size());
 
@@ -138,13 +138,13 @@ void graph_list<T>::transpose()
     _graph = std::move(tmp._graph);
 }
 
-template<typename T>  
+template<typename T>
 size_t graph_list<T>::component_count() const
 {
     size_t count = 0;
     std::vector<bool> visited(_graph.size(), false);
     std::stack<size_t> stack;
-    
+
     for (int i = 0; i < _graph.size(); ++i)
     {
         if (!visited[i])
@@ -195,7 +195,7 @@ void graph_list<T>::dfs_extra_case(size_t start, std::function<void(size_t)> cal
 }
 
 template<typename T>
-void graph_list<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited, 
+void graph_list<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited,
                                                          std::function<void(size_t)> callback) const
 {
     visited[current] = true;
@@ -212,7 +212,7 @@ void graph_list<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visi
 }
 
 template<typename T>
-void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited, 
+void graph_list<T>::dfs_helper_iterative(size_t start, std::vector<bool>& visited,
                                                        std::function<void(size_t)> callback) const
 {
     std::stack<size_t> stack;
@@ -306,11 +306,11 @@ size_t  graph_list<T>::vertex_count_in_level(size_t vertex, size_t level) const
                     queue.push(next);
                     visited[next] = true;
                 }
-            }       
+            }
         }
         --level;
     }
-    return 0;   
+    return 0;
 }
 
 template<typename T>
@@ -327,7 +327,7 @@ size_t graph_list<T>::shortest_path_two_vertex(size_t source, size_t destination
     while (!queue.empty())
     {
         int size = queue.size();
-        ++count;  
+        ++count;
         while (size--)
         {
             size_t current = queue.front();
@@ -358,24 +358,24 @@ std::vector<std::vector<int>> graph_list<T>::all_paths_two_vertex(size_t source,
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<bool> visited(_graph.size(), false);
     all_paths_two_vertex_helper(source, destination, visited, raw_path, paths);
-    
+
     return paths;
 }
 
 template<typename T>
-void graph_list<T>::all_paths_two_vertex_helper(size_t source, 
-                                                size_t destination, 
-                                                std::vector<bool>& visited, 
+void graph_list<T>::all_paths_two_vertex_helper(size_t source,
+                                                size_t destination,
+                                                std::vector<bool>& visited,
                                                 std::vector<int>& raw_path,
                                                 std::vector<std::vector<int>>& paths) const
 {
-    visited[source] = true;     
+    visited[source] = true;
     for (auto next : _graph[source])
     {
         if (!visited[next])
         {
             raw_path[next] = source;
-            if (next == destination) 
+            if (next == destination)
             {
                 paths.push_back(reconstruct(source, destination, raw_path));
             }
@@ -402,21 +402,22 @@ std::vector<int> graph_list<T>::reconstruct(size_t source, size_t destination, s
 }
 
 template<typename T>
-std::vector<int> graph_list<T>::topological_sort() const
+std::vector<int> graph_list<T>::topological_sort() const    // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead  use Kahn's algorithm
 {
     if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
-    std::vector<size_t> vertex_degree(_graph.size(), 0);
+
+    std::vector<int> result;
     std::vector<bool> visited(_graph.size(), false);
-    
-    for(auto list : _graph)
+    std::vector<size_t> vertex_degree(_graph.size(), 0);
+
+    for (auto list : _graph)
     {
-        for (auto vertex : list)
+        for (auto vertice : list)
         {
-            ++vertex_degree[vertex];
+            ++vertex_degree[vertice];
         }
     }
 
-    std::vector<int> result;
 
     for (int i = 0; i < vertex_degree.size(); ++i)
     {
@@ -445,13 +446,53 @@ void graph_list<T>::topological_sort_helper(size_t source, std::vector<bool>& vi
 }
 
 template<typename T>
-std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const
+std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        // Use this algorithm !!!
 {
+    std::vector<int> result;
+    std::vector<bool> visited(_graph.size(), false);
+    std::vector<size_t> vertice_degree(_graph.size(), 0);
+    std::queue<size_t> queue;
 
+    for (auto list : _graph)
+    {
+        for (auto vertice : list)
+        {
+            ++vertice_degree[vertice];
+        }
+    }
+
+    for (size_t i = 0; i < vertice_degree.size(); ++i)
+    {
+        if (vertice_degree[i] == 0)
+        {
+            queue.push(i);
+        }
+    }
+
+    while (!queue.empty())
+    {
+        size_t current = queue.front();
+        visited[current] = true;
+        result.push_back(current);
+        queue.pop();
+
+        for (auto vertice : _graph[current])
+        {
+            --vertice_degree[vertice];
+            if (vertice_degree[vertice] == 0)
+            {
+                queue.push(vertice);
+            }
+        }
+    }
+
+   if (result.size() != _graph.size()) throw std::logic_error("There is cycle in the graph");
+
+    return result;
 }
 
 template<typename T>
-void graph_list<T>::default_operation(size_t vertex) 
+void graph_list<T>::default_operation(size_t vertex)
 {
     std::cout << vertex << " ";
 }
@@ -464,7 +505,7 @@ void graph_list<T>::print_list() const
         std::cout << i << " ->";
         for (size_t j = 0; j < _graph[i].size(); ++j)
         {
-            std::cout <<  "\033[1;32m" << " " << _graph[i][j] <<  "\033[0m" << " |"; 
+            std::cout <<  "\033[1;32m" << " " << _graph[i][j] <<  "\033[0m" << " |";
         }
         std::cout << std::endl;
     }
