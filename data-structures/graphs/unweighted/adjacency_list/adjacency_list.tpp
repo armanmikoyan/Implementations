@@ -578,7 +578,7 @@ void graph_list<T>::print_list() const
 {
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        std::cout << i << " ->";
+        std::cout << i << " -> ";
         for (size_t j = 0; j < _graph[i].size(); ++j)
         {
             std::cout <<  "\033[1;32m" << " " << _graph[i][j] <<  "\033[0m" << " |";
