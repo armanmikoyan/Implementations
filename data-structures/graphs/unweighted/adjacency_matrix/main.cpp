@@ -177,7 +177,7 @@ graph_matrix<int> g{};
 
 Test 2
 
-    graph_matrix<int> g{};
+
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
@@ -200,18 +200,26 @@ Test 2
     g.add_edge(4, 7);
     g.add_edge(7, 8);
 
-    g.print_matrix();
 
-    auto list = g.scc_Kosarajus_algorithm();
 
-    for (auto vertice : list)
-    {
-        for (auto v : vertice)
-        {
-            std::cout << v << " ";
-        }
-        std::cout << std::endl;
-    }
+Test 3
+
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 2);
+    g.add_edge(2, 1);
+    g.add_edge(4, 5);
+    g.add_edge(5, 4);
+    g.add_edge(6, 5);
+    g.add_edge(6, 3);
+    g.add_edge(3, 2);
+    g.add_edge(2, 0);
 
 
 #endif

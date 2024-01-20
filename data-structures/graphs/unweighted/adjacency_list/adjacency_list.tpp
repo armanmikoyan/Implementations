@@ -534,7 +534,7 @@ void graph_list<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,
                                                               std::stack<size_t>& finish_time) const
 {
     visited[source] = true;
-    
+
     for (auto next : _graph[source])
     {
         if (!visited[next])
@@ -562,11 +562,6 @@ void graph_list<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
         }
     }
 }
-
-
-
-
-
 
 
 

@@ -9,15 +9,16 @@ int main()
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
+    g.add_vertex();
     g.add_edge(0, 1);
-    g.add_edge(1, 5);
-    g.add_edge(5, 4);
-    g.add_edge(2, 4);
     g.add_edge(1, 2);
-    g.add_edge(2, 3);
-    g.add_edge(3, 0);
-    
-    g.print_list();
+    g.add_edge(2, 1);
+    g.add_edge(4, 5);
+    g.add_edge(5, 4);
+    g.add_edge(6, 5);
+    g.add_edge(6, 3);
+    g.add_edge(3, 2);
+    g.add_edge(2, 0);
 
     auto list = g.scc_Kosarajus_algorithm();
 
@@ -29,7 +30,7 @@ int main()
         }
         std::cout << std::endl;
     }
-  
+
   
 }
 
@@ -50,7 +51,10 @@ TESTS  ------------
 
 #if 0
 
-////// Test case for topological sort dfs (postorder travsersal)
+////// Test cases for topological sort dfs (postorder travsersal)
+
+Test 1
+
 graph_list<int> g{};
     g.add_vertex();
     g.add_vertex();
@@ -95,7 +99,10 @@ graph_list<int> g{};
 
 
 
-////// Test case for Kahn's topological sort algorithm
+////// Test cases for Kahn's topological sort algorithm
+
+Test 1
+
  graph_list<int> g{};
     g.add_vertex();
     g.add_vertex();
@@ -143,5 +150,86 @@ graph_list<int> g{};
 
 
 
+// Test cases for Kosaraju's  algorithm
+
+
+Test 1
+
+graph_list<int> g{};
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 5);
+    g.add_edge(5, 4);
+    g.add_edge(2, 4);
+    g.add_edge(1, 2);
+    g.add_edge(2, 3);
+    g.add_edge(3, 0);
+
+    auto list = g.scc_Kosarajus_algorithm();
+
+    for (auto vertice : list)
+    {
+        for (auto v : vertice)
+        {
+            std::cout << v << " ";
+        }
+        std::cout << std::endl;
+    }
+
+
+Test 2
+
+
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 0);
+    g.add_edge(0, 2);
+    g.add_edge(2, 0);
+    g.add_edge(2, 3);
+    g.add_edge(3, 4);
+    g.add_edge(4, 7);
+    g.add_edge(4, 5);
+    g.add_edge(5, 6);
+    g.add_edge(6, 4);
+    g.add_edge(4, 7);
+    g.add_edge(7, 8);
+
+
+
+Test 3
+
+
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 2);
+    g.add_edge(2, 1);
+    g.add_edge(4, 5);
+    g.add_edge(5, 4);
+    g.add_edge(6, 5);
+    g.add_edge(6, 3);
+    g.add_edge(3, 2);
+    g.add_edge(2, 0);
+
+
+    
 
 #endif
