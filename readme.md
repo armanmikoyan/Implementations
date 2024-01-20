@@ -8,7 +8,7 @@ This repository contains implementations of various projects related to C++ prog
 
 2. **STL Algorithms**: Examples of using Standard Template Library (STL) algorithms for various tasks.
 
-3. **Data Structures**: Implementations of common data structures in C++.
+3. **Data Structures**: Implementations of common data structures in C++ (vector, list, graphs, trees, stack, queue, priority queue, heap, hash-table).
 
 4. **Smart Pointers**: Usage and examples of smart pointers in C++.
 
