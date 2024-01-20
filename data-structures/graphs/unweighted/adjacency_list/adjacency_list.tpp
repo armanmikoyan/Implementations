@@ -489,6 +489,89 @@ std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        
     return result;
 }
 
+
+//-------------------SCC-------------------//
+
+template<typename T>
+std::vector<std::vector<int>> graph_list<T>::scc_Kosarajus_algorithm() const
+{
+    std::vector<bool> visited(_graph.size(), false);
+    std::vector<std::vector<int>> result;
+    std::stack<size_t> finish_time;
+
+    // 1. first pass, fill the stack with finishing time of vertices
+    for (int i = 0; i < _graph.size(); ++i)       
+    {
+        if (!visited[i])
+        {
+            scc_Kosarajus_algorithm_helper_first_pass(i, visited, finish_time);
+        }
+    }
+
+    // 2. second pass, strongly connected component detecting
+    visited.assign(visited.size(), false);
+    auto tmp = *this;
+    tmp.transpose();
+
+    while (!finish_time.empty())
+    {
+        size_t curr = finish_time.top();
+        finish_time.pop();
+
+        if (!visited[curr])
+        {
+            std::vector<int> scc;
+            scc_Kosarajus_algorithm_helper_second_pass(curr, visited, scc, tmp._graph);
+            result.push_back(std::move(scc));
+        }
+    }
+    return result;
+}
+
+template<typename T>
+void graph_list<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,  
+                                                              std::vector<bool>& visited, 
+                                                              std::stack<size_t>& finish_time) const
+{
+    visited[source] = true;
+    
+    for (auto next : _graph[source])
+    {
+        if (!visited[next])
+        {
+            scc_Kosarajus_algorithm_helper_first_pass(next, visited, finish_time);
+        }
+    }
+    finish_time.push(source);
+}
+
+template<typename T>
+void graph_list<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
+                                                               std::vector<bool>& visited,
+                                                               std::vector<int>& scc,
+                                                               std::vector<std::vector<int>>& transposed_list) const
+{
+    visited[source] = true;
+    scc.push_back(source);
+
+    for (auto next : transposed_list[source])
+    {
+        if (!visited[next])
+        {
+            scc_Kosarajus_algorithm_helper_second_pass(next, visited, scc, transposed_list);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
 template<typename T>
 void graph_list<T>::default_operation(size_t vertex)
 {
