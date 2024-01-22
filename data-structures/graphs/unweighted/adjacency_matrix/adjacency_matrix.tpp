@@ -57,7 +57,7 @@ void graph_matrix<T>::add_vertex()
 template<typename T>
 bool graph_matrix<T>::has_cycle_undirected() const
 {
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
 
     for (int i = 0; i < _graph.size(); ++i)
     {
@@ -72,7 +72,7 @@ bool graph_matrix<T>::has_cycle_undirected() const
 }
 
 template<typename T>
-bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, std::vector<bool>& visited) const
+bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, visited_type& visited) const
 {
     visited[source] = true;
 
@@ -94,8 +94,8 @@ bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, 
 template<typename T>
 bool graph_matrix<T>::has_cycle_directed() const
 {
-    std::vector<bool> visited(_graph.size(), false);
-    std::vector<bool> on_rec_stack(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
+    visited_type on_rec_stack(_graph.size(), false);
 
     for (int i = 0; i < _graph.size(); ++i)
     {
@@ -109,8 +109,8 @@ bool graph_matrix<T>::has_cycle_directed() const
 }
 
 template<typename T>
-bool graph_matrix<T>::has_cycle_directed_helper(size_t source, std::vector<bool>& visited,
-                                                               std::vector<bool>& on_rec_stack) const
+bool graph_matrix<T>::has_cycle_directed_helper(size_t source, visited_type& visited,
+                                                               visited_type& on_rec_stack) const
 {
     visited[source]      = true;
     on_rec_stack[source] = true;
@@ -147,19 +147,19 @@ void graph_matrix<T>::transpose()
 }
 
 template<typename T>
-void graph_matrix<T>::dfs(size_t vertex, std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs(size_t vertex, callback_type callback) const
 {
     if (vertex >= _graph.size()) throw std::out_of_range("vertex index is great");
 
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     dfs_helper_recrusive(vertex, visited, callback);
    // dfs_helper_iterative(vertex, visited, callback);
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_extra_case(size_t vertex, std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs_extra_case(size_t vertex, callback_type callback) const
 {
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     for (size_t i = 0; i < _graph.size(); ++i)
     {
         if (!visited[i])
@@ -170,8 +170,7 @@ void graph_matrix<T>::dfs_extra_case(size_t vertex, std::function<void(size_t)> 
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& visited,
-                                                           std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs_helper_recrusive(size_t current, visited_type& visited, callback_type callback) const
 {
     visited[current] = true;
 
@@ -187,8 +186,7 @@ void graph_matrix<T>::dfs_helper_recrusive(size_t current, std::vector<bool>& vi
 }
 
 template<typename T>
-void graph_matrix<T>::dfs_helper_iterative(size_t vertex, std::vector<bool>& visited,
-                                                          std::function<void(size_t)> callback) const
+void graph_matrix<T>::dfs_helper_iterative(size_t vertex, visited_type& visited, callback_type callback) const
 {
     std::stack<size_t> stack;
     stack.push(vertex);
@@ -213,19 +211,19 @@ void graph_matrix<T>::dfs_helper_iterative(size_t vertex, std::vector<bool>& vis
 }
 
 template<typename T>
-void graph_matrix<T>::bfs(size_t vertex,  std::function<void(size_t)> callback) const
+void graph_matrix<T>::bfs(size_t vertex,  callback_type callback) const
 {
     if (vertex >= _graph.size()) throw std::out_of_range("vertex index is great");
 
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     bfs_helper(vertex, visited, callback);
 
 }
 
 template<typename T>
-void graph_matrix<T>::bfs_extra_case(size_t vertex, std::function<void(size_t)> callback) const
+void graph_matrix<T>::bfs_extra_case(size_t vertex, callback_type callback) const
 {
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     for (size_t i = 0; i < _graph.size(); ++i)
     {
         if (!visited[i])
@@ -237,7 +235,7 @@ void graph_matrix<T>::bfs_extra_case(size_t vertex, std::function<void(size_t)> 
 }
 
 template<typename T>
-void graph_matrix<T>::bfs_helper(size_t vertex, std::vector<bool>& visited, std::function<void(size_t)> callback) const
+void graph_matrix<T>::bfs_helper(size_t vertex, visited_type& visited, callback_type callback) const
 {
     std::queue<size_t> queue;
     queue.push(vertex);
@@ -266,7 +264,7 @@ size_t graph_matrix<T>::component_count() const
 {
     size_t count = 0;
     std::stack<size_t> stack;
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     for (int i = 0; i < _graph.size(); ++i)
     {
        if (!visited[i])
@@ -298,7 +296,7 @@ template<typename T>
 size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level)  const
 {
     std::queue<size_t> q;
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     q.push(vertex);
     visited[vertex] = true;
 
@@ -332,7 +330,7 @@ size_t graph_matrix<T>::shortest_path_two_vertex(size_t source, size_t destionat
 {
     if (source == destionation) return 0;
     std::queue<size_t> q;
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     size_t path_length = 0;
     q.push(source);
     visited[source] = true;
@@ -363,11 +361,11 @@ size_t graph_matrix<T>::shortest_path_two_vertex(size_t source, size_t destionat
 }
 
 template<typename T>
-std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t source, size_t destination) const
+typename graph_matrix<T>::matrix_type graph_matrix<T>::all_paths_two_vertex(size_t source, size_t destination) const
 {
-    std::vector<std::vector<int>> paths;
+    matrix_type paths;
     std::vector<int> raw_path(_graph.size(), -1);
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     all_paths_two_vertex_helper(source, destination, visited, raw_path, paths);
 
     return paths;
@@ -375,10 +373,10 @@ std::vector<std::vector<int>> graph_matrix<T>::all_paths_two_vertex(size_t sourc
 
 template<typename T>
 void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source,
-                                     size_t destination,
-                                     std::vector<bool>& visited,
-                                     std::vector<int>& raw_path,
-                                     std::vector<std::vector<int>>& paths) const
+                                                   size_t destination,
+                                                   visited_type& visited,
+                                                   std::vector<int>& raw_path,
+                                                   matrix_type& paths) const
 {
     visited[source] = true;
     for (int i = 0; i < _graph.size(); ++i)
@@ -414,12 +412,12 @@ std::vector<int> graph_matrix<T>::reconstruct(size_t source, size_t destination,
 }
 
 template<typename T>
-std::vector<int> graph_matrix<T>::topological_sort() const     // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead use Kahn's algorithm
+std::vector<int> graph_matrix<T>::topological_sort() const // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead use Kahn's algorithm
 {
     if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
 
     std::vector<int> result;
-    std::vector<bool> visited(_graph.size(), false);
+    visited_type visited(_graph.size(), false);
     std::vector<size_t> vertex_degree(_graph.size(), 0);
 
     for (int i = 0; i < _graph.size(); ++i)
@@ -445,7 +443,7 @@ std::vector<int> graph_matrix<T>::topological_sort() const     // This is NOT RE
 }
 
 template<typename T>
-void graph_matrix<T>::topological_sort_helper(size_t source, std::vector<bool>& visited, std::vector<int>& result) const
+void graph_matrix<T>::topological_sort_helper(size_t source, visited_type& visited, std::vector<int>& result) const
 {
     visited[source] = true;
 
@@ -516,10 +514,10 @@ std::vector<int> graph_matrix<T>::topological_sort_Kahns_algorithm() const     /
 //-------------------SCC-------------------//
 
 template<typename T>
-std::vector<std::vector<int>> graph_matrix<T>::scc_Kosarajus_algorithm() const
+typename graph_matrix<T>::matrix_type graph_matrix<T>::scc_Kosarajus_algorithm() const
 {
-    std::vector<bool> visited(_graph.size(), false);
-    std::vector<std::vector<int>> result;
+    visited_type visited(_graph.size(), false);
+    matrix_type result;
     std::stack<size_t> finish_time;
 
     // 1. first pass, fill the stack with finishing time of vertices
@@ -553,8 +551,8 @@ std::vector<std::vector<int>> graph_matrix<T>::scc_Kosarajus_algorithm() const
 
 template<typename T>
 void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,  
-                                                              std::vector<bool>& visited, 
-                                                              std::stack<size_t>& finish_time) const
+                                                                visited_type& visited, 
+                                                                std::stack<size_t>& finish_time) const
 {
     visited[source] = true;
 
@@ -571,9 +569,9 @@ void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,
 
 template<typename T>
 void graph_matrix<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
-                                                               std::vector<bool>& visited,
-                                                               std::vector<int>& scc,
-                                                               std::vector<std::vector<int>>& transposed_list) const
+                                                                 visited_type& visited,
+                                                                 std::vector<int>& scc,
+                                                                 matrix_type& transposed_list) const
 {
     visited[source] = true;
     scc.push_back(source);

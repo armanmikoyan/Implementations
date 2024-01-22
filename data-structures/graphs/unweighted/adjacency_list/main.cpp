@@ -19,18 +19,8 @@ int main()
     g.add_edge(6, 3);
     g.add_edge(3, 2);
     g.add_edge(2, 0);
-
-    auto list = g.scc_Kosarajus_algorithm();
-
-    for (auto vertice : list)
-    {
-        for (auto v : vertice)
-        {
-            std::cout << v << " ";
-        }
-        std::cout << std::endl;
-    }
-
+    g.print_list();
+  
   
 }
 
