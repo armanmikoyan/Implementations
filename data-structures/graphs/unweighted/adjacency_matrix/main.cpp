@@ -10,16 +10,24 @@ int main()
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
     g.add_edge(0, 1);
-    g.add_edge(1, 5);
-    g.add_edge(5, 4);
-    g.add_edge(2, 4);
-    g.add_edge(1, 2);
+    g.add_edge(1, 0);
+    g.add_edge(0, 2);
+    g.add_edge(2, 0);
     g.add_edge(2, 3);
-    g.add_edge(3, 0);
+    g.add_edge(3, 4);
+    g.add_edge(4, 7);
+    g.add_edge(4, 5);
+    g.add_edge(5, 6);
+    g.add_edge(6, 4);
+    g.add_edge(4, 7);
+    g.add_edge(7, 8);
     g.print_matrix();
     auto list = g.scc_Tarjans_algorithm();
-
+    
     for (auto vertice : list)
     {
         for (auto v : vertice)
@@ -257,5 +265,23 @@ graph_matrix<int> g{};
         }
         std::cout << std::endl;
     }
+
+
+TEST 2
+
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 5);
+    g.add_edge(5, 4);
+    g.add_edge(2, 4);
+    g.add_edge(1, 2);
+    g.add_edge(2, 3);
+    g.add_edge(3, 0);
+    g.print_matrix();
 
 #endif

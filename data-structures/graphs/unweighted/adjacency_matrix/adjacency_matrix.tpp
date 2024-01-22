@@ -1,6 +1,6 @@
 template<typename T>
 graph_matrix<T>::graph_matrix(size_t v)
-    : _graph(v, std::vector<int>(v, 0))
+    : _graph(v, std::vector<bool>(v, false))
 {
 }
 
@@ -51,7 +51,7 @@ void graph_matrix<T>::add_vertex()
     {
         row.push_back(0);
     }
-    _graph.push_back(std::vector<int>(_graph.size() + 1, 0));
+    _graph.push_back(std::vector<bool>(_graph.size() + 1, false));
 }
 
 template<typename T>
@@ -619,13 +619,16 @@ void graph_matrix<T>::scc_Tarjans_algorithm_helper(size_t source,
 
     for (int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i] && ids[i] == -1)
+        if (_graph[source][i])
         {
-            scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
-        }
-        if (_graph[source][i] && on_stack[i])
-        {
-            low_links[source] = std::min(low_links[source], low_links[i]);
+            if (ids[i] == -1)
+            {
+                scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
+            }
+            if (on_stack[i])
+            {
+                low_links[source] = std::min(low_links[source], low_links[i]);
+            }
         }
     }
 

@@ -68,7 +68,7 @@ private:
     static void default_operation(size_t = 0);
 
 private:
-    matrix_type _graph;
+    std::vector<std::vector<bool>> _graph;
 };
 
 #include "adjacency_matrix.tpp"

@@ -3,19 +3,27 @@
 int main()
 {
     graph_list<int> g{};
-   g.add_vertex();
+     g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_edge(0, 1);
-    g.add_edge(1, 5);
-    g.add_edge(5, 4);
-    g.add_edge(2, 4);
-    g.add_edge(1, 2);
+    g.add_edge(1, 0);
+    g.add_edge(0, 2);
+    g.add_edge(2, 0);
     g.add_edge(2, 3);
-    g.add_edge(3, 0);
+    g.add_edge(3, 4);
+    g.add_edge(4, 7);
+    g.add_edge(4, 5);
+    g.add_edge(5, 6);
+    g.add_edge(6, 4);
+    g.add_edge(4, 7);
+    g.add_edge(7, 8);
     g.print_list();
     auto list = g.scc_Tarjans_algorithm();
 
@@ -263,6 +271,22 @@ TEST 1
     }
 
 
+
+TEST 2
+
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 5);
+    g.add_edge(5, 4);
+    g.add_edge(2, 4);
+    g.add_edge(1, 2);
+    g.add_edge(2, 3);
+    g.add_edge(3, 0);
     
 
 #endif
