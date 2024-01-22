@@ -3,24 +3,31 @@
 int main()
 {
     graph_list<int> g{};
-    g.add_vertex();
-    g.add_vertex();
+   g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
     g.add_edge(0, 1);
-    g.add_edge(1, 2);
-    g.add_edge(2, 1);
-    g.add_edge(4, 5);
+    g.add_edge(1, 5);
     g.add_edge(5, 4);
-    g.add_edge(6, 5);
-    g.add_edge(6, 3);
-    g.add_edge(3, 2);
-    g.add_edge(2, 0);
+    g.add_edge(2, 4);
+    g.add_edge(1, 2);
+    g.add_edge(2, 3);
+    g.add_edge(3, 0);
     g.print_list();
-  
+    auto list = g.scc_Tarjans_algorithm();
+
+    for (auto vertice : list)
+    {
+        for (auto v : vertice)
+        {
+            std::cout << v << " ";
+        }
+        std::cout << std::endl;
+    }
+
   
 }
 
@@ -218,6 +225,42 @@ Test 3
     g.add_edge(6, 3);
     g.add_edge(3, 2);
     g.add_edge(2, 0);
+
+
+
+
+// Test cases for Tarjan's  algorithm
+
+TEST 1
+
+    graph_list<int> g{};
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_vertex();
+    g.add_edge(0, 1);
+    g.add_edge(1, 2);
+    g.add_edge(2, 1);
+    g.add_edge(4, 5);
+    g.add_edge(5, 4);
+    g.add_edge(6, 5);
+    g.add_edge(6, 3);
+    g.add_edge(3, 2);
+    g.add_edge(2, 0);
+    g.print_list();
+    auto list = g.scc_Tarjans_algorithm();
+
+    for (auto vertice : list)
+    {
+        for (auto v : vertice)
+        {
+            std::cout << v << " ";
+        }
+        std::cout << std::endl;
+    }
 
 
     

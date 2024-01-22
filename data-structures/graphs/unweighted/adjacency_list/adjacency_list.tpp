@@ -566,20 +566,60 @@ void graph_list<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
 template<typename T>
 typename graph_list<T>::matrix_type graph_list<T>::scc_Tarjans_algorithm() const
 {
-    
+    matrix_type result;
+    visited_type on_stack(_graph.size(), false);
+    std::stack<size_t> stack;
+    std::vector<int> ids(_graph.size(), -1);
+    std::vector<int> low_links(_graph.size(), -1);
+
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (ids[i] == -1)
+        {
+            scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
+        }
+    }
+    return result;
 }
 
-template<typename T>
-void graph_list<T>::scc_Tarjans_algorithm_helper(size_t,
-                                      visited_type&,
-                                      std::vector<int>&,
-                                      matrix_type&) const
+template <typename T>
+void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
+                                                 visited_type& on_stack,
+                                                 std::stack<size_t>& stack,
+                                                 std::vector<int>& ids,
+                                                 std::vector<int>& low_links,
+                                                 matrix_type& result) const
 {
-    
+    static int time = 0;
+    ids[source] = low_links[source] = time++;
+    on_stack[source] = true;
+    stack.push(source);
+
+    for (auto next : _graph[source])
+    {
+        if (ids[next] == -1)
+        {
+            scc_Tarjans_algorithm_helper(next, on_stack, stack, ids, low_links, result);
+        }
+        if (on_stack[next])
+        {
+            low_links[source] = std::min(low_links[source], low_links[next]);
+        }
+    }
+
+    if (low_links[source] == ids[source])
+    {
+        std::vector<int> scc;
+        for (size_t vertex = stack.top();; vertex = stack.top())
+        {
+            stack.pop();
+            on_stack[vertex] = false;
+            scc.push_back(vertex);
+            if (source == vertex) break;
+        }
+        result.push_back(std::move(scc));
+    }
 }
-
-
-
 
 template<typename T>
 void graph_list<T>::default_operation(size_t vertex)

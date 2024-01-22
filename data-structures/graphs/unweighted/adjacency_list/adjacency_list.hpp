@@ -56,9 +56,13 @@ private: // helpers
     void                                  topological_sort_helper(size_t, visited_type&, std::vector<int>&) const;
     void              scc_Kosarajus_algorithm_helper_first_pass(size_t, visited_type&, std::stack<size_t>&) const;
     void scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, matrix_type&) const;
-    void               scc_Tarjans_algorithm_helper(size_t, visited_type&, std::vector<int>&, matrix_type&) const;
     void        all_paths_two_vertex_helper(size_t, size_t, visited_type&, std::vector<int>&, matrix_type&) const;
 
+    void scc_Tarjans_algorithm_helper(size_t, visited_type&,
+                                      std::stack<size_t>&,
+                                      std::vector<int>&,
+                                      std::vector<int>&, 
+                                      matrix_type&) const;
 private:
     static void default_operation(size_t = 0);
 
