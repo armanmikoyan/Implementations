@@ -598,7 +598,6 @@ typename graph_matrix<T>::matrix_type graph_matrix<T>::scc_Tarjans_algorithm() c
     {
         if (ids[i] == -1)
         {
-            std::cout << i;
             scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
         }
     }
@@ -624,7 +623,7 @@ void graph_matrix<T>::scc_Tarjans_algorithm_helper(size_t source,
         {
             scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
         }
-        if (on_stack[i])
+        if (_graph[source][i] && on_stack[i])
         {
             low_links[source] = std::min(low_links[source], low_links[i]);
         }
