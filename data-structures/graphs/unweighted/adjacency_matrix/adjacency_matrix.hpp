@@ -12,9 +12,10 @@ template<typename T>
 class graph_matrix
 {
 public:
-    using visited_type  =             std::vector<bool>;
-    using callback_type =  std::function <void(size_t)>;
-    using matrix_type   = std::vector<std::vector<int>>;
+    using visited_type  =              std::vector<bool>;
+    using callback_type =   std::function <void(size_t)>;
+    using matrix_type   =  std::vector<std::vector<int>>;
+    using list_type     = std::vector<std::vector<bool>>;
 
 public:
     graph_matrix                        () = default;
@@ -55,20 +56,20 @@ private: // helpers
     void                                  topological_sort_helper(size_t, visited_type&, std::vector<int>&) const;
     std::vector<int>                                         reconstruct(size_t, size_t, std::vector<int>&) const;
     void              scc_Kosarajus_algorithm_helper_first_pass(size_t, visited_type&, std::stack<size_t>&) const;
-    void scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, matrix_type&) const;
+    void scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, list_type&) const;
     void        all_paths_two_vertex_helper(size_t, size_t, visited_type&, std::vector<int>&, matrix_type&) const;
 
     void scc_Tarjans_algorithm_helper(size_t, visited_type&,
                                       std::stack<size_t>&,
                                       std::vector<int>&,
-                                      std::vector<int>&, 
+                                      std::vector<int>&,
                                       matrix_type&) const;
 
 private:
     static void default_operation(size_t = 0);
 
 private:
-    std::vector<std::vector<bool>> _graph;
+    list_type _graph;
 };
 
 #include "adjacency_matrix.tpp"

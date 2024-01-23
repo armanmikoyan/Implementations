@@ -550,8 +550,8 @@ typename graph_matrix<T>::matrix_type graph_matrix<T>::scc_Kosarajus_algorithm()
 }
 
 template<typename T>
-void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,  
-                                                                visited_type& visited, 
+void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,
+                                                                visited_type& visited,
                                                                 std::stack<size_t>& finish_time) const
 {
     visited[source] = true;
@@ -571,7 +571,7 @@ template<typename T>
 void graph_matrix<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
                                                                  visited_type& visited,
                                                                  std::vector<int>& scc,
-                                                                 matrix_type& transposed_list) const
+                                                                 list_type& transposed_list) const
 {
     visited[source] = true;
     scc.push_back(source);
