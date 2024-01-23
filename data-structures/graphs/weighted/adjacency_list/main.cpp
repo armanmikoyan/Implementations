@@ -3,7 +3,7 @@
 int main()
 {
 
-graph_list<int> g{};
+    graph_list<int> g{};
 
     g.add_vertex();
     g.add_vertex();
@@ -23,6 +23,7 @@ graph_list<int> g{};
     g.add_edge(2, 0);
 
     g.print_list();
+;
     auto list = g.scc_Tarjans_algorithm();
 
     for (auto vertice : list)
