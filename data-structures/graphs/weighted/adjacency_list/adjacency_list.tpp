@@ -625,7 +625,7 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
             scc.push_back(vertex);
             stack.pop();
             on_stack[vertex] = false;
-            
+
             if (source == vertex) break;
         }
         result.push_back(std::move(scc));
