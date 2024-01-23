@@ -53,7 +53,7 @@ void graph_list<T>::add_edge(size_t u, size_t v, size_t w)
     }
 
     _graph[u].push_back({v,w});
- _graph[v].push_back({u, w});   //for undirected graph
+//  _graph[v].push_back({u, w});   //for undirected graph
 }
 
 template<typename T>
@@ -415,15 +415,44 @@ std::vector<int> graph_list<T>::reconstruct(size_t source, size_t destination, s
 template<typename T>
 std::vector<int> graph_list<T>::topological_sort() const // This is NOT RECOMMENDED algorithm !!!!!!!!!!! instead use Kahn's algorithm
 {
-    
+    if (has_cycle_directed()) throw std::logic_error("There is cycle in the graph");
 
-   
+    std::vector<int> result;
+    visited_type visited(_graph.size(), false);
+    std::vector<size_t> vertex_degree(_graph.size(), 0);
+
+    for (auto list : _graph)
+    {
+        for (auto vertex : list)
+        {
+            ++vertex_degree[vertex.first];
+        }
+    }
+
+    for (int i = 0; i < vertex_degree.size(); ++i)
+    {
+        if (!visited[i] && vertex_degree[i] == 0)
+        {
+            topological_sort_helper(i, visited, result);
+        }
+    }
+
+    return result;
 }
 
 template<typename T>
 void graph_list<T>::topological_sort_helper(size_t source, visited_type& visited, std::vector<int>& result) const
 {
-   
+    visited[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (!visited[next.first])
+        {
+            topological_sort_helper(next.first, visited, result);
+        }
+    }
+    result.insert(result.begin(), source);
 }
 
 template<typename T>
