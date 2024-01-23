@@ -250,7 +250,7 @@ template<typename T>
 void graph_list<T>::bfs_extra_case(size_t start, callback_type callback) const
 {
     if (start >= _graph.size()) throw std::out_of_range("vertex index is great");
-    
+
     visited_type visited(_graph.size(), false);
     for (int i = 0; i < _graph.size(); ++i)
     {
@@ -323,7 +323,7 @@ size_t graph_list<T>::shortest_path_two_vertex(size_t source, size_t destination
 {
     if (source >= _graph.size() || destination >= _graph.size()) throw std::invalid_argument("args is not valid");
     if (source == destination) return 0;
-    
+
     visited_type visited(_graph.size(), false);
     std::queue<size_t> queue;
     size_t count = 0;
@@ -504,36 +504,93 @@ std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        
 template<typename T>
 typename graph_list<T>::matrix_type graph_list<T>::scc_Kosarajus_algorithm() const
 {
-    
 
-    // 1. first pass, fill the stack with finishing time of vertices
-   
+    std::stack<size_t> finish_time;
+    visited_type visited(_graph.size(), false);
+    matrix_type result;
+
+     // 1. first pass, fill the stack with finishing time of vertices
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        if (!visited[i])
+        {
+            scc_Kosarajus_algorithm_helper_first_pass(i, visited, finish_time);
+        }
+    }
+
+
+    visited.assign(_graph.size(), false);
+    auto tmp = *this;
+    tmp.transpose();
 
     // 2. second pass, strongly connected component detecting
-   
+    while (!finish_time.empty())
+    {
+        size_t curr = finish_time.top();
+        finish_time.pop();
+
+        if (!visited[curr])
+        {
+            std::vector<int> scc;
+            scc_Kosarajus_algorithm_helper_second_pass(curr, visited, scc, tmp._graph);
+            result.push_back(std::move(scc));
+        }
+    }
+    return result;
 }
 
 template<typename T>
-void graph_list<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,  
-                                                              visited_type& visited, 
+void graph_list<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,
+                                                              visited_type& visited,
                                                               std::stack<size_t>& finish_time) const
 {
-   
+    visited[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (!visited[next.first])
+        {
+            scc_Kosarajus_algorithm_helper_first_pass(next.first, visited, finish_time);
+        }
+    }
+    finish_time.push(source);
 }
 
 template<typename T>
 void graph_list<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
                                                                visited_type& visited,
                                                                std::vector<int>& scc,
-                                                               matrix_type& transposed_list) const
+                                                               list_type& transposed_list) const
 {
-    
+    visited[source] = true;
+    scc.push_back(source);
+
+    for(auto next : transposed_list[source])
+    {
+        if (!visited[next.first])
+        {
+            scc_Kosarajus_algorithm_helper_second_pass(next.first, visited, scc, transposed_list);
+        }
+    }
 }
 
 template<typename T>
 typename graph_list<T>::matrix_type graph_list<T>::scc_Tarjans_algorithm() const
 {
-  
+    matrix_type result;
+    visited_type on_stack(_graph.size(), false);
+    std::stack<size_t> stack;
+    std::vector<int> ids(_graph.size(), -1);
+    std::vector<int> low_links(_graph.size(), -1);
+
+    for(int i = 0; i < _graph.size(); ++i)
+    {
+        if (ids[i] == -1)
+        {
+            scc_Tarjans_algorithm_helper(i, on_stack, stack, ids, low_links, result);
+        }
+    }
+    return result;
 }
 
 template <typename T>
@@ -544,7 +601,35 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
                                                  std::vector<int>& low_links,
                                                  matrix_type& result) const
 {
-   
+    static int time = 0;
+    ids[source] = low_links[source] = time++;
+    stack.push(source);
+    on_stack[source] = true;
+
+    for (auto next : _graph[source])
+    {
+        if (ids[next.first] == -1)
+        {
+            scc_Tarjans_algorithm_helper(next.first, on_stack, stack, ids, low_links, result);
+        }
+        if (on_stack[next.first])
+        {
+            low_links[source] = std::min(  low_links[source], low_links[next.first]);
+        }
+    }
+    if (low_links[source] == ids[source])
+    {
+        std::vector<int> scc;
+        for (size_t vertex = stack.top();; vertex = stack.top())
+        {
+            scc.push_back(vertex);
+            stack.pop();
+            on_stack[vertex] = false;
+            
+            if (source == vertex) break;
+        }
+        result.push_back(std::move(scc));
+    }
 }
 
 template<typename T>

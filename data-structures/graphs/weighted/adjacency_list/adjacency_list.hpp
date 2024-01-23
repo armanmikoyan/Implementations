@@ -12,9 +12,10 @@ template<typename T>
 class graph_list
 {
 public:
-    using visited_type  =             std::vector<bool>;
-    using callback_type =  std::function <void(size_t)>;
-    using matrix_type   = std::vector<std::vector<int>>;
+    using visited_type  =                              std::vector<bool>;
+    using callback_type =                   std::function <void(size_t)>;
+    using matrix_type   =                  std::vector<std::vector<int>>;
+    using list_type     =  std::vector<std::vector<std::pair<int, int>>>;
 
 public:
     graph_list                      () = default;
@@ -32,7 +33,7 @@ public:
     bool                                        has_cycle_undirected() const;
     bool                                          has_cycle_directed() const;
     void            dfs(size_t = 0, callback_type = default_operation) const;
-    void dfs_extra_case(size_t = 0, callback_type = default_operation) const;   
+    void dfs_extra_case(size_t = 0, callback_type = default_operation) const;
     void            bfs(size_t = 0, callback_type = default_operation) const;
     void bfs_extra_case(size_t = 0, callback_type = default_operation) const;
     size_t                                           component_count() const;
@@ -54,20 +55,20 @@ private: // helpers
     bool                                         has_cycle_undirected_helper(size_t, size_t, visited_type&) const;
     std::vector<int>                                         reconstruct(size_t, size_t, std::vector<int>&) const;
     void                                  topological_sort_helper(size_t, visited_type&, std::vector<int>&) const;
-    void              scc_Kosarajus_algorithm_helper_first_pass(size_t, visited_type&, std::stack<size_t>&) const;
-    void scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, matrix_type&) const;
     void        all_paths_two_vertex_helper(size_t, size_t, visited_type&, std::vector<int>&, matrix_type&) const;
+    void              scc_Kosarajus_algorithm_helper_first_pass(size_t, visited_type&, std::stack<size_t>&) const;
+    void   scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, list_type&) const;
 
     void scc_Tarjans_algorithm_helper(size_t, visited_type&,
                                       std::stack<size_t>&,
                                       std::vector<int>&,
-                                      std::vector<int>&, 
+                                      std::vector<int>&,
                                       matrix_type&) const;
 private:
     static void default_operation(size_t = 0);
 
 private:
-    std::vector<std::vector<std::pair<int, int>>> _graph;
+    list_type _graph;
 };
 
 #include "adjacency_list.tpp"
