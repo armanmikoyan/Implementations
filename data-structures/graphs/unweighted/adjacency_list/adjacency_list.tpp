@@ -103,8 +103,7 @@ bool graph_list<T>::has_cycle_directed() const
 }
 
 template<typename T>
-bool graph_list<T>::has_cycle_directed_helper(size_t source, visited_type& visited,
-                                                             visited_type& on_rec_stack) const
+bool graph_list<T>::has_cycle_directed_helper(size_t source, visited_type& visited, visited_type& on_rec_stack) const
 {
     visited[source]      = true;
     on_rec_stack[source] = true;
@@ -161,7 +160,7 @@ size_t graph_list<T>::component_count() const
                     if (!visited[next])
                     {
                         stack.push(next);
-                        visited[next];
+                        visited[next] = true;
                     }
                 }
             }
@@ -247,6 +246,8 @@ void graph_list<T>::bfs(size_t start, callback_type callback) const
 template<typename T>
 void graph_list<T>::bfs_extra_case(size_t start, callback_type callback) const
 {
+    if (start >= _graph.size()) throw std::out_of_range("vertex index is great");
+    
     visited_type visited(_graph.size(), false);
     for (size_t i = 0; i < _graph.size(); ++i)
     {
@@ -262,8 +263,8 @@ template<typename T>
 void graph_list<T>::bfs_helper(size_t start, visited_type& visited, callback_type callback) const
 {
     std::queue<size_t> queue;
-    visited[start] = true;
     queue.push(start);
+    visited[start] = true;
 
     while (!queue.empty())
     {
@@ -317,7 +318,8 @@ template<typename T>
 size_t graph_list<T>::shortest_path_two_vertex(size_t source, size_t destination) const
 {
     if (source >= _graph.size() || destination >= _graph.size()) throw std::invalid_argument("args is not valid");
-
+    if (source == destination) return 0;
+    
     visited_type visited(_graph.size(), false);
     std::queue<size_t> queue;
     size_t count = 0;
@@ -354,6 +356,7 @@ template<typename T>
 typename graph_list<T>::matrix_type graph_list<T>::all_paths_two_vertex(size_t source, size_t destination) const
 {
     if (source >= _graph.size() || destination >= _graph.size()) throw std::invalid_argument("args is not valid");
+
     matrix_type paths;
     std::vector<int> raw_path(_graph.size(), -1);
     visited_type visited(_graph.size(), false);
