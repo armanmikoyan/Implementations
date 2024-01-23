@@ -628,8 +628,6 @@ void graph_matrix<T>::print_matrix() const
     const char* blue  =  "\033[0;34m ";
     const char* reset = "\033[0m";
 
-
-
     std::cout << "    ";
     for (size_t i = 0; i < _graph.size(); ++i)
     {

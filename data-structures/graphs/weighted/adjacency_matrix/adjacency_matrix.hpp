@@ -27,7 +27,7 @@ public:
 
 public:
     void                                                         add_vertex();
-    void                                 add_edge(size_t, size_t,size_t = 0);
+    void                                  add_edge(size_t, size_t,size_t = 0);
     void                                                          transpose();
     void                                                 print_matrix() const;
     bool                                         has_cycle_undirected() const;
@@ -55,7 +55,7 @@ private: // helpers
     void                                  topological_sort_helper(size_t, visited_type&, std::vector<int>&) const;
     std::vector<int>                                         reconstruct(size_t, size_t, std::vector<int>&) const;
     void              scc_Kosarajus_algorithm_helper_first_pass(size_t, visited_type&, std::stack<size_t>&) const;
-    void scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, list_type&) const;
+    void   scc_Kosarajus_algorithm_helper_second_pass(size_t, visited_type&, std::vector<int>&, list_type&) const;
     void        all_paths_two_vertex_helper(size_t, size_t, visited_type&, std::vector<int>&, matrix_type&) const;
 
     void scc_Tarjans_algorithm_helper(size_t, visited_type&,
