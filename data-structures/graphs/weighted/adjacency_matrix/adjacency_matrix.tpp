@@ -1,6 +1,6 @@
 template<typename T>
 graph_matrix<T>::graph_matrix(size_t v)
-    : _graph(v, std::vector<bool>(v, false))
+    : _graph(v, std::vector<std::pair<bool, int>>(v, {false, 0}))
 {
 }
 
@@ -37,11 +37,14 @@ graph_matrix<T>& graph_matrix<T>::operator=(graph_matrix<T>&& rhs) noexcept
 }
 
 template<typename T>
-void graph_matrix<T>::add_edge(size_t u, size_t v)
+void graph_matrix<T>::add_edge(size_t u, size_t v, size_t w)
 {
     if (u >= _graph.size() || v >= _graph.size()) throw std::out_of_range("Vertex index out of range");
-    _graph[u][v] = 1;
- //   _graph[v][u] = 1;  //  for undirected graph
+    _graph[u][v] = {true, w};
+    if (!_graph[v][u].first)
+    {
+       // _graph[v][u] = {true, w};  //  for undirected graph
+    }
 }
 
 template<typename T>
@@ -49,9 +52,9 @@ void graph_matrix<T>::add_vertex()
 {
     for (auto& row : _graph)
     {
-        row.push_back(0);
+        row.push_back({false , 0});
     }
-    _graph.push_back(std::vector<bool>(_graph.size() + 1, false));
+    _graph.push_back(std::vector<std::pair<bool, int>>(_graph.size() + 1, {false, 0}));
 }
 
 template<typename T>
@@ -78,7 +81,7 @@ bool graph_matrix<T>::has_cycle_undirected_helper(size_t source, size_t parent, 
 
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i])
+        if (_graph[source][i].first)
         {
              if (!visited[i])
             {
@@ -117,7 +120,7 @@ bool graph_matrix<T>::has_cycle_directed_helper(size_t source, visited_type& vis
 
     for (int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i])
+        if (_graph[source][i].first)
         {
             if (!visited[i])
             {
@@ -152,8 +155,8 @@ void graph_matrix<T>::dfs(size_t vertex, callback_type callback) const
     if (vertex >= _graph.size()) throw std::out_of_range("vertex index is great");
 
     visited_type visited(_graph.size(), false);
-    dfs_helper_recrusive(vertex, visited, callback);
-   // dfs_helper_iterative(vertex, visited, callback);
+  //  dfs_helper_recrusive(vertex, visited, callback);
+   dfs_helper_iterative(vertex, visited, callback);
 }
 
 template<typename T>
@@ -178,7 +181,7 @@ void graph_matrix<T>::dfs_helper_recrusive(size_t current, visited_type& visited
 
     for (int i = 0; i < _graph.size(); ++i)
     {
-       if (_graph[current][i] && !visited[i])
+       if (_graph[current][i].first && !visited[i])
        {
            dfs_helper_recrusive(i, visited, callback);
        }
@@ -201,7 +204,7 @@ void graph_matrix<T>::dfs_helper_iterative(size_t vertex, visited_type& visited,
 
         for (int i = _graph.size() - 1; i >= 0; --i)
         {
-            if (_graph[current][i] && !visited[i])
+            if (_graph[current][i].first && !visited[i])
             {
                 stack.push(i);
                 visited[i] = true;
@@ -250,7 +253,7 @@ void graph_matrix<T>::bfs_helper(size_t vertex, visited_type& visited, callback_
 
         for (int i = 0; i < _graph.size(); ++i)
         {
-            if (_graph[current][i] && !visited[i])
+            if (_graph[current][i].first && !visited[i])
             {
                 queue.push(i);
                 visited[i] = true;
@@ -280,7 +283,7 @@ size_t graph_matrix<T>::component_count() const
 
                 for (int i = _graph.size() - 1; i >= 0; --i)
                 {
-                    if (_graph[current][i] && !visited[i])
+                    if (_graph[current][i].first && !visited[i])
                     {
                         stack.push(i);
                         visited[i] = true;
@@ -312,7 +315,7 @@ size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level)  cons
             q.pop();
             for (int i = 0; i < _graph.size(); ++i)
             {
-                if (_graph[curr][i] && !visited[i])
+                if (_graph[curr][i].first && !visited[i])
                 {
                     q.push(i);
                     visited[i] = true;
@@ -323,41 +326,6 @@ size_t graph_matrix<T>::vertex_count_in_level(size_t vertex, size_t level)  cons
     }
 
     return 0;
-}
-
-template<typename T>
-size_t graph_matrix<T>::shortest_path_two_vertex(size_t source, size_t destionation) const
-{
-    if (source == destionation) return 0;
-    std::queue<size_t> q;
-    visited_type visited(_graph.size(), false);
-    size_t path_length = 0;
-    q.push(source);
-    visited[source] = true;
-
-    while(!q.empty())
-    {
-        ++path_length;
-        size_t size = q.size();
-        while (size--)
-        {
-            size_t curr = q.front();
-            q.pop();
-            for (int i = 0; i < _graph.size(); ++i)
-            {
-                if (_graph[curr][i] && !visited[i])
-                {
-                    if (i == destionation)
-                        return path_length;
-                    q.push(i);
-                    visited[i] = true;
-                }
-            }
-        }
-    }
-
-    std::cout << "from " << source  << " " << destionation << " is not reachable\n";
-    return INT_MAX;
 }
 
 template<typename T>
@@ -381,7 +349,7 @@ void  graph_matrix<T>::all_paths_two_vertex_helper(size_t source,
     visited[source] = true;
     for (int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i] && !visited[i])
+        if (_graph[source][i].first && !visited[i])
         {
             raw_path[i] = source;
             if (i == destination)
@@ -424,7 +392,7 @@ std::vector<int> graph_matrix<T>::topological_sort() const // This is NOT RECOMM
     {
         for (int j = 0; j < _graph.size(); ++j)
         {
-            if (_graph[i][j])
+            if (_graph[i][j].first)
             {
                 ++vertex_degree[j];
             }
@@ -449,7 +417,7 @@ void graph_matrix<T>::topological_sort_helper(size_t source, visited_type& visit
 
     for(int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i] && !visited[i])
+        if (_graph[source][i].first && !visited[i])
         {
             topological_sort_helper(i, visited, result);
         }
@@ -470,7 +438,7 @@ std::vector<int> graph_matrix<T>::topological_sort_Kahns_algorithm() const     /
     {
         for (int j = 0; j < _graph.size(); ++j)
         {
-            if (_graph[i][j])
+            if (_graph[i][j].first)
             {
                 ++vertice_degree[j];
             }
@@ -493,7 +461,7 @@ std::vector<int> graph_matrix<T>::topological_sort_Kahns_algorithm() const     /
 
         for (int i = 0; i < _graph.size(); ++i)
         {
-            if (_graph[current][i])
+            if (_graph[current][i].first)
             {
                 --vertice_degree[i];
                 if (vertice_degree[i] == 0)
@@ -550,15 +518,15 @@ typename graph_matrix<T>::matrix_type graph_matrix<T>::scc_Kosarajus_algorithm()
 }
 
 template<typename T>
-void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,  
-                                                                visited_type& visited, 
+void graph_matrix<T>::scc_Kosarajus_algorithm_helper_first_pass(size_t source,
+                                                                visited_type& visited,
                                                                 std::stack<size_t>& finish_time) const
 {
     visited[source] = true;
 
     for (int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i] && !visited[i])
+        if (_graph[source][i].first && !visited[i])
         {
             scc_Kosarajus_algorithm_helper_first_pass(i, visited, finish_time);
         }
@@ -571,14 +539,14 @@ template<typename T>
 void graph_matrix<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
                                                                  visited_type& visited,
                                                                  std::vector<int>& scc,
-                                                                 matrix_type& transposed_list) const
+                                                                 list_type& transposed_list) const
 {
     visited[source] = true;
     scc.push_back(source);
 
     for (int i = 0; i < transposed_list.size(); ++i)
     {
-        if (transposed_list[source][i] && !visited[i])
+        if (transposed_list[source][i].first && !visited[i])
         {
             scc_Kosarajus_algorithm_helper_second_pass(i, visited, scc, transposed_list);
         }
@@ -619,7 +587,7 @@ void graph_matrix<T>::scc_Tarjans_algorithm_helper(size_t source,
 
     for (int i = 0; i < _graph.size(); ++i)
     {
-        if (_graph[source][i])
+        if (_graph[source][i].first)
         {
             if (ids[i] == -1)
             {
@@ -657,12 +625,15 @@ void graph_matrix<T>::print_matrix() const
 {
     const char* green = "\033[1;32m";
     const char* red   = "\033[1;31m";
+    const char* blue  =  "\033[0;34m ";
     const char* reset = "\033[0m";
+
+
 
     std::cout << "    ";
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        std::cout << i << "   ";
+        std::cout << i << "     ";
     }
     std::cout << std::endl;
 
@@ -671,22 +642,16 @@ void graph_matrix<T>::print_matrix() const
         std::cout << "   ";
         for (size_t j = 0; j < _graph[i].size(); ++j)
         {
-            std::cout << "----";
+            std::cout << "------";
         }
         std::cout << std::endl;
 
         std::cout << i << " |";
         for (size_t j = 0; j < _graph[i].size(); ++j)
         {
-            if (_graph[i][j])
-            {
-                std::cout << green;
-            }
-            else
-            {
-                std::cout << red;
-            }
-            std::cout << " " << _graph[i][j] << reset << " |";
+            std::cout << blue <<  _graph[i][j].second << " "
+                      <<  (_graph[i][j].first ?  green :  red)
+                      << _graph[i][j].first << reset << " |";
         }
         std::cout << std::endl;
     }
@@ -694,7 +659,8 @@ void graph_matrix<T>::print_matrix() const
     std::cout << "   ";
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        std::cout << "----";
+        std::cout << "-----";
     }
+    std::cout << "---";
     std::cout << std::endl;
 }
