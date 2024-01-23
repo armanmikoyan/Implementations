@@ -458,10 +458,46 @@ void graph_list<T>::topological_sort_helper(size_t source, visited_type& visited
 template<typename T>
 std::vector<int> graph_list<T>::topological_sort_Kahns_algorithm() const        // Use this algorithm !!!
 {
-   
+    std::vector<int> result;
+    std::vector<size_t> vertex_degree(_graph.size(), 0);
+    std::queue<size_t> QUEUE;
 
+    for (int i = 0; i < _graph.size(); ++i)
+    {
+        for (int j = 0; j < _graph[i].size(); ++j)
+        {
+            ++vertex_degree[_graph[i][j].first];
+        }
+    }
+
+    for (int i = 0; i < vertex_degree.size(); ++i)
+    {
+        if (vertex_degree[i] == 0)     // if there is not vertice with degree 0, the graph is cyclic
+        {
+            QUEUE.push(i);
+        }
+    }
+
+    while (!QUEUE.empty())
+    {
+        size_t curr = QUEUE.front();
+        result.push_back(curr);
+        QUEUE.pop();
+
+        for (auto next : _graph[curr])
+        {
+            --vertex_degree[next.first];
+            if (vertex_degree[next.first] == 0)
+            {
+                QUEUE.push(next.first);
+            }
+        }
+    }
+
+    if (result.size() != _graph.size()) throw std::logic_error("There is cycle in the graph");
+
+    return result;
 }
-
 
 //-------------------SCC-------------------//
 

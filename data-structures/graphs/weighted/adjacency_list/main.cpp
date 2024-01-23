@@ -37,7 +37,7 @@ int main()
 
     g.print_list();
 
-    auto list = g.topological_sort();
+    auto list = g.topological_sort_Kahns_algorithm();
 
     for (auto vertice : list)
     {
