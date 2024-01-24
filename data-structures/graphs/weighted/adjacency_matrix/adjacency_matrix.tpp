@@ -644,8 +644,8 @@ std::vector<int> graph_matrix<T>::sssp_Armans_algorithm(size_t source, size_t de
             {
                 if (distance[j] > distance[vertex] + _graph[vertex][j].second)
                 {
-                    distance[j] = distance[vertex] + _graph[vertex][j].second;
-                    raw_path[j] = vertex;
+                    distance[j] = distance[vertex] + _graph[vertex][j].second; // relaxing
+                    raw_path[j] = vertex;                                     // parenting for construct path
                 }
             }
         }
