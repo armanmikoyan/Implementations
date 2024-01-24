@@ -3,25 +3,25 @@
 int main()
 {
 
-    graph_list<int> g{9};
-    g.add_edge(0, 4, 15);
-    g.add_edge(0, 3, 111);
-    g.add_edge(0, 2, 1);
-    g.add_edge(0, 1, 3);
-    g.add_edge(1, 4, 2);
-    g.add_edge(2, 4, 6);
-    g.add_edge(3, 4, 2);
-    g.add_edge(3, 2, 3);
-    g.add_edge(3, 1, 1);
-    g.add_edge(3, 4, 2);
-    g.add_edge(5, 4, 8);
+      graph_list<int> g{10};
+    g.add_edge(0, 5, 3);
+    g.add_edge(5, 1, -111199);
+    g.add_edge(1, 2, 2);
+    g.add_edge(2, 3, 4);
+    g.add_edge(2, 6, 4);
+    g.add_edge(3, 6, 9);
+    g.add_edge(6, 4, 3);
+    g.add_edge(5, 6, 11);
+    g.add_edge(5, 3, 111);
+    g.add_edge(3, 4, -1211);
+    g.add_edge(5, 4, -11181);
     g.print_list();
 
     auto path = g.sssp_Armans_algorithm(0, 4);
     
     for (int i = 0; i < path.size(); ++i)
     {
-        std::cout <<  path[i] << " -> ";
+        std::cout <<  path[i] << "-> ";
     }
 }
 

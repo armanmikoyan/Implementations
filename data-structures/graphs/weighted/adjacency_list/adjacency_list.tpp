@@ -640,7 +640,8 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
 {
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
-    std::vector<int> distance(_graph.size(), INT_FAST16_MAX);   
+    std::vector<long long> distance(_graph.size(), INT_MAX);   
+
     distance[source] = 0;
     size_t source_id = 0;
 
