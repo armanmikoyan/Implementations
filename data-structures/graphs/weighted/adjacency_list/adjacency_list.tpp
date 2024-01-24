@@ -634,7 +634,7 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
 
 
 //-------------------SSSP-------------------//
-
+        
 template<typename T>
 std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t destination) const
 {
@@ -644,7 +644,7 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
     distance[source] = 0;
     size_t source_id = 0;
 
-    for (int i = 0; i < top_sort_arr.size(); ++i) // find source id in topologicaly sorted array
+    for (size_t i = 0; i < top_sort_arr.size(); ++i) // find source id in topologicaly sorted array
     {
         if (top_sort_arr[i] == source)
         {
