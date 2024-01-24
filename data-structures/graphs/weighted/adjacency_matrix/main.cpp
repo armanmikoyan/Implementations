@@ -2,32 +2,25 @@
 
 int main()
 {
-   graph_matrix<int> g{};
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_vertex();
-    g.add_edge(0, 1);
-    g.add_edge(1, 5);
-    g.add_edge(5, 4);
-    g.add_edge(2, 4);
-    g.add_edge(1, 2);
-    g.add_edge(2, 3);
-    g.add_edge(3, 0);
-
+    graph_matrix<int> g{9};
+    g.add_edge(0, 4, 15);
+    g.add_edge(0, 3, 111);
+    g.add_edge(0, 2, 1);
+    g.add_edge(0, 1, 3);
+    g.add_edge(1, 4, 2);
+    g.add_edge(2, 4, 6);
+    g.add_edge(3, 4, 2);
+    g.add_edge(3, 2, 3);
+    g.add_edge(3, 1, 1);
+    g.add_edge(3, 4, 2);
+    g.add_edge(5, 4, 8);
     g.print_matrix();
 
-    auto list = g.scc_Tarjans_algorithm();
-
-    for (auto vertice : list)
+    auto path = g.sssp_Armans_algorithm(0, 4);
+    
+    for (int i = 0; i < path.size(); ++i)
     {
-        for (auto v : vertice)
-        {
-            std::cout << v << " ";
-        }
-        std::cout << std::endl;
+        std::cout <<  path[i] << " -> ";
     }
 
 
@@ -276,5 +269,21 @@ TEST 2
     g.add_edge(2, 3);
     g.add_edge(3, 0);
     g.print_matrix();
+
+
+
+TEST 2 
+graph_matrix<int> g{9};
+    g.add_edge(0, 4, 15);
+    g.add_edge(0, 3, 111);
+    g.add_edge(0, 2, 1);
+    g.add_edge(0, 1, 3);
+    g.add_edge(1, 4, 2);
+    g.add_edge(2, 4, 6);
+    g.add_edge(3, 4, 2);
+    g.add_edge(3, 2, 3);
+    g.add_edge(3, 1, 1);
+    g.add_edge(3, 4, 2);
+    g.add_edge(5, 4, 8);
 
 #endif
