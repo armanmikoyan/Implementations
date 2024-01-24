@@ -640,16 +640,16 @@ std::vector<int> graph_list<T>::sssp(size_t source, size_t destination) const
 {
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
-    std::vector<int> distance(_graph.size(), INT_FAST16_MAX);
+    std::vector<int> distance(_graph.size(), INT_FAST16_MAX);   
     distance[source] = 0;
     size_t source_id = 0;
 
     std::cout << std::endl;
-    for (int i = 0; i < top_sort_arr.size(); ++i)
+    for (int i = 0; i < top_sort_arr.size(); ++i)         // find source id in topologicaly sorted array
     {
         if (top_sort_arr[i] == source)
         {
-            source_id = i;
+            source_id = i;           
             break;
         }
      }
@@ -663,8 +663,8 @@ std::vector<int> graph_list<T>::sssp(size_t source, size_t destination) const
         {
             if (distance[next.first] > distance[vertex] + next.second)
             {
-                distance[next.first] = distance[vertex] + next.second;
-                raw_path[next.first] = vertex;
+                distance[next.first] = distance[vertex] + next.second;  // relaxing
+                raw_path[next.first] = vertex;                         // parenting for construct path
             }
         }
     }

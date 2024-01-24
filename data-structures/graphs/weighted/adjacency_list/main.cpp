@@ -16,7 +16,7 @@ int main()
     g.add_edge(6, 4, 3);
     g.add_edge(5, 6, 11);
     g.add_edge(5, 3, 111);
-     g.add_edge(3, 4, -1211);
+    g.add_edge(3, 4, -1211);
     g.add_edge(5, 4, 8);
     g.print_list();
 
