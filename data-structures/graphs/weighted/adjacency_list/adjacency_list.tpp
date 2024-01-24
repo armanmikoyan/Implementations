@@ -636,7 +636,7 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
 //-------------------SSSP-------------------//
 
 template<typename T>
-std::vector<int> graph_list<T>::sssp(size_t source, size_t destination) const
+std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t destination) const
 {
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
@@ -644,8 +644,7 @@ std::vector<int> graph_list<T>::sssp(size_t source, size_t destination) const
     distance[source] = 0;
     size_t source_id = 0;
 
-    std::cout << std::endl;
-    for (int i = 0; i < top_sort_arr.size(); ++i)         // find source id in topologicaly sorted array
+    for (int i = 0; i < top_sort_arr.size(); ++i) // find source id in topologicaly sorted array
     {
         if (top_sort_arr[i] == source)
         {

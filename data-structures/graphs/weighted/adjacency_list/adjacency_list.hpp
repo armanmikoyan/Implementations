@@ -49,7 +49,7 @@ public:
     matrix_type   scc_Tarjans_algorithm() const;
 
     //SSSP
-    std::vector<int> sssp(size_t, size_t) const;
+    std::vector<int> sssp_Armans_algorithm(size_t, size_t) const;
 
 private: 
 // helpers
