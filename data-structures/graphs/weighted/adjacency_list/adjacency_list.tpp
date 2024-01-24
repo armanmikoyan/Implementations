@@ -614,7 +614,7 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
         }
         if (on_stack[next.first])
         {
-            low_links[source] = std::min(  low_links[source], low_links[next.first]);
+            low_links[source] = std::min(low_links[source], low_links[next.first]);
         }
     }
     if (low_links[source] == ids[source])
