@@ -26,6 +26,7 @@ public:
     graph_list& operator=(graph_list&&) noexcept;
 
 public:
+// Main functionality
     void                                                        add_vertex();
     void                                                         transpose();
     void                                add_edge(size_t, size_t, size_t = 0);
@@ -47,7 +48,11 @@ public:
     matrix_type scc_Kosarajus_algorithm() const;
     matrix_type   scc_Tarjans_algorithm() const;
 
-private: // helpers
+    //SSSP
+    std::vector<int> sssp(size_t, size_t) const;
+
+private: 
+// helpers
     void                                         dfs_helper_recrusive(size_t, visited_type&, callback_type) const;
     void                                         dfs_helper_iterative(size_t, visited_type&, callback_type) const;
     void                                                   bfs_helper(size_t, visited_type&, callback_type) const;
