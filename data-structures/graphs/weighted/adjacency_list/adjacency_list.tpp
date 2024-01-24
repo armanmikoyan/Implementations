@@ -668,7 +668,6 @@ std::vector<int> graph_list<T>::sssp(size_t source, size_t destination) const
             }
         }
     }
-    
     return reconstruct(source, destination, raw_path);
 }
 
