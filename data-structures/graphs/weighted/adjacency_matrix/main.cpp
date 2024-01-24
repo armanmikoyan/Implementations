@@ -253,8 +253,10 @@ graph_matrix<int> g{};
     }
 
 
-TEST 2
+////// Test case for  sssp_Armans_algorithm
 
+TEST 1
+    graph_matrix<int> g{9};
     g.add_vertex();
     g.add_vertex();
     g.add_vertex();
@@ -273,7 +275,7 @@ TEST 2
 
 
 TEST 2 
-graph_matrix<int> g{9};
+    graph_matrix<int> g{9};
     g.add_edge(0, 4, 15);
     g.add_edge(0, 3, 111);
     g.add_edge(0, 2, 1);
