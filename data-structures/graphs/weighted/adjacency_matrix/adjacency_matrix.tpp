@@ -620,8 +620,8 @@ template<typename T>
 std::vector<int> graph_matrix<T>::sssp_Armans_algorithm(size_t source, size_t destination) const
 {
     std::vector<int> raw_path(_graph.size(), -1);
-    std::vector<int> distance(_graph.size(), INT_FAST16_MAX);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
+    std::vector<long long> distance(_graph.size(), INT_MAX);   
     size_t source_id = 0;
     distance[source] = 0;
 
