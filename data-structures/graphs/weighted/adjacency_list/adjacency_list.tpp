@@ -659,12 +659,13 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
     {
         size_t vertex = top_sort_arr[i];
 
-        for (auto next : _graph[vertex])
+        for (auto [next_vertex, next_vertex_weight] : _graph[vertex])
         {
-            if (distance[next.first] > distance[vertex] + next.second)
+            long long new_distanse_from_vertex_to_next = distance[vertex] + next_vertex_weight;
+            if (distance[next_vertex] > new_distanse_from_vertex_to_next)
             {
-                distance[next.first] = distance[vertex] + next.second;  // relaxing
-                raw_path[next.first] = vertex;                         // parenting for construct path
+                distance[next_vertex] = new_distanse_from_vertex_to_next;  // relaxing
+                raw_path[next_vertex] = vertex;                           // parenting for construct path
             }
         }
     }
@@ -683,18 +684,20 @@ std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t d
 
     while (!priority.empty())
     {
-        auto current = priority.top();
+        auto [vertex, cost] = priority.top();
         priority.pop();
 
-        if (current.second > distance[current.first]) continue;       // optimization
+        if (cost > distance[vertex]) continue;  // optimization  if extracted vertex cost is not actual, and distanse to vertex  is already updated
 
-        for (auto next : _graph[current.first])
+        for (auto [next_vertex, next_vertex_weight] : _graph[vertex])
         {
-            if (distance[next.first] > distance[current.first] + next.second)
+            long long new_distanse_from_vertex_to_next = distance[vertex] + next_vertex_weight;
+
+            if (distance[next_vertex] > new_distanse_from_vertex_to_next)
             {
-                distance[next.first] = distance[current.first] + next.second;     // relaxing
-                priority.push({next.first,  distance[next.first]});              // parenting for construct path
-                raw_path[next.first] = current.first; 
+                distance[next_vertex] = new_distanse_from_vertex_to_next;          // RELAXING  there is shortest path to next_vertex
+                priority.push({next_vertex, distance[next_vertex]});
+                raw_path[next_vertex] = vertex;                                  // parenting for construct path
             }
         }
     }

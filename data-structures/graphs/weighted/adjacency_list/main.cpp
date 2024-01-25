@@ -4,19 +4,23 @@ int main()
 {
 
 
-    graph_list<int> g{6};
-    g.add_edge(0, 1, 2);
-    g.add_edge(0, 2, 9);
-    g.add_edge(1, 3, 3);
-    g.add_edge(1, 4, 5);
-    g.add_edge(2, 4, 1);
-     g.add_edge(3, 4, 1);
-    g.add_edge(3, 5, 5);
-     g.add_edge(4, 5, 7);
+
+    graph_list<int> g{10};
+    g.add_edge(0, 5, 3);
+    g.add_edge(5, 1, 111199);
+    g.add_edge(1, 2, 2);
+    g.add_edge(2, 3, 4);
+    g.add_edge(2, 6, 4);
+    g.add_edge(3, 6, 9);
+    g.add_edge(6, 4, 3);
+    g.add_edge(5, 6, 11);
+    g.add_edge(5, 3, 111);
+    g.add_edge(3, 4, 1211);
+    g.add_edge(5, 4, 8);
 
     g.print_list();
 
-    auto path = g.sssp_Dijkstras_algorithm(0, 4);
+    auto path = g.sssp_Armans_algorithm(1, 4);
 
     for (int i = 0; i < path.size(); ++i)
     {
