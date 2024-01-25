@@ -615,17 +615,17 @@ void graph_matrix<T>::scc_Tarjans_algorithm_helper(size_t source,
 }
 
 //-------------------SSSP-------------------//
-        
+
 template<typename T>
 std::vector<int> graph_matrix<T>::sssp_Armans_algorithm(size_t source, size_t destination) const
 {
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
-    std::vector<long long> distance(_graph.size(), INT_MAX);   
+    std::vector<long long> distance(_graph.size(), INT_MAX);
     size_t source_id = 0;
     distance[source] = 0;
 
-    for (size_t i = 0; i < top_sort_arr.size(); ++i)
+    for (size_t i = 0; i < top_sort_arr.size(); ++i)     // find source id in topologicaly sorted array
     {
         if (top_sort_arr[i] == source)
         {
@@ -651,6 +651,49 @@ std::vector<int> graph_matrix<T>::sssp_Armans_algorithm(size_t source, size_t de
         }
     }
     return reconstruct(source, destination, raw_path);
+}
+
+template<typename T>
+std::vector<int> graph_matrix<T>::sssp_Dijkstras_algorithm(size_t source, size_t destination) const   // don't allowed negative edge!!!
+{
+    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+        return a.second > b.second;
+    };
+
+    std::vector<long long> distance(_graph.size(), INT_MAX);
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;   // max heap, compatator with pair's second value (cost)
+    std::vector<int> raw_path(_graph.size(), -1);
+
+    distance[source] = 0;
+    priority.push({source, 0});
+
+    while (!priority.empty())
+    {
+        auto [vertex, cost] = priority.top();
+        priority.pop();
+
+        if (vertex == destination) break;     // raw_path is ready.  If vertex is poped from pq, then vertex won't be updated anymore
+
+        if (cost > distance[vertex]) continue;  // optimization  if extracted vertex cost is not actual, and distanse to vertex  is already updated
+
+        for (int i = 0; i < _graph.size(); ++i)
+        {
+            if (_graph[vertex][i].first)
+            {
+                long long new_distanse_from_vertex_to_next = distance[vertex] + _graph[vertex][i].second;
+
+                if (distance[i] > new_distanse_from_vertex_to_next)
+                {
+                    distance[i] = new_distanse_from_vertex_to_next;
+                    priority.push({i, distance[i]});
+                    raw_path[i] = vertex;
+                }
+            }
+        }
+    }
+
+    return reconstruct(source, destination, raw_path);
+    // return  distance ->>  if need from source vertex shortest paths to all passible vertex,  and need to comment this line  if (vertex == destination) break;
 }
 
 template<typename T>
