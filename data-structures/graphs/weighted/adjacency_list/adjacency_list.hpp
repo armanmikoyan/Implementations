@@ -49,9 +49,10 @@ public:
     matrix_type   scc_Tarjans_algorithm() const;
 
     //SSSP
-    std::vector<int> sssp_Armans_algorithm(size_t, size_t) const;
+    std::vector<int>    sssp_Armans_algorithm(size_t, size_t) const;
+    std::vector<int> sssp_Dijkstras_algorithm(size_t, size_t) const;
 
-private: 
+private:
 // helpers
     void                                         dfs_helper_recrusive(size_t, visited_type&, callback_type) const;
     void                                         dfs_helper_iterative(size_t, visited_type&, callback_type) const;

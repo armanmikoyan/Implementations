@@ -634,13 +634,13 @@ void graph_list<T>::scc_Tarjans_algorithm_helper(size_t source,
 
 
 //-------------------SSSP-------------------//
-        
+
 template<typename T>
 std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t destination) const
 {
     std::vector<int> raw_path(_graph.size(), -1);
     std::vector<int> top_sort_arr = topological_sort_Kahns_algorithm();
-    std::vector<long long> distance(_graph.size(), INT_MAX);   
+    std::vector<long long> distance(_graph.size(), INT_MAX);
 
     distance[source] = 0;
     size_t source_id = 0;
@@ -649,12 +649,12 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
     {
         if (top_sort_arr[i] == source)
         {
-            source_id = i;           
+            source_id = i;
             break;
         }
      }
 
-  
+
     for (size_t i = source_id; i < top_sort_arr.size(); ++i)
     {
         size_t vertex = top_sort_arr[i];
@@ -668,6 +668,37 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
             }
         }
     }
+    return reconstruct(source, destination, raw_path);
+}
+
+template<typename T>
+std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t destination) const
+{
+    std::vector<long long> distance(_graph.size(), INT_MAX);
+    std::vector<int> raw_path(_graph.size(), -1);
+    std::priority_queue<std::pair<int, int>> priority;
+
+    distance[source] = 0;
+    priority.push({source, 0});
+
+    while (!priority.empty())
+    {
+        auto current = priority.top();
+        priority.pop();
+
+        if (current.second > distance[current.first]) continue;       // optimization
+
+        for (auto next : _graph[current.first])
+        {
+            if (distance[next.first] > distance[current.first] + next.second)
+            {
+                distance[next.first] = distance[current.first] + next.second;     // relaxing
+                priority.push({next.first,  distance[next.first]});              // parenting for construct path
+                raw_path[next.first] = current.first; 
+            }
+        }
+    }
+
     return reconstruct(source, destination, raw_path);
 }
 
