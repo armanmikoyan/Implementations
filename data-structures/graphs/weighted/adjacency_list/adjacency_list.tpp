@@ -714,6 +714,7 @@ std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t d
     // for all shorest path from source to all passible vertexes , 
     //comment this line  --> if (vertex == destination) break; 
 }
+
 template<typename T>
 void graph_list<T>::default_operation(size_t vertex)
 {
