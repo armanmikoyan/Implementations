@@ -3,7 +3,7 @@
 int main()
 {
     graph_matrix<int> g{9};
-      g.add_edge(0, 1, 2);
+    g.add_edge(0, 1, 2);
     g.add_edge(0, 2, 2);
     g.add_edge(0, 3, 2);
     g.add_edge(1, 3, 3);
