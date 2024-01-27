@@ -696,7 +696,6 @@ std::vector<int> graph_matrix<T>::sssp_Dijkstras_algorithm(size_t source, size_t
     // return  distance   
     // for all shorest path from source to all passible vertexes, 
     //comment this line  --> if (vertex == destination) break; 
-
 }
 
 template<typename T>
