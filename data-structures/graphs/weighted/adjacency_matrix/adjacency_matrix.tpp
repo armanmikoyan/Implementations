@@ -661,7 +661,7 @@ std::vector<int> graph_matrix<T>::sssp_Dijkstras_algorithm(size_t source, size_t
     };
 
     std::vector<long long> distance(_graph.size(), INT_MAX);
-    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;   // max heap, compatator with pair's second value (cost)
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;   // min heap, compatator with pair's second value (cost)
     std::vector<int> raw_path(_graph.size(), -1);
 
     distance[source] = 0;
@@ -693,7 +693,10 @@ std::vector<int> graph_matrix<T>::sssp_Dijkstras_algorithm(size_t source, size_t
     }
 
     return reconstruct(source, destination, raw_path);
-    // return  distance ->>  if need from source vertex shortest paths to all passible vertex,  and need to comment this line  if (vertex == destination) break;
+    // return  distance   
+    // for all shorest path from source to all passible vertexes, 
+    //comment this line  --> if (vertex == destination) break; 
+
 }
 
 template<typename T>

@@ -675,13 +675,13 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
 template<typename T>
 std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t destination) const   // don't allowed negative edge!!!
 {
-    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) { 
         return a.second > b.second;
     };
 
     std::vector<long long> distance(_graph.size(), INT_MAX);
     std::vector<int> raw_path(_graph.size(), -1);
-    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;  // max heap, compatator with pair's second value (cost)
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;  // min heap, compatator with pair's second value (cost)
 
     distance[source] = 0;
     priority.push({source, 0});
@@ -710,8 +710,10 @@ std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t d
     }
 
     return reconstruct(source, destination, raw_path);
-    // return  distance ->>  if need from source vertex shortest paths to all passible vertex,  and need to comment this line  if (vertex == destination) break;
-}
+    
+    // return  distance   
+    // for all shorest path from source to all passible vertexes , 
+    //comment this line  --> if (vertex == destination) break; 
 
 template<typename T>
 void graph_list<T>::default_operation(size_t vertex)

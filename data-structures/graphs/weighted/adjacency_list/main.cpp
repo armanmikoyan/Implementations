@@ -15,15 +15,16 @@ int main()
     g.add_edge(3, 4, 2);
     g.add_edge(5, 4, 8);
 
-    g.print_list();
+   g.print_list();
 
-    //auto path = g.sssp_Dijkstras_algorithm(0, 4);
-    auto path = g.sssp_Armans_algorithm(0, 4);
+    auto path = g.sssp_Dijkstras_algorithm(0, 4);
+  
 
     for (int i = 0; i < path.size(); ++i)
     {
        std::cout <<  path[i] << "-> ";
     }
+
 }
 
 /*
