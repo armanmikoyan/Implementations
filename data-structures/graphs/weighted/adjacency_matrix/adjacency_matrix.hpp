@@ -50,6 +50,9 @@ public:
     std::vector<int>    sssp_Armans_algorithm(size_t, size_t) const;
     std::vector<int> sssp_Dijkstras_algorithm(size_t, size_t) const;
 
+    // negative cycle detecting, also SSSP;
+    std::vector<long long> sssp_Bellman_Fords_algorithm(size_t source = 0) const;
+
 private: // helpers
     void                                         dfs_helper_recrusive(size_t, visited_type&, callback_type) const;
     void                                         dfs_helper_iterative(size_t, visited_type&, callback_type) const;

@@ -699,6 +699,56 @@ std::vector<int> graph_matrix<T>::sssp_Dijkstras_algorithm(size_t source, size_t
 }
 
 template<typename T>
+std::vector<long long> graph_matrix<T>::sssp_Bellman_Fords_algorithm(size_t source) const
+{
+    std::vector<long long> distance(_graph.size(), INT_MAX);
+    distance[source] = 0;
+    
+    // 1. first pass relaxing V-1 times
+
+    for (int i = 0; i < _graph.size() - 1; ++i)
+    {
+        for (int vertex = 0; vertex < _graph.size(); ++vertex)
+        {
+            for (int next_vertex = 0; next_vertex < _graph.size(); ++next_vertex)
+            {
+                if (_graph[vertex][next_vertex].first)
+                {
+                    long long new_distanse_from_vertex_to_next = distance[vertex] + _graph[vertex][next_vertex].second;
+                    if (distance[next_vertex] > distance[vertex] + _graph[vertex][next_vertex].second)
+                    {
+                        distance[next_vertex] = distance[vertex] + _graph[vertex][next_vertex].second;
+                    }
+                }
+            }
+        }
+    }
+
+    // 2. second pass if distance array have INT_MIN value then, there is negative cycle in the graph 
+    // INT_MIN values have all vertexes in cycle and also affected from that cycle
+
+    for (int i = 0; i < _graph.size() - 1; ++i)
+    {
+        for (int vertex = 0; vertex < _graph.size(); ++vertex)
+        {
+            for (int next_vertex = 0; next_vertex < _graph.size(); ++next_vertex)
+            {
+                if (_graph[vertex][next_vertex].first)
+                {
+                    long long new_distanse_from_vertex_to_next = distance[vertex] + _graph[vertex][next_vertex].second;
+                    if (distance[next_vertex] > distance[vertex] + _graph[vertex][next_vertex].second)
+                    {
+                        distance[next_vertex] = INT_MIN;
+                    }
+                }
+            }
+        }
+    }
+    
+    return distance;
+}
+
+template<typename T>
 void graph_matrix<T>::default_operation(size_t vertex)
 {
     std::cout << vertex << " ";

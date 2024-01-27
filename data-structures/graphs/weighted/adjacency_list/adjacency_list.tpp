@@ -675,7 +675,8 @@ std::vector<int> graph_list<T>::sssp_Armans_algorithm(size_t source, size_t dest
 template<typename T>
 std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t destination) const   // don't allowed negative edge!!!
 {
-    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) { 
+    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) 
+    { 
         return a.second > b.second;
     };
 
@@ -712,7 +713,51 @@ std::vector<int> graph_list<T>::sssp_Dijkstras_algorithm(size_t source, size_t d
     return reconstruct(source, destination, raw_path);
     // return  distance   
     // for all shorest path from source to all passible vertexes , 
-    //comment this line  --> if (vertex == destination) break; 
+    // comment this line  --> if (vertex == destination) break; 
+}
+
+template<typename T>
+std::vector<long long> graph_list<T>::sssp_Bellman_Fords_algorithm(size_t source) const
+{
+    std::vector<long long> distance(_graph.size(), INT_MAX);
+    distance[source] = 0;
+    
+    // 1. first pass relaxing V-1 times
+
+    for (int i = 0; i < _graph.size() - 1; ++i)
+    {
+        for (int vertex = 0; vertex < _graph.size(); ++vertex)
+        {
+            for (auto [next_vertex, next_vertex_weight] : _graph[vertex])
+            {
+                long long new_distanse_from_vertex_to_next = distance[vertex] + next_vertex_weight;
+                if (distance[next_vertex] > new_distanse_from_vertex_to_next)
+                {
+                    distance[next_vertex] = new_distanse_from_vertex_to_next;
+                }
+            }
+        }
+    }
+
+    // 2. second pass if distance array have INT_MIN value then, there is negative cycle in the graph 
+    // INT_MIN values have all vertexes in cycle and also affected from that cycle
+
+    for (int i = 0; i < _graph.size() - 1; ++i)
+    {
+        for (int vertex = 0; vertex < _graph.size(); ++vertex)
+        {
+            for (auto [next_vertex, next_vertex_weight] : _graph[vertex])
+            {
+                long long new_distanse_from_vertex_to_next = distance[vertex] + next_vertex_weight;
+                if (distance[next_vertex] > new_distanse_from_vertex_to_next)
+                {
+                   distance[next_vertex] = INT_MIN;              
+                }
+            }
+        }
+    }
+    
+    return distance;
 }
 
 template<typename T>

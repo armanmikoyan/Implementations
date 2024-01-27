@@ -2,29 +2,29 @@
 
 int main()
 {
-    graph_list<int> g{10};
-      g.add_edge(0, 4, 15);
-    g.add_edge(0, 3, 111);
-    g.add_edge(0, 2, 1);
-    g.add_edge(0, 1, 3);
-    g.add_edge(1, 4, 2);
-    g.add_edge(2, 4, 6);
-    g.add_edge(3, 4, 2);
-    g.add_edge(3, 2, 3);
-    g.add_edge(3, 1, 1);
-    g.add_edge(3, 4, 2);
-    g.add_edge(5, 4, 8);
 
-   g.print_list();
-
-    auto path = g.sssp_Dijkstras_algorithm(0, 4);
+    graph_list<int> g{9};
+    g.add_edge(0, 1, 2);
+    g.add_edge(0, 2, 2);
+    g.add_edge(0, 3, 2);
+    g.add_edge(1, 3, 3);
+    g.add_edge(3, 2, 1);
+    g.add_edge(2, 1, 5);
+    g.add_edge(3, 4, 3);
+    g.add_edge(4, 5, 3);
+    g.add_edge(0, 6, 2);
+    g.add_edge(0, 7, 2);
+    g.add_edge(0, 8, 2);
   
+    g.print_list();
 
-    for (int i = 0; i < path.size(); ++i)
+    auto list = g.sssp_Bellman_Fords_algorithm();
+
+    for (int i = 0; i < list.size(); ++i)
     {
-       std::cout <<  path[i] << "-> ";
+        std::cout << i << " " << list[i] << "\n";
     }
-
+    
 }
 
 /*
@@ -355,5 +355,73 @@ TEST 2
     g.add_edge(3, 1, 1);
     g.add_edge(3, 4, 2);
     g.add_edge(5, 4, 8);
+
+
+
+
+// Test cases for sssp Bellman Fords algorithm 
+
+
+// if any of distance is INT_MIN there is negative cyle, and from  negative cycle affected vertexes also have INT_MIN
+
+TEST1 1
+    graph_list<int> g{9};
+    g.add_edge(0, 1, 2);
+    g.add_edge(0, 2, 2);
+    g.add_edge(0, 3, 2);
+    g.add_edge(1, 3, 3);
+    g.add_edge(3, 2, 1);
+    g.add_edge(2, 1, -5); 
+    g.add_edge(3, 4, 3);
+    g.add_edge(4, 5, 3);
+    g.add_edge(0, 6, 2);
+    g.add_edge(0, 7, 2);
+    g.add_edge(0, 8, 2);
+    g.print_list();
+
+    auto list = g.sssp_Bellman_Fords_algorithm();    
+
+   
+
+    for (int i = 0; i < list.size(); ++i)
+    {
+        std::cout << i << " " << list[i] << "\n";
+    }
+
+
+
+TEST 2 
+
+    graph_list<int> g{9};
+    g.add_edge(0, 1, 2);
+    g.add_edge(0, 2, 2);
+    g.add_edge(0, 3, 2);
+    g.add_edge(1, 3, 3);
+    g.add_edge(3, 2, 1);
+    g.add_edge(2, 1, 5);
+    g.add_edge(3, 4, 3);
+    g.add_edge(4, 5, 3);
+    g.add_edge(0, 6, 2);
+    g.add_edge(0, 7, 2);
+    g.add_edge(0, 8, 2);
+
+
+TEST 3
+
+
+    graph_list<int> g{9};
+    g.add_edge(0, 1, 2);
+    g.add_edge(0, 2, 2);
+    g.add_edge(2, 0, 2);
+    g.add_edge(0, 3, 2);
+    g.add_edge(1, 3, 3);
+    g.add_edge(3, 2, 1);
+    g.add_edge(2, 1, -5); 
+    g.add_edge(3, 4, 3);
+    g.add_edge(4, 5, 3);
+    g.add_edge(0, 6, 2);
+    g.add_edge(0, 7, 2);
+    g.add_edge(0, 8, 2);
+
 
 #endif
