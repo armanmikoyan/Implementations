@@ -565,7 +565,7 @@ void graph_list<T>::scc_Kosarajus_algorithm_helper_second_pass(size_t source,
     visited[source] = true;
     scc.push_back(source);
 
-    for(auto next : transposed_list[source])
+    for (auto next : transposed_list[source])
     {
         if (!visited[next.first])
         {
@@ -583,7 +583,7 @@ typename graph_list<T>::matrix_type graph_list<T>::scc_Tarjans_algorithm() const
     std::vector<int> ids(_graph.size(), -1);
     std::vector<int> low_links(_graph.size(), -1);
 
-    for(int i = 0; i < _graph.size(); ++i)
+    for (int i = 0; i < _graph.size(); ++i)
     {
         if (ids[i] == -1)
         {
