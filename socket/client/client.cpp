@@ -1,6 +1,5 @@
 #include "tcp_client.hpp"
 
-#if 0
 // Example of usage client;
 int main() {
     try {
@@ -31,4 +30,4 @@ int main() {
 
     return 0;
 }
-#endif
+
