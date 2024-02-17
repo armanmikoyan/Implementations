@@ -23,6 +23,11 @@ public:
       listenning_connetions();
    }
 
+   ~tcp_server()
+   {
+      close(socket_fd);
+   }
+
 private:
    void create_socket()
    {
