@@ -108,7 +108,7 @@ private:
          throw std::runtime_error("Error sending response to client"); 
       }
 
-      return 1;  // connection is ont closed
+      return 1;  // connection is not closed
    }
 
 public:
