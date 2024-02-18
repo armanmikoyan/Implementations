@@ -17,7 +17,8 @@ public:
       address.sin_port = htons(server_PORT);
       address.sin_family = AF_INET;
       address.sin_addr.s_addr = INADDR_ANY;
-      inet_pton(AF_INET, server_IP.c_str(), &address.sin_addr); 
+      
+      if (inet_pton(AF_INET, server_IP.c_str(), &address.sin_addr) < 0)  throw std::runtime_error("Error converting addres\n");; 
       
       create_socket();
       connect_to_server();
