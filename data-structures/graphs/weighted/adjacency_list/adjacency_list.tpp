@@ -304,7 +304,7 @@ size_t  graph_list<T>::vertex_count_in_level(size_t vertex, size_t level) const
         {
             size_t current = queue.front();
             queue.pop();
-            for(auto next : _graph[current])
+            for (auto next : _graph[current])
             {
                 if (!visited[next.first])
                 {
@@ -385,7 +385,7 @@ void graph_list<T>::all_paths_two_vertex_helper(size_t source,
             raw_path[next.first] = source;
             if (next.first == destination)
             {
-              paths.push_back(reconstruct(source, destination, raw_path));
+                paths.push_back(reconstruct(source, destination, raw_path));
             }
             else
             {
