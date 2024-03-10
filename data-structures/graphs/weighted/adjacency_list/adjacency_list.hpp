@@ -57,6 +57,7 @@ public:
 
     //MST(Minimum spanning tree)  only undirected graph
     size_t mst_Prims_algorithm(size_t source = 0) const;
+    // size_t               mst_Kruskals_algorithm() const;
 
 private:
 // helpers

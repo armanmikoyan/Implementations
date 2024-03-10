@@ -770,7 +770,7 @@ size_t graph_list<T>::mst_Prims_algorithm(size_t source) const
 
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;
     size_t cost{};
-    visited_type visited(_graph.size(), false);
+    visited_type on_mst(_graph.size(), false);
 
     priority.push({source, 0});
 
@@ -779,14 +779,14 @@ size_t graph_list<T>::mst_Prims_algorithm(size_t source) const
         auto [vertex, weight] = priority.top();
         priority.pop();
 
-        if (visited[vertex]) continue;
+        if (on_mst[vertex]) continue;
           
-        visited[vertex] = true;
+        on_mst[vertex] = true;
         cost += weight;
 
         for (auto [next_vertex, next_weight] : _graph[vertex])
         {
-            if (!visited[next_vertex])
+            if (!on_mst[next_vertex])
             {
                 priority.push({next_vertex, next_weight});
             }
@@ -795,6 +795,12 @@ size_t graph_list<T>::mst_Prims_algorithm(size_t source) const
 
     return cost;
 }
+
+// template<typename T>
+// size_t graph_list<T>::mst_Kruskals_algorithm() const
+// {
+   
+// }
 
 template<typename T>
 void graph_list<T>::default_operation(size_t vertex)
