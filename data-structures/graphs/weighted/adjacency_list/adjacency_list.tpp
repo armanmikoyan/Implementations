@@ -1,7 +1,7 @@
 template<typename T>
 graph_list<T>::graph_list(size_t vertex_count)
     : _graph(vertex_count, std::vector<std::pair<int, int>>{})
-{
+{  
 }
 
 template<typename T>
@@ -53,7 +53,7 @@ void graph_list<T>::add_edge(size_t u, size_t v, size_t w)
     }
 
     _graph[u].push_back({v,w});
-//  _graph[v].push_back({u, w});   //for undirected graph
+    _graph[v].push_back({u, w});   //for undirected graph
 }
 
 template<typename T>
@@ -761,6 +761,42 @@ std::vector<long long> graph_list<T>::sssp_Bellman_Fords_algorithm(size_t source
 }
 
 template<typename T>
+int graph_list<T>::mst_Prims_algorithm(size_t source) const 
+{
+    auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) 
+    { 
+        return a.second > b.second;
+    };
+
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;
+    int cost{};
+    visited_type visited(_graph.size(), false);
+
+    priority.push({source, 0});
+
+    while (!priority.empty())
+    {
+        auto [vertex, weight] = priority.top();
+        priority.pop();
+
+        if (visited[vertex]) continue;
+          
+        visited[vertex] = true;
+        cost += weight;
+
+        for (auto [next_vertex, next_weight] : _graph[vertex])
+        {
+            if (!visited[next_vertex])
+            {
+                priority.push({next_vertex, next_weight});
+            }
+        }
+    }
+
+    return cost;
+}
+
+template<typename T>
 void graph_list<T>::default_operation(size_t vertex)
 {
     std::cout << vertex << " ";
@@ -771,7 +807,7 @@ void graph_list<T>::print_list() const
 {
     for (size_t i = 0; i < _graph.size(); ++i)
     {
-        std::cout << i << " -> ";
+        std::cout <<  "\033[1;32m" << i << " -> ";
         for (size_t j = 0; j < _graph[i].size(); ++j)
         {
             std::cout << "\033[0;34m " << " "<< _graph[i][j].second  // edge weight color blue
@@ -781,5 +817,7 @@ void graph_list<T>::print_list() const
         std::cout << std::endl;
     }
 
-    std::cout << std::endl;
+    std::cout << "\033[0m" << std::endl;
 }
+
+

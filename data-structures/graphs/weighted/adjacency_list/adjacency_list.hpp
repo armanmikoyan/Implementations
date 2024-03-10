@@ -55,6 +55,9 @@ public:
     // negative cycle detecting, also SSSP;
     std::vector<long long> sssp_Bellman_Fords_algorithm(size_t source = 0) const;
 
+    //MST(Minimum spanning tree)  only undirected graph
+    int mst_Prims_algorithm(size_t source = 0) const;
+
 private:
 // helpers
     void                                         dfs_helper_recrusive(size_t, visited_type&, callback_type) const;

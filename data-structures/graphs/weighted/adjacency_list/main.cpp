@@ -2,29 +2,28 @@
 
 int main()
 {
-
+ 
     graph_list<int> g{9};
-    g.add_edge(0, 1, 2);
-    g.add_edge(0, 2, 2);
-    g.add_edge(0, 3, 2);
-    g.add_edge(1, 3, 3);
-    g.add_edge(3, 2, 1);
-    g.add_edge(2, 1, 5);
-    g.add_edge(3, 4, 3);
-    g.add_edge(4, 5, 3);
-    g.add_edge(0, 6, 2);
-    g.add_edge(0, 7, 2);
-    g.add_edge(0, 8, 2);
-  
+    g.add_edge(0, 1, 4);
+    g.add_edge(0, 7, 8);
+    g.add_edge(1, 7, 11);
+    g.add_edge(1, 2, 8);
+    g.add_edge(7, 8, 7);
+    g.add_edge(7, 6, 1);
+    g.add_edge(2, 8, 2);
+    g.add_edge(2, 3, 7);
+    g.add_edge(2, 5, 4);
+    g.add_edge(8, 6, 6);
+    g.add_edge(6, 5, 2);
+    g.add_edge(5, 3, 14);
+    g.add_edge(5, 4, 10);
+    g.add_edge(3, 4, 9);
+
     g.print_list();
 
-    auto list = g.sssp_Bellman_Fords_algorithm();
+    int cost = g.mst_Prims_algorithm();
 
-    for (int i = 0; i < list.size(); ++i)
-    {
-        std::cout << i << " " << list[i] << "\n";
-    }
-    
+    std::cout << cost << "\n";   
 }
 
 /*
@@ -424,4 +423,36 @@ TEST 3
     g.add_edge(0, 8, 2);
 
 
+
+
+// Test cases for MST
+
+
+//  Prim's Algorithm
+
+TEST 1
+
+graph_list<int> g{9};
+    g.add_edge(0, 1, 4);
+    g.add_edge(0, 7, 8);
+    g.add_edge(1, 7, 11);
+    g.add_edge(1, 2, 8);
+    g.add_edge(7, 8, 7);
+    g.add_edge(7, 6, 1);
+    g.add_edge(2, 8, 2);
+    g.add_edge(2, 3, 7);
+    g.add_edge(2, 5, 4);
+    g.add_edge(8, 6, 6);
+    g.add_edge(6, 5, 2);
+    g.add_edge(5, 3, 14);
+    g.add_edge(5, 4, 10);
+    g.add_edge(3, 4, 9);
+
+    g.print_list();
+
+    int cost = g.mst_Prims_algorithm();
+
+    std::cout << cost << "\n";   
 #endif
+
+
