@@ -56,7 +56,7 @@ public:
     std::vector<long long> sssp_Bellman_Fords_algorithm(size_t source = 0) const;
 
     //MST(Minimum spanning tree)  only undirected graph
-    int mst_Prims_algorithm(size_t source = 0) const;
+    size_t mst_Prims_algorithm(size_t source = 0) const;
 
 private:
 // helpers

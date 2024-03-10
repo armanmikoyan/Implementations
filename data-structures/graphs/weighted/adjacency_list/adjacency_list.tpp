@@ -761,7 +761,7 @@ std::vector<long long> graph_list<T>::sssp_Bellman_Fords_algorithm(size_t source
 }
 
 template<typename T>
-int graph_list<T>::mst_Prims_algorithm(size_t source) const 
+size_t graph_list<T>::mst_Prims_algorithm(size_t source) const 
 {
     auto comparator = [](const std::pair<int, int>& a, const std::pair<int, int>& b) 
     { 
@@ -769,7 +769,7 @@ int graph_list<T>::mst_Prims_algorithm(size_t source) const
     };
 
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> priority;
-    int cost{};
+    size_t cost{};
     visited_type visited(_graph.size(), false);
 
     priority.push({source, 0});

@@ -21,7 +21,7 @@ int main()
 
     g.print_list();
 
-    int cost = g.mst_Prims_algorithm();
+    size_t cost = g.mst_Prims_algorithm();
 
     std::cout << cost << "\n";   
 }
@@ -450,7 +450,7 @@ graph_list<int> g{9};
 
     g.print_list();
 
-    int cost = g.mst_Prims_algorithm();
+    size_t cost = g.mst_Prims_algorithm();
 
     std::cout << cost << "\n";   
 #endif
