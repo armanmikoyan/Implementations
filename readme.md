@@ -20,6 +20,6 @@ This repository contains implementations of various projects related to C++ prog
 
 ## How to Use
 
-Each project is organized into its own directory. Navigate to the project of interest to find the source code, explanations, and instructions.
+#Don't use only watch!!!
 
 
