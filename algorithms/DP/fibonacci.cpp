@@ -5,9 +5,11 @@
 // DYNAMIC PROGRAMMING
 
 //------------------------------------------------------------------------------------
+constexpr size_t fibonacci_id = 43;
 
 
 // DP TOP-DOWN approach
+std::vector<size_t> memo(fibonacci_id + 1, -1);
 size_t fibonacci_TOPDOWN(size_t n, std::vector<size_t>& memo)
 {
    if (n <= 1) return n;
@@ -50,10 +52,7 @@ size_t fibonacci(size_t n)
 
 int main()
 {
-   constexpr size_t fibonacci_id = 43;
-
    // DP TOP-DOWN
-   std::vector<size_t> memo(fibonacci_id + 1, -1);
    auto DP_TD_TIME_START = std::chrono::high_resolution_clock::now();
    auto result_TD_DP = fibonacci_TOPDOWN(fibonacci_id, memo);
    auto DP_TD_TIME_END = std::chrono::high_resolution_clock::now();
