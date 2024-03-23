@@ -2,8 +2,9 @@
 #include <vector>
 #include <chrono> 
 
-// DYNAMIC PROGRAMMING 
+// DYNAMIC PROGRAMMING
 
+//------------------------------------------------------------------------------------
 
 
 // DP TOP-DOWN approach
@@ -18,8 +19,8 @@ size_t fibonacci_TOPDOWN(size_t n, std::vector<size_t>& memo)
 
 //------------------------------------------------------------------------------------
 
-// DP BOTTOM-UP approach
 
+// DP BOTTOM-UP approach
 size_t fibonacci_BOTTOMUP(size_t n)
 {
    if (n <= 1) return n;
@@ -36,9 +37,8 @@ size_t fibonacci_BOTTOMUP(size_t n)
 
 }
 
-
-
 //--------------------------------------------------------------------
+
 
 // approach without DP 
 size_t fibonacci(size_t n)
@@ -51,7 +51,6 @@ size_t fibonacci(size_t n)
 int main()
 {
    constexpr size_t fibonacci_id = 43;
-
 
    // DP TOP-DOWN
    std::vector<size_t> memo(fibonacci_id + 1, -1);
