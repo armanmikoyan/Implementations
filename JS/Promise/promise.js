@@ -65,8 +65,7 @@ class MyPromise {
       if (this.#state === STATE.FULFILLED)
       {
          callback(this.#value);  // when there is not an async operation 
-      }
-                            
+      }                        
   }
 
   catch(callback) {
@@ -82,9 +81,10 @@ class MyPromise {
    }
 }
 
+
+// TEST
 let myP = new MyPromise((resolve, reject) => {
    let value = 10;
-
    setTimeout(() => {
       if (value > 5)
       {
@@ -96,8 +96,6 @@ let myP = new MyPromise((resolve, reject) => {
 
       }
    }, 0)
-   throw new Error
-
 })
 
 myP.then((val)=>{
@@ -107,7 +105,6 @@ myP.then((val)=>{
 myP.catch((val) => {
    console.log("catch")
 })
-
 
 setInterval(()=>{
    console.log("waiting")
