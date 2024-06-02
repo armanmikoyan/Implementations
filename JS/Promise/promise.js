@@ -93,7 +93,6 @@ let myP = new MyPromise((resolve, reject) => {
       else
       {
          reject(value)
-
       }
    }, 0)
 })
