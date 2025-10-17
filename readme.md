@@ -18,8 +18,4 @@ This repository contains implementations of various projects related to C++ prog
 
 7. **And so on**
 
-## How to Use
-
-# Don't use, just watch!!!
-
 
